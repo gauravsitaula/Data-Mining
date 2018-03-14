@@ -1,0 +1,3062 @@
+MPRINT(EM_DIAGRAM):    data _null_;
+MPRINT(EM_DIAGRAM):   call symput('NLDATE', strip(put(date(), NLDATE.)));
+MPRINT(EM_DIAGRAM):   call symput('NLTIME', strip(put(datetime(), NLTIME.)));
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   data _null_;
+MPRINT(EM_DIAGRAM):   nldate= sasmsg("sashelp.dmine", "log_date_note", 'N', "February 25, 2017" );
+MPRINT(EM_DIAGRAM):   nltime= sasmsg("sashelp.dmine", "log_time_note", 'N', "15:20:53" );
+MPRINT(EM_DIAGRAM):   put "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   put "* Score Log";
+MPRINT(EM_DIAGRAM):   put nldate;
+MPRINT(EM_DIAGRAM):   put nltime;
+MPRINT(EM_DIAGRAM):   put "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   run;
+*------------------------------------------------------------*
+* Score Log
+Date:                February 25, 2017
+Time:                15:20:53
+*------------------------------------------------------------*
+MPRINT(EM_DIAGRAM):    filename O2H6ER0C "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMSCORE.out" encoding="UTF-8" NOBOM;
+MPRINT(EM_DIAGRAM):   proc printto print=O2H6ER0C new;
+MPRINT(EM_DIAGRAM):   run;
+23300      %let EMEXCEPTIONSTRING=;
+23301      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):    *------------------------------------------------------------*;
+23302      * SCORE: Tree2;
+MPRINT(EM_DIAGRAM):   * SCORE: Tree2;
+23303      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+23304      %let EM_ACTION = SCORE;
+23305      %let syscc = 0;
+23306      %macro main;
+23307      
+23308        %if %upcase(&EM_ACTION) = CREATE %then %do;
+23309          filename temp catalog 'sashelp.emmodl.tree_create.source';
+23310          %include temp;
+23311          filename temp;
+23312      
+23313          %em_tree_create;
+23314        %end;
+23315      
+23316         %else
+23317         %if %upcase(&EM_ACTION) = TRAIN %then %do;
+23318      
+23319             filename temp catalog 'sashelp.emmodl.tree_train.source';
+23320             %include temp;
+23321             filename temp;
+23322             %em_tree_train;
+23323         %end;
+23324      
+23325        %else
+23326        %if %upcase(&EM_ACTION) = SCORE %then %do;
+23327          filename temp catalog 'sashelp.emmodl.tree_score.source';
+23328          %include temp;
+23329          filename temp;
+23330      
+23331          %em_tree_score;
+23332      
+23333        %end;
+23334      
+23335        %else
+23336        %if %upcase(&EM_ACTION) = REPORT %then %do;
+23337      
+23338             filename temp catalog 'sashelp.emmodl.tree_report.source';
+23339             %include temp;
+23340             filename temp;
+23341      
+23342             %em_tree_report;
+23343         %end;
+23344      
+23345        %else
+23346        %if %upcase(&EM_ACTION) = OPENINT %then %do;
+23347      
+23348             filename temp catalog 'sashelp.emmodl.tree_actions.source';
+23349             %include temp;
+23350             filename temp;
+23351             %EM_TREE_OPENTREEVIEWER;
+23352      
+23353         %end;
+23354      
+23355        %else
+23356        %if %upcase(&EM_ACTION) = CLOSEINT %then %do;
+23357      
+23358             filename temp catalog 'sashelp.emmodl.tree_actions.source';
+23359             %include temp;
+23360             filename temp;
+23361             %EM_TREE_CLOSETREEVIEWER;
+23362      
+23363         %end;
+23364      
+23365      
+23366         %doendm:
+23367      %mend main;
+23368      
+23369      %main;
+MPRINT(EM_DIAGRAM):    
+MPRINT(MAIN):   filename temp catalog 'sashelp.emmodl.tree_score.source';
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMMODL.TREE_SCORE.SOURCE.
+23371     +%macro em_tree_score;
+23373     +   /* determine if multiple targets will be processed */
+23374     +   %let em_tree_multipleTargets=N;
+23375     +   %let em_tree_numTarget=1;
+23376     +   %if "&EM_PROPERTY_USEMULTIPLETARGET" eq "Y" %then %do;
+23377     +      /* determine if there are any ordinal target variables - if so, multiple targets are not supported */
+23378     +      %if &EM_NUM_ORDINAL_TARGET gt 0 %then %do;
+23379     +         %let em_tree_multipleTargets=N;
+23380     +      %end;
+23381     +      %else %do;
+23382     +         /* create macro array of targets  */
+23383     +         data _null_;
+23384     +           set &EM_DATA_VARIABLESET(where=(ROLE='TARGET' AND LEVEL^='ORDINAL')) end=eof;
+23385     +           call symput('em_tree_targetVars'!!strip(put(_N_, BEST.)), strip(Name));
+23386     +           if eof then
+23387     +             call symput('em_tree_numTarget', strip(put(_N_, BEST.)));
+23388     +        run;
+23390     +        %if &em_tree_numTarget gt 1 %then %do;
+23391     +           %let em_tree_multipleTargets=Y;
+23392     +        %end;
+23393     +      %end;
+23394     +   %end;
+23396     +   /* build flow and publish scoring code */
+23397     +   %EM_GETNAME(key=TREEFLOW, type=FILE, extension=sas);
+23398     +   %EM_GETNAME(key=TREEPUBLISH, type=FILE, extension=sas);
+23400     +   filename treeflow "&EM_USER_TREEFLOW";
+23401     +   filename treepub "&EM_USER_TREEPUBLISH";
+23403     +   filename flowref  "&EM_FILE_EMFLOWSCORECODE";
+23404     +   filename pubref   "&EM_FILE_EMPUBLISHSCORECODE";
+23406     +   %em_copyfile(infref=treeflow, outfref=flowref);
+23407     +   %em_copyfile(infref=treepub, outfref=pubref);
+23409     +   filename treeflow;
+23410     +   filename treepub;
+23412     +   /* if priors are used, add code to generate unadjusted residuals in export */
+23413     +   %let useAdjPriors = N;
+23414     +   data _null_;
+23415     +     set &EM_DEC_DECMETA(where=(_TYPE_="DECPRIOR"));
+23416     +     if USE="Y" then call symput('useAdjPriors', 'Y');
+23417     +   run;
+23418     +   %if (("&em_tree_multipleTargets" eq "N") AND ("&useAdjPriors" eq "Y")) %then %do;
+23419     +      filename temp catalog 'sashelp.emutil.em_makeunadjustedresidualvars.source';
+23420     +      %include temp;
+23421     +      filename temp;
+23423     +      %EM_GETNAME(key=adjResidualCode, type=FILE, extension=sas);
+23424     +      filename adjref "&EM_USER_adjResidualCode";
+23425     +      %makeUnadjustedResidualVars(target=%EM_TARGET, decmeta=&EM_DEC_DECMETA, fref=adjref);
+23427     +      %em_copyfile(infref=adjref, outfref=flowref, append=Y);
+23429     +      filename adjref;
+23430     +   %end;
+23432     +   /* LEAF */
+23433     +   %if "&EM_PROPERTY_LEAFID" eq "Y" %then %do;
+23434     +      data _null_;
+23435     +        file flowref mod;
+23436     +        put 'drop _LEAF_;';
+23437     +      run;
+23439     +      data _null_;
+23440     +        file pubref mod;
+23441     +        put 'drop _LEAF_;';
+23442     +      run;
+23444     +   %end;
+23446     +   filename flowref;
+23447     +   filename pubref;
+23449     +   /* em_metachange code */
+23450     +   %if "&EM_PROPERTY_LEAFID" eq "Y" %then %do;
+23451     +     %EM_METACHANGE(name=_NODE_, role=&EM_PROPERTY_NODEROLE, LEVEL=NOMINAL);
+23452     +   %end;
+23454     +   /* variable selection based on importance stat    */
+23455     +   %if "&EM_PROPERTY_VARSELECTION" eq "Y" %then %do;
+23456     +     %EM_GETNAME(key=OUTIMPORT, type=DATA);
+23457     +     %let dsid = %sysfunc(open(&EM_USER_OUTIMPORT(where=(IMPORTANCE<0.05))));
+23458     +     %let varnum = %sysfunc(varnum(&dsid, NAME));
+23459     +     %let obs = %sysfunc(fetch(&dsid));
+23460     +     %do %while(&obs=0);
+23461     +       %let temp = %nrbquote(%sysfunc(getvarc(&dsid, &varnum)));
+23462     +       %let varname = %nrbquote(%sysfunc(tranwrd(&temp,  %str(%"),"")));
+23463     +       %EM_METACHANGE(name=&varname, role=REJECTED);
+23464     +       %let obs = %sysfunc(fetch(&dsid));
+23465     +     %end;
+23466     +     %if &dsid %then %let dsid=%sysfunc(close(&dsid));
+23467     +   %end;
+23469     +   /* set Q_ varaibles to role of ASSESS when in the presense of prior probabilities */
+23470     +   %if %sysfunc(exist(&EM_DEC_DECMETA)) %then %do;
+23471     +    %let tree_pred_vars = ;
+23472     +    %let tree_pred_lvl =;
+23473     +    %let numpred= 0;
+23475     +    data _null_;
+23476     +     set &EM_DEC_DECMETA(where=(_TYPE_="PREDICTED")) end=eof;
+23477     +     call symput('tree_pred_vars'!!strip(put(_N_, BEST.)), strip(VARIABLE));
+23478     +     call symput('tree_pred_lvl'!!strip(put(_N_, BEST.)), strip(LEVEL));
+23479     +     if eof then
+23480     +       call symput('numpred', strip(put(_N_, BEST.)));
+23481     +    run;
+23482     +   %end;
+23484     +   %if &numpred ne 0 %then %do;
+23485     +    %do i=1 %to &numpred;
+23486     +      %let qpred = Q%substr(&&tree_pred_vars&i,2);
+23487     +      %EM_METACHANGE(name=&qpred, role=ASSESS);
+23488     +    %end;
+23489     +   %end;
+23491     +   /* determine if multiple targets will be processed */
+23492     +   %let em_tree_multipleTargets=N;
+23493     +   %let em_tree_numTarget=1;
+23494     +   %if "&EM_PROPERTY_USEMULTIPLETARGET" eq "Y" %then %do;
+23495     +      /* determine if there are any ordinal target variables - if so, multiple targets are not supported */
+23496     +      %if &EM_NUM_ORDINAL_TARGET gt 0 %then %do;
+23497     +         %let em_tree_multipleTargets=N;
+23498     +      %end;
+23499     +      %else %do;
+23500     +        data _null_;
+23501     +          set &EM_DATA_VARIABLESET(where=(ROLE='TARGET' AND LEVEL^='ORDINAL')) end=eof;
+23502     +          if eof then
+23503     +            call symput('em_tree_numTarget', strip(put(_N_, BEST.)));
+23504     +        run;
+23506     +        %if &em_tree_numTarget gt 1 %then %do;
+23507     +           %let em_tree_multipleTargets=Y;
+23508     +        %end;
+23509     +     %end;
+23510     +   %end;
+23512     +   /* need to include this code to do the %em_report for OUTIMPORT here instead of in Report code so _loop data set is created when group processing */
+23513     +   %if "&em_tree_multipleTargets" eq "N" %then %do;
+23515     +      /* variable importance */
+23516     +      %EM_GETNAME(key=OUTIMPORT, type=DATA);
+23517     +      %if %sysfunc(exist(&EM_USER_OUTIMPORT)) eq 1 %then %do;
+23519     +         %let validexist=0;
+23520     +         %if (("&EM_IMPORT_VALIDATE" ne "") AND (%sysfunc(exist(&EM_IMPORT_VALIDATE)) or %sysfunc(exist(&EM_IMPORT_VALIDATE,VIEW)))) %then %do;
+23521     +           %let validexist=1;
+23522     +         %end;
+23524     +         /* determine if vars exists - properties could indicate they are they but freeze=Y would mean the node wasn't retrained */
+23525     +         /* and the columns may not be generated                                                                                 */
+23526     +         %let em_tree_cvexists=;
+23527     +         %let em_tree_surrexists=.;
+23528     +         data _null_;
+23529     +            set &EM_USER_OUTIMPORT (obs=2) end=eof;
+23530     +            if eof then do ;
+23531     +               call symput("em_tree_cvexists" , strip(put(cvimportance,best.))) ;
+23532     +               call symput("em_tree_surrexists", strip(put(nsurrogates, best.)));
+23533     +            end;
+23534     +         run;
+23536     +         data &EM_USER_OUTIMPORT;
+23537     +            set &EM_USER_OUTIMPORT;
+23539     +            /* format columns based on Precison value specified */
+23540     +            format importance 15.&EM_PROPERTY_PRECISION
+23541     +                 %if &validexist %then %do;
+23542     +                   vimportance ratio 15.&EM_PROPERTY_PRECISION
+23543     +                 %end;
+23544     +                 %if "&EM_TREE_CVEXISTS" ne "." %then %do;
+23545     +                   cvimportance vimportance ratio 15.&EM_PROPERTY_PRECISION
+23546     +                 %end;
+23547     +            ;
+23548     +            label  NAME       = "%sysfunc(sasmsg(sashelp.dmine, meta_name_vlabel, noquote))"
+23549     +                 LABEL        = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel, noquote))"
+23550     +                 NRULES       = "%sysfunc(sasmsg(sashelp.dmine, rpt_nrules_vlabel, noquote))"
+23551     +                 IMPORTANCE   = "%sysfunc(sasmsg(sashelp.dmine, rpt_importance_vlabel, noquote))"
+23552     +                 %if "&em_tree_surrexists" ne "" %then %do;
+23553     +                   NSURROGATES  = "%sysfunc(sasmsg(sashelp.dmine, rpt_nsurrogates_vlabel, noquote))"
+23554     +                 %end;
+23555     +                 %if &validexist %then %do;
+23556     +                   VIMPORTANCE = "%sysfunc(sasmsg(sashelp.dmine, rpt_vimportance_vlabel, noquote))"
+23557     +                   RATIO       = "%sysfunc(sasmsg(sashelp.dmine, rpt_ratio_vlabel, noquote))"
+23558     +                 %end;
+23559     +                 %if "&EM_TREE_CVEXISTS" ne "" %then %do;
+23560     +                   VIMPORTANCE = "%sysfunc(sasmsg(sashelp.dmine, rpt_vimportance_vlabel, noquote))"
+23561     +                   CVIMPORTANCE =  "%sysfunc(sasmsg(sashelp.dmine, rpt_cvimport_vlabel, noquote))"
+23562     +                   CVRULES= "%sysfunc(sasmsg(sashelp.dmine, rpt_cvrules_vlabel, noquote))"
+23563     +                   RATIO = "%sysfunc(sasmsg(sashelp.dmine, rpt_ratio_vlabel, noquote))"
+23564     +                 %end;
+23565     +            ;
+23566     +         run;
+23568     +         %EM_REPORT(key=OUTIMPORT, viewtype=DATA, block=MODEL, description=IMPORTANCE, autodisplay=N);
+23569     +      %end;
+23570     +   %end;
+23572     +   %doendm:
+23573     +%mend em_tree_score;
+NOTE: %INCLUDE (level 1) ending.
+MPRINT(MAIN):   filename temp;
+NOTE: Fileref TEMP has been deassigned.
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_TREE_SCORE):   filename treeflow "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\TREEFLOW.sas";
+MPRINT(EM_TREE_SCORE):   filename treepub "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\TREEPUBLISH.sas";
+MPRINT(EM_TREE_SCORE):   filename flowref "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMFLOWSCORE.sas";
+MPRINT(EM_TREE_SCORE):   filename pubref "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMPUBLISHSCORE.sas";
+MPRINT(EM_COPYFILE):   data _null_;
+MPRINT(EM_COPYFILE):   length line $20000;
+MPRINT(EM_COPYFILE):   file flowref lrecl=20000;
+MPRINT(EM_COPYFILE):   fid=fopen("treeflow",'i',20000,'v');
+MPRINT(EM_COPYFILE):   if fid > 0 then do;
+MPRINT(EM_COPYFILE):   do while(^fread(fid));
+MPRINT(EM_COPYFILE):   rlen = frlen(fid);
+MPRINT(EM_COPYFILE):   rc= fget(fid,line,20000);
+MPRINT(EM_COPYFILE):   start = length(line)-length(left(line))+1;
+MPRINT(EM_COPYFILE):   line=strip(line);
+MPRINT(EM_COPYFILE):   put @start line;
+MPRINT(EM_COPYFILE):   end;
+MPRINT(EM_COPYFILE):   if fid > 0 then rc=fclose(fid);
+MPRINT(EM_COPYFILE):   end;
+MPRINT(EM_COPYFILE):   run;
+
+NOTE: The file FLOWREF is:
+      Filename=C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMFLOWSCORE.sas,
+      RECFM=V,LRECL=20000,File Size (bytes)=0,
+      Last Modified=25Feb2017:15:20:52,
+      Create Time=25Feb2017:15:19:45
+
+NOTE: 236 records were written to the file FLOWREF.
+      The minimum record length was 1.
+      The maximum record length was 77.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_COPYFILE):   data _null_;
+MPRINT(EM_COPYFILE):   length line $20000;
+MPRINT(EM_COPYFILE):   file pubref lrecl=20000;
+MPRINT(EM_COPYFILE):   fid=fopen("treepub",'i',20000,'v');
+MPRINT(EM_COPYFILE):   if fid > 0 then do;
+MPRINT(EM_COPYFILE):   do while(^fread(fid));
+MPRINT(EM_COPYFILE):   rlen = frlen(fid);
+MPRINT(EM_COPYFILE):   rc= fget(fid,line,20000);
+MPRINT(EM_COPYFILE):   start = length(line)-length(left(line))+1;
+MPRINT(EM_COPYFILE):   line=strip(line);
+MPRINT(EM_COPYFILE):   put @start line;
+MPRINT(EM_COPYFILE):   end;
+MPRINT(EM_COPYFILE):   if fid > 0 then rc=fclose(fid);
+MPRINT(EM_COPYFILE):   end;
+MPRINT(EM_COPYFILE):   run;
+
+NOTE: The file PUBREF is:
+      Filename=C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMPUBLISHSCORE.sas,
+      RECFM=V,LRECL=20000,File Size (bytes)=0,
+      Last Modified=25Feb2017:15:20:52,
+      Create Time=25Feb2017:15:19:45
+
+NOTE: 214 records were written to the file PUBREF.
+      The minimum record length was 1.
+      The maximum record length was 77.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_TREE_SCORE):   filename treeflow;
+NOTE: Fileref TREEFLOW has been deassigned.
+MPRINT(EM_TREE_SCORE):   filename treepub;
+NOTE: Fileref TREEPUB has been deassigned.
+MPRINT(EM_TREE_SCORE):   data _null_;
+MPRINT(EM_TREE_SCORE):   set EMWS1.Ids_CLAIM_IND_DM(where=(_TYPE_="DECPRIOR"));
+MPRINT(EM_TREE_SCORE):   if USE="Y" then call symput('useAdjPriors', 'Y');
+MPRINT(EM_TREE_SCORE):   run;
+
+NOTE: There were 1 observations read from the data set EMWS1.IDS_CLAIM_IND_DM.
+      WHERE _TYPE_='DECPRIOR';
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):   data _null_;
+MPRINT(EM_TREE_SCORE):   file flowref mod;
+MPRINT(EM_TREE_SCORE):   put 'drop _LEAF_;';
+MPRINT(EM_TREE_SCORE):   run;
+
+NOTE: The file FLOWREF is:
+      Filename=C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMFLOWSCORE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=9065,
+      Last Modified=25Feb2017:15:20:52,
+      Create Time=25Feb2017:15:19:45
+
+NOTE: 1 record was written to the file FLOWREF.
+      The minimum record length was 12.
+      The maximum record length was 12.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):   data _null_;
+MPRINT(EM_TREE_SCORE):   file pubref mod;
+MPRINT(EM_TREE_SCORE):   put 'drop _LEAF_;';
+MPRINT(EM_TREE_SCORE):   run;
+
+NOTE: The file PUBREF is:
+      Filename=C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMPUBLISHSCORE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=8392,
+      Last Modified=25Feb2017:15:20:52,
+      Create Time=25Feb2017:15:19:45
+
+NOTE: 1 record was written to the file PUBREF.
+      The minimum record length was 12.
+      The maximum record length was 12.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_SCORE):   filename flowref;
+NOTE: Fileref FLOWREF has been deassigned.
+MPRINT(EM_TREE_SCORE):   filename pubref;
+NOTE: Fileref PUBREF has been deassigned.
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   length KEY $32 DELETE $1 UNAME $32 ROLE $32 LEVEL $10 ORDER $8 COMMENT $64 LOWERLIMIT 8 UPPERLIMIT 8;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("_NODE_");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("SEGMENT");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("NOMINAL");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: The data set WORK.EM_METACHANGE has 1 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("MVR_PTS                         ");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("REJECTED");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 1 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 2 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("YOJ                             ");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("REJECTED");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 2 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 3 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("VEHICLE_VAL                     ");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("REJECTED");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 3 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 4 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("AGE                             ");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("REJECTED");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 4 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 5 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("EDU_LEVEL                       ");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("REJECTED");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 5 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 6 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("CHILDREN                        ");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("REJECTED");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 6 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 7 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("STATE_CODE                      ");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("REJECTED");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 7 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 8 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("CLM_FREQ                        ");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("REJECTED");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 8 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 9 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("INCOME                          ");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("REJECTED");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 9 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 10 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("HOUSE_VAL                       ");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("REJECTED");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 10 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 11 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("VEHICLE_AGE                     ");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("REJECTED");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 11 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 12 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("GENDER                          ");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("REJECTED");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 12 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 13 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_TREE_SCORE):   data _null_;
+MPRINT(EM_TREE_SCORE):   set EMWS1.Ids_CLAIM_IND_DM(where=(_TYPE_="PREDICTED")) end=eof;
+MPRINT(EM_TREE_SCORE):   call symput('tree_pred_vars'!!strip(put(_N_, BEST.)), strip(VARIABLE));
+MPRINT(EM_TREE_SCORE):   call symput('tree_pred_lvl'!!strip(put(_N_, BEST.)), strip(LEVEL));
+MPRINT(EM_TREE_SCORE):   if eof then call symput('numpred', strip(put(_N_, BEST.)));
+MPRINT(EM_TREE_SCORE):   run;
+
+NOTE: There were 2 observations read from the data set EMWS1.IDS_CLAIM_IND_DM.
+      WHERE _TYPE_='PREDICTED';
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("Q_CLAIM_IND1");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("ASSESS");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 13 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 14 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_METACHANGE):   data WORK.EM_METACHANGE;
+MPRINT(EM_METACHANGE):   set WORK.EM_METACHANGE end=eof;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   if eof then do;
+MPRINT(EM_METACHANGE):   KEY = upcase("CDELTA_TRAIN");
+MPRINT(EM_METACHANGE):   UNAME = upcase("Q_CLAIM_IND0");
+MPRINT(EM_METACHANGE):   DELETE = upcase("N");
+MPRINT(EM_METACHANGE):   ROLE = upcase("ASSESS");
+MPRINT(EM_METACHANGE):   LEVEL = upcase("");
+MPRINT(EM_METACHANGE):   ORDER = upcase("");
+MPRINT(EM_METACHANGE):   COMMENT = "";
+MPRINT(EM_METACHANGE):   LOWERLIMIT = .;
+MPRINT(EM_METACHANGE):   UPPERLIMIT = .;
+MPRINT(EM_METACHANGE):   output;
+MPRINT(EM_METACHANGE):   end;
+MPRINT(EM_METACHANGE):   run;
+
+NOTE: There were 14 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 15 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(EM_TREE_SCORE):   data _null_;
+MPRINT(EM_TREE_SCORE):   set EMWS1.Tree2_OUTIMPORT (obs=2) end=eof;
+MPRINT(EM_TREE_SCORE):   if eof then do ;
+MPRINT(EM_TREE_SCORE):   call symput("em_tree_cvexists" , strip(put(cvimportance,best.))) ;
+MPRINT(EM_TREE_SCORE):   call symput("em_tree_surrexists", strip(put(nsurrogates, best.)));
+MPRINT(EM_TREE_SCORE):   end;
+MPRINT(EM_TREE_SCORE):   run;
+
+NOTE: Variable cvimportance is uninitialized.
+NOTE: Variable nsurrogates is uninitialized.
+NOTE: There were 2 observations read from the data set EMWS1.TREE2_OUTIMPORT.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):   data EMWS1.Tree2_OUTIMPORT;
+MPRINT(EM_TREE_SCORE):   set EMWS1.Tree2_OUTIMPORT;
+MPRINT(EM_TREE_SCORE):   format importance 15.4 vimportance ratio 15.4 ;
+MPRINT(EM_TREE_SCORE):   label NAME = "Variable Name" LABEL = "Label" NRULES = "Number of Splitting Rules" IMPORTANCE = "Importance" NSURROGATES = "Number of Surrogate Rules" VIMPORTANCE = "Validation Importance" RATIO = "Ratio of Validation to Training 
+Importance" VIMPORTANCE = "Validation Importance" CVIMPORTANCE = "Relative Importance" CVRULES= "Number of Rules in CV Trees" RATIO = "Ratio of Validation to Training Importance" ;
+MPRINT(EM_TREE_SCORE):   run;
+
+NOTE: Variable NSURROGATES is uninitialized.
+NOTE: Variable CVIMPORTANCE is uninitialized.
+NOTE: Variable CVRULES is uninitialized.
+NOTE: There were 20 observations read from the data set EMWS1.TREE2_OUTIMPORT.
+NOTE: The data set EMWS1.TREE2_OUTIMPORT has 20 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_REPORT):   data WORK.EM_USER_REPORT;
+MPRINT(EM_REPORT):   retain id 0;
+MPRINT(EM_REPORT):   id + 1;
+MPRINT(EM_REPORT):   length VIEW 8 NAME $32 VALUE $400;
+MPRINT(EM_REPORT):   NAME = "KEY";
+MPRINT(EM_REPORT):   VALUE = "OUTIMPORT";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "VIEWTYPE";
+MPRINT(EM_REPORT):   VALUE = "DATA";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "AUTODISPLAY";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SPK";
+MPRINT(EM_REPORT):   VALUE = "Y";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "COMPARE";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LOCALIZE";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "EQUALIZEROWX";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "EQUALIZEROWY";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "EQUALIZECOLX";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "EQUALIZECOLY";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NROWS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NCOLS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DISCRETEX";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DISCRETEY";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LATTICEX";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LATTICEY";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LATTICETYPE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "ABSOLUTEVALUE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SORTORDER";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SORTORDERY";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "ORIENTATION";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "METHOD";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DIRECTION";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "BYSET";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "RENDERMODE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DESCRIPTION";
+MPRINT(EM_REPORT):   VALUE = "IMPORTANCE";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "X";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "EXCLUDEVARS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Z";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YVARS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "FREQVARS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "AXIS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "FREQ";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "GROUP";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SUBGROUP";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "BLOCK";
+MPRINT(EM_REPORT):   VALUE = "MODEL";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "COLOR";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "COLORINDEX";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "TIPTEXT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "TIP";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "TOOLTIP";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "REPORTID";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "IDVALUE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "ID";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SIZE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "FROM";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "TO";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "VALUE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "VIEWS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "PARENT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODETEXT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "ABOVETEXT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "BELOWTEXT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODESIZE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "STATS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "CLASSDIST";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "INTDIST";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "FOLDER";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YPLOTTYPE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "XREF";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "XREF2";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YREF";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y2REF";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YREF2";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y2REF2";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "GROUPINDEX";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "JOIN";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "XEXCLUDE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "FREQEXCLUDE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YEXCLUDE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NAME";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "HEIGHT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "WIDTH";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "XAXISLABEL";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y2AXISLABEL";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YAXISLABEL";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DISPLAYXLABEL";
+MPRINT(EM_REPORT):   VALUE = "Y";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DISPLAYYLABEL";
+MPRINT(EM_REPORT):   VALUE = "Y";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "CHOICETEXT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SEGMENTVALUE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LOWERBAND";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "UPPERBAND";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YLINE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKKEY";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODEKEY";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODEID";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODEVALUE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODECOLOR";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODESHAPE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODESHAPEVAR";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODELABEL";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODETIP";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKID";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKVALUE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKFROM";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKTO";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKCOLOR";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKWIDTH";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKTIP";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "XFROM";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "XTO";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YFROM";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YTO";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "MATRIXVAR";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "RESPONSE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SERIES";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DESCARG";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SLIDER";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "MarkerSize";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Marker";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y1";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y2";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y3";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y4";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y5";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y6";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y7";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y8";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y9";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y10";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y11";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y12";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y13";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y14";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y15";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y16";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "TITLE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LEGEND";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LEGENDTITLE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SHAPE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "METHOD";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NOBINMISS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.3552930193745;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   run;
+
+NOTE: The data set WORK.EM_USER_REPORT has 132 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_SCORE):  ;
+MPRINT(MAIN):  ;
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * End SCORE: Tree2;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+23574      
+23575      *------------------------------------------------------------*;
+23576      * End SCORE: Tree2;
+23577      *------------------------------------------------------------*;
+
+23578      proc sort data=WORK.EM_METACHANGE;
+MPRINT(EM_DIAGRAM):    proc sort data=WORK.EM_METACHANGE;
+23579      by key uname;
+MPRINT(EM_DIAGRAM):   by key uname;
+23580      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: There were 15 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 15 observations and 9 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+23581      filename x "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\CDELTA_TRAIN.sas";
+MPRINT(EM_DIAGRAM):    filename x "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\CDELTA_TRAIN.sas";
+23582      data _null_;
+MPRINT(EM_DIAGRAM):   data _null_;
+23583      file x;
+MPRINT(EM_DIAGRAM):   file x;
+23584      put 'if upcase(NAME) = "AGE" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "AGE" then do;';
+23585      put 'ROLE = "REJECTED";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "REJECTED";';
+23586      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23587      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23588      put 'if upcase(NAME) = "CHILDREN" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "CHILDREN" then do;';
+23589      put 'ROLE = "REJECTED";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "REJECTED";';
+23590      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23591      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23592      put 'if upcase(NAME) = "CLM_FREQ" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "CLM_FREQ" then do;';
+23593      put 'ROLE = "REJECTED";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "REJECTED";';
+23594      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23595      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23596      put 'if upcase(NAME) = "EDU_LEVEL" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "EDU_LEVEL" then do;';
+23597      put 'ROLE = "REJECTED";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "REJECTED";';
+23598      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23599      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23600      put 'if upcase(NAME) = "GENDER" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "GENDER" then do;';
+23601      put 'ROLE = "REJECTED";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "REJECTED";';
+23602      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23603      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23604      put 'if upcase(NAME) = "HOUSE_VAL" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "HOUSE_VAL" then do;';
+23605      put 'ROLE = "REJECTED";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "REJECTED";';
+23606      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23607      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23608      put 'if upcase(NAME) = "INCOME" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "INCOME" then do;';
+23609      put 'ROLE = "REJECTED";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "REJECTED";';
+23610      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23611      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23612      put 'if upcase(NAME) = "MVR_PTS" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "MVR_PTS" then do;';
+23613      put 'ROLE = "REJECTED";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "REJECTED";';
+23614      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23615      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23616      put 'if upcase(NAME) = "Q_CLAIM_IND0" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "Q_CLAIM_IND0" then do;';
+23617      put 'ROLE = "ASSESS";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "ASSESS";';
+23618      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23619      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23620      put 'if upcase(NAME) = "Q_CLAIM_IND1" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "Q_CLAIM_IND1" then do;';
+23621      put 'ROLE = "ASSESS";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "ASSESS";';
+23622      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23623      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23624      put 'if upcase(NAME) = "STATE_CODE" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "STATE_CODE" then do;';
+23625      put 'ROLE = "REJECTED";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "REJECTED";';
+23626      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23627      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23628      put 'if upcase(NAME) = "VEHICLE_AGE" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "VEHICLE_AGE" then do;';
+23629      put 'ROLE = "REJECTED";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "REJECTED";';
+23630      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23631      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23632      put 'if upcase(NAME) = "VEHICLE_VAL" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "VEHICLE_VAL" then do;';
+23633      put 'ROLE = "REJECTED";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "REJECTED";';
+23634      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23635      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23636      put 'if upcase(NAME) = "YOJ" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "YOJ" then do;';
+23637      put 'ROLE = "REJECTED";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "REJECTED";';
+23638      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23639      put 'else ';
+MPRINT(EM_DIAGRAM):   put 'else ';
+23640      put 'if upcase(NAME) = "_NODE_" then do;';
+MPRINT(EM_DIAGRAM):   put 'if upcase(NAME) = "_NODE_" then do;';
+23641      put 'ROLE = "SEGMENT";';
+MPRINT(EM_DIAGRAM):   put 'ROLE = "SEGMENT";';
+23642      put 'LEVEL = "NOMINAL";';
+MPRINT(EM_DIAGRAM):   put 'LEVEL = "NOMINAL";';
+23643      put 'end;';
+MPRINT(EM_DIAGRAM):   put 'end;';
+23644      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: The file X is:
+      Filename=C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\CDELTA_TRAIN.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=0,
+      Last Modified=25Feb2017:15:20:53,
+      Create Time=25Feb2017:15:19:45
+
+NOTE: 60 records were written to the file X.
+      The minimum record length was 4.
+      The maximum record length was 41.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+23645      filename x;
+MPRINT(EM_DIAGRAM):   filename x;
+NOTE: Fileref X has been deassigned.
+23646      filename emflow "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMFLOWSCORE.sas";
+MPRINT(EM_DIAGRAM):    filename emflow "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMFLOWSCORE.sas";
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Tree2: Scoring DATA data;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+23647      *------------------------------------------------------------*;
+23648      * Tree2: Scoring DATA data;
+23649      *------------------------------------------------------------*;
+23650      data EMWS1.Tree2_TRAIN
+23651      / view=EMWS1.Tree2_TRAIN
+23652      ;
+MPRINT(EM_DIAGRAM):   data EMWS1.Tree2_TRAIN / view=EMWS1.Tree2_TRAIN ;
+23653      set EMWS1.Part_TRAIN
+23654      ;
+MPRINT(EM_DIAGRAM):   set EMWS1.Part_TRAIN ;
+23655      %inc emflow;
+NOTE: %INCLUDE (level 1) file EMFLOW is file C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMFLOWSCORE.sas.
+23656     +****************************************************************;
+MPRINT(EM_DIAGRAM):   ****************************************************************;
+23657     +******             DECISION TREE SCORING CODE             ******;
+MPRINT(EM_DIAGRAM):   ****** DECISION TREE SCORING CODE ******;
+23658     +****************************************************************;
+MPRINT(EM_DIAGRAM):   ****************************************************************;
+23659     +
+23660     +******         LENGTHS OF NEW CHARACTER VARIABLES         ******;
+MPRINT(EM_DIAGRAM):   ****** LENGTHS OF NEW CHARACTER VARIABLES ******;
+23661     +LENGTH F_CLAIM_IND  $   12;
+MPRINT(EM_DIAGRAM):   LENGTH F_CLAIM_IND $ 12;
+23662     +LENGTH I_CLAIM_IND  $   12;
+MPRINT(EM_DIAGRAM):   LENGTH I_CLAIM_IND $ 12;
+23663     +LENGTH _WARN_  $    4;
+MPRINT(EM_DIAGRAM):   LENGTH _WARN_ $ 4;
+23664     +
+23665     +******              LABELS FOR NEW VARIABLES              ******;
+MPRINT(EM_DIAGRAM):   ****** LABELS FOR NEW VARIABLES ******;
+23666     +label _NODE_ = 'Node' ;
+MPRINT(EM_DIAGRAM):   label _NODE_ = 'Node' ;
+23667     +label _LEAF_ = 'Leaf' ;
+MPRINT(EM_DIAGRAM):   label _LEAF_ = 'Leaf' ;
+23668     +label P_CLAIM_IND0 = 'Predicted: CLAIM_IND=0' ;
+MPRINT(EM_DIAGRAM):   label P_CLAIM_IND0 = 'Predicted: CLAIM_IND=0' ;
+23669     +label P_CLAIM_IND1 = 'Predicted: CLAIM_IND=1' ;
+MPRINT(EM_DIAGRAM):   label P_CLAIM_IND1 = 'Predicted: CLAIM_IND=1' ;
+23670     +label Q_CLAIM_IND0 = 'Unadjusted P: CLAIM_IND=0' ;
+MPRINT(EM_DIAGRAM):   label Q_CLAIM_IND0 = 'Unadjusted P: CLAIM_IND=0' ;
+23671     +label Q_CLAIM_IND1 = 'Unadjusted P: CLAIM_IND=1' ;
+MPRINT(EM_DIAGRAM):   label Q_CLAIM_IND1 = 'Unadjusted P: CLAIM_IND=1' ;
+23672     +label V_CLAIM_IND0 = 'Validated: CLAIM_IND=0' ;
+MPRINT(EM_DIAGRAM):   label V_CLAIM_IND0 = 'Validated: CLAIM_IND=0' ;
+23673     +label V_CLAIM_IND1 = 'Validated: CLAIM_IND=1' ;
+MPRINT(EM_DIAGRAM):   label V_CLAIM_IND1 = 'Validated: CLAIM_IND=1' ;
+23674     +label R_CLAIM_IND0 = 'Residual: CLAIM_IND=0' ;
+MPRINT(EM_DIAGRAM):   label R_CLAIM_IND0 = 'Residual: CLAIM_IND=0' ;
+23675     +label R_CLAIM_IND1 = 'Residual: CLAIM_IND=1' ;
+MPRINT(EM_DIAGRAM):   label R_CLAIM_IND1 = 'Residual: CLAIM_IND=1' ;
+23676     +label F_CLAIM_IND = 'From: CLAIM_IND' ;
+MPRINT(EM_DIAGRAM):   label F_CLAIM_IND = 'From: CLAIM_IND' ;
+23677     +label I_CLAIM_IND = 'Into: CLAIM_IND' ;
+MPRINT(EM_DIAGRAM):   label I_CLAIM_IND = 'Into: CLAIM_IND' ;
+23678     +label U_CLAIM_IND = 'Unnormalized Into: CLAIM_IND' ;
+MPRINT(EM_DIAGRAM):   label U_CLAIM_IND = 'Unnormalized Into: CLAIM_IND' ;
+23679     +label _WARN_ = 'Warnings' ;
+MPRINT(EM_DIAGRAM):   label _WARN_ = 'Warnings' ;
+23680     +
+23681     +
+23682     +******      TEMPORARY VARIABLES FOR FORMATTED VALUES      ******;
+MPRINT(EM_DIAGRAM):   ****** TEMPORARY VARIABLES FOR FORMATTED VALUES ******;
+23683     +LENGTH _ARBFMT_12 $     12; DROP _ARBFMT_12;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_12 $ 12;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_12;
+23684     +_ARBFMT_12 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_12 = ' ';
+23685     +LENGTH _ARBFMT_13 $     13; DROP _ARBFMT_13;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_13 $ 13;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_13;
+23686     +_ARBFMT_13 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_13 = ' ';
+23687     +LENGTH _ARBFMT_21 $     21; DROP _ARBFMT_21;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_21 $ 21;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_21;
+23688     +_ARBFMT_21 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_21 = ' ';
+23689     +LENGTH _ARBFMT_5 $      5; DROP _ARBFMT_5;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_5 $ 5;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_5;
+23690     +_ARBFMT_5 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_5 = ' ';
+23691     +LENGTH _ARBFMT_3 $      3; DROP _ARBFMT_3;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_3 $ 3;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_3;
+23692     +_ARBFMT_3 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_3 = ' ';
+23693     +LENGTH _ARBFMT_11 $     11; DROP _ARBFMT_11;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_11 $ 11;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_11;
+23694     +_ARBFMT_11 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_11 = ' ';
+23695     +LENGTH _ARBFMT_10 $     10; DROP _ARBFMT_10;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_10 $ 10;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_10;
+23696     +_ARBFMT_10 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_10 = ' ';
+23697     +
+23698     +
+23699     +_ARBFMT_12 = PUT( CLAIM_IND , BEST12.);
+MPRINT(EM_DIAGRAM):   _ARBFMT_12 = PUT( CLAIM_IND , BEST12.);
+23700     + %DMNORMCP( _ARBFMT_12, F_CLAIM_IND );
+MPRINT(DMNORMCP):   F_CLAIM_IND=dmnorm(_ARBFMT_12,
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMCP):  );
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   ****** ASSIGN OBSERVATION TO NODE ******;
+MPRINT(EM_DIAGRAM):   _ARBFMT_21 = PUT( AREA , $21.);
+23701     +
+23702     +******             ASSIGN OBSERVATION TO NODE             ******;
+23703     +_ARBFMT_21 = PUT( AREA , $21.);
+23704     + %DMNORMIP( _ARBFMT_21);
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_21,
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_21 IN ('Z_HIGHLY RURAL/ RURAL' ) THEN DO;
+MPRINT(EM_DIAGRAM):   _NODE_ = 3;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 11;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.93540669856459;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.0645933014354;
+23705     +IF _ARBFMT_21 IN ('Z_HIGHLY RURAL/ RURAL' ) THEN DO;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.93540669856459;
+23706     +  _NODE_  =                    3;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.0645933014354;
+23707     +  _LEAF_  =                   11;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.93567961165048;
+23708     +  P_CLAIM_IND0  =     0.93540669856459;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.06432038834951;
+23709     +  P_CLAIM_IND1  =      0.0645933014354;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '0' ;
+23710     +  Q_CLAIM_IND0  =     0.93540669856459;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 0;
+23711     +  Q_CLAIM_IND1  =      0.0645933014354;
+MPRINT(EM_DIAGRAM):   END;
+23712     +  V_CLAIM_IND0  =     0.93567961165048;
+23713     +  V_CLAIM_IND1  =     0.06432038834951;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23714     +  I_CLAIM_IND  = '0' ;
+MPRINT(EM_DIAGRAM):   _ARBFMT_13 = PUT( JOB , $13.);
+23715     +  U_CLAIM_IND  =                    0;
+23716     +  END;
+23717     +ELSE DO;
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_13,
+23718     +  _ARBFMT_13 = PUT( JOB , $13.);
+23719     +   %DMNORMIP( _ARBFMT_13);
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_13 IN ('TEACHER' ,'HOME MAKER' ,'CLERICAL' ,'STUDENT' ) THEN DO;
+MPRINT(EM_DIAGRAM):   _ARBFMT_5 = PUT( STATUS , $5.);
+23720     +  IF _ARBFMT_13 IN ('TEACHER' ,'HOME MAKER' ,'CLERICAL' ,'STUDENT' ) THEN DO;
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_5,
+23721     +    _ARBFMT_5 = PUT( STATUS , $5.);
+23722     +     %DMNORMIP( _ARBFMT_5);
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_5 IN ('Z_NO' ) THEN DO;
+MPRINT(EM_DIAGRAM):   _ARBFMT_11 = PUT( VEHICLE_TYPE , $11.);
+23723     +    IF _ARBFMT_5 IN ('Z_NO' ) THEN DO;
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_11,
+23724     +      _ARBFMT_11 = PUT( VEHICLE_TYPE , $11.);
+23725     +       %DMNORMIP( _ARBFMT_11);
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_11 IN ('SPORTS CAR' ,'PANEL TRUCK' ,'VAN' ,'PICKUP' ) THEN DO;
+MPRINT(EM_DIAGRAM):   _NODE_ = 16;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 4;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.29752066115702;
+23726     +      IF _ARBFMT_11 IN ('SPORTS CAR' ,'PANEL TRUCK' ,'VAN' ,'PICKUP' ) THEN
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.70247933884297;
+23727     +        DO;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.29752066115702;
+23728     +        _NODE_  =                   16;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.70247933884297;
+23729     +        _LEAF_  =                    4;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.4156378600823;
+23730     +        P_CLAIM_IND0  =     0.29752066115702;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.58436213991769;
+23731     +        P_CLAIM_IND1  =     0.70247933884297;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '1' ;
+23732     +        Q_CLAIM_IND0  =     0.29752066115702;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 1;
+23733     +        Q_CLAIM_IND1  =     0.70247933884297;
+MPRINT(EM_DIAGRAM):   END;
+23734     +        V_CLAIM_IND0  =      0.4156378600823;
+23735     +        V_CLAIM_IND1  =     0.58436213991769;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23736     +        I_CLAIM_IND  = '1' ;
+23737     +        U_CLAIM_IND  =                    1;
+MPRINT(EM_DIAGRAM):   IF NOT MISSING(DISTANCE ) AND 85.9929255747592 <= DISTANCE THEN DO;
+23738     +        END;
+MPRINT(EM_DIAGRAM):   _NODE_ = 29;
+23739     +      ELSE DO;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 6;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.35849056603773;
+23740     +        IF  NOT MISSING(DISTANCE ) AND
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.64150943396226;
+23741     +              85.9929255747592 <= DISTANCE  THEN DO;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.35849056603773;
+23742     +          _NODE_  =                   29;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.64150943396226;
+23743     +          _LEAF_  =                    6;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.45794392523364;
+23744     +          P_CLAIM_IND0  =     0.35849056603773;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.54205607476635;
+23745     +          P_CLAIM_IND1  =     0.64150943396226;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '1' ;
+23746     +          Q_CLAIM_IND0  =     0.35849056603773;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 1;
+23747     +          Q_CLAIM_IND1  =     0.64150943396226;
+MPRINT(EM_DIAGRAM):   END;
+23748     +          V_CLAIM_IND0  =     0.45794392523364;
+23749     +          V_CLAIM_IND1  =     0.54205607476635;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23750     +          I_CLAIM_IND  = '1' ;
+MPRINT(EM_DIAGRAM):   _NODE_ = 28;
+23751     +          U_CLAIM_IND  =                    1;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 5;
+23752     +          END;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.56981132075471;
+23753     +        ELSE DO;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.43018867924528;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.56981132075471;
+23754     +          _NODE_  =                   28;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.43018867924528;
+23755     +          _LEAF_  =                    5;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.5042735042735;
+23756     +          P_CLAIM_IND0  =     0.56981132075471;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.49572649572649;
+23757     +          P_CLAIM_IND1  =     0.43018867924528;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '0' ;
+23758     +          Q_CLAIM_IND0  =     0.56981132075471;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 0;
+23759     +          Q_CLAIM_IND1  =     0.43018867924528;
+MPRINT(EM_DIAGRAM):   END;
+23760     +          V_CLAIM_IND0  =      0.5042735042735;
+MPRINT(EM_DIAGRAM):   END;
+23761     +          V_CLAIM_IND1  =     0.49572649572649;
+MPRINT(EM_DIAGRAM):   END;
+23762     +          I_CLAIM_IND  = '0' ;
+23763     +          U_CLAIM_IND  =                    0;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23764     +          END;
+MPRINT(EM_DIAGRAM):   _ARBFMT_3 = PUT( REVOKED , $3.);
+23765     +        END;
+23766     +      END;
+23767     +    ELSE DO;
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_3,
+23768     +      _ARBFMT_3 = PUT( REVOKED , $3.);
+23769     +       %DMNORMIP( _ARBFMT_3);
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_3 IN ('YES' ) THEN DO;
+MPRINT(EM_DIAGRAM):   _ARBFMT_10 = PUT( CAR_USE , $10.);
+23770     +      IF _ARBFMT_3 IN ('YES' ) THEN DO;
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_10,
+23771     +        _ARBFMT_10 = PUT( CAR_USE , $10.);
+23772     +         %DMNORMIP( _ARBFMT_10);
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_10 IN ('PRIVATE' ) THEN DO;
+MPRINT(EM_DIAGRAM):   _NODE_ = 22;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 1;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.56716417910447;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.43283582089552;
+23773     +        IF _ARBFMT_10 IN ('PRIVATE' ) THEN DO;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.56716417910447;
+23774     +          _NODE_  =                   22;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.43283582089552;
+23775     +          _LEAF_  =                    1;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.54794520547945;
+23776     +          P_CLAIM_IND0  =     0.56716417910447;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.45205479452054;
+23777     +          P_CLAIM_IND1  =     0.43283582089552;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '0' ;
+23778     +          Q_CLAIM_IND0  =     0.56716417910447;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 0;
+23779     +          Q_CLAIM_IND1  =     0.43283582089552;
+MPRINT(EM_DIAGRAM):   END;
+23780     +          V_CLAIM_IND0  =     0.54794520547945;
+23781     +          V_CLAIM_IND1  =     0.45205479452054;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23782     +          I_CLAIM_IND  = '0' ;
+MPRINT(EM_DIAGRAM):   _NODE_ = 23;
+23783     +          U_CLAIM_IND  =                    0;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 2;
+23784     +          END;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.35211267605633;
+23785     +        ELSE DO;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.64788732394366;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.35211267605633;
+23786     +          _NODE_  =                   23;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.64788732394366;
+23787     +          _LEAF_  =                    2;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.25454545454545;
+23788     +          P_CLAIM_IND0  =     0.35211267605633;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.74545454545454;
+23789     +          P_CLAIM_IND1  =     0.64788732394366;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '1' ;
+23790     +          Q_CLAIM_IND0  =     0.35211267605633;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 1;
+23791     +          Q_CLAIM_IND1  =     0.64788732394366;
+MPRINT(EM_DIAGRAM):   END;
+23792     +          V_CLAIM_IND0  =     0.25454545454545;
+MPRINT(EM_DIAGRAM):   END;
+23793     +          V_CLAIM_IND1  =     0.74545454545454;
+23794     +          I_CLAIM_IND  = '1' ;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23795     +          U_CLAIM_IND  =                    1;
+MPRINT(EM_DIAGRAM):   _NODE_ = 15;
+23796     +          END;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 3;
+23797     +        END;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.64819277108433;
+23798     +      ELSE DO;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.35180722891566;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.64819277108433;
+23799     +        _NODE_  =                   15;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.35180722891566;
+23800     +        _LEAF_  =                    3;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.64713216957606;
+23801     +        P_CLAIM_IND0  =     0.64819277108433;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.35286783042394;
+23802     +        P_CLAIM_IND1  =     0.35180722891566;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '0' ;
+23803     +        Q_CLAIM_IND0  =     0.64819277108433;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 0;
+23804     +        Q_CLAIM_IND1  =     0.35180722891566;
+MPRINT(EM_DIAGRAM):   END;
+23805     +        V_CLAIM_IND0  =     0.64713216957606;
+MPRINT(EM_DIAGRAM):   END;
+23806     +        V_CLAIM_IND1  =     0.35286783042394;
+MPRINT(EM_DIAGRAM):   END;
+23807     +        I_CLAIM_IND  = '0' ;
+23808     +        U_CLAIM_IND  =                    0;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23809     +        END;
+23810     +      END;
+MPRINT(EM_DIAGRAM):   IF NOT MISSING(CHILD_DRIV ) AND 0.5 <= CHILD_DRIV THEN DO;
+23811     +    END;
+MPRINT(EM_DIAGRAM):   _ARBFMT_5 = PUT( STATUS , $5.);
+23812     +  ELSE DO;
+23813     +    IF  NOT MISSING(CHILD_DRIV ) AND
+23814     +                       0.5 <= CHILD_DRIV  THEN DO;
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_5,
+23815     +      _ARBFMT_5 = PUT( STATUS , $5.);
+23816     +       %DMNORMIP( _ARBFMT_5);
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_5 IN ('Z_NO' ) THEN DO;
+MPRINT(EM_DIAGRAM):   _NODE_ = 21;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 10;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.34782608695652;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.65217391304347;
+23817     +      IF _ARBFMT_5 IN ('Z_NO' ) THEN DO;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.34782608695652;
+23818     +        _NODE_  =                   21;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.65217391304347;
+23819     +        _LEAF_  =                   10;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.36923076923076;
+23820     +        P_CLAIM_IND0  =     0.34782608695652;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.63076923076923;
+23821     +        P_CLAIM_IND1  =     0.65217391304347;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '1' ;
+23822     +        Q_CLAIM_IND0  =     0.34782608695652;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 1;
+23823     +        Q_CLAIM_IND1  =     0.65217391304347;
+MPRINT(EM_DIAGRAM):   END;
+23824     +        V_CLAIM_IND0  =     0.36923076923076;
+23825     +        V_CLAIM_IND1  =     0.63076923076923;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23826     +        I_CLAIM_IND  = '1' ;
+MPRINT(EM_DIAGRAM):   _ARBFMT_3 = PUT( REVOKED , $3.);
+23827     +        U_CLAIM_IND  =                    1;
+23828     +        END;
+23829     +      ELSE DO;
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_3,
+23830     +        _ARBFMT_3 = PUT( REVOKED , $3.);
+23831     +         %DMNORMIP( _ARBFMT_3);
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_3 IN ('YES' ) THEN DO;
+MPRINT(EM_DIAGRAM):   _NODE_ = 34;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 8;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.21428571428571;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.78571428571428;
+23832     +        IF _ARBFMT_3 IN ('YES' ) THEN DO;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.21428571428571;
+23833     +          _NODE_  =                   34;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.78571428571428;
+23834     +          _LEAF_  =                    8;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.35714285714285;
+23835     +          P_CLAIM_IND0  =     0.21428571428571;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.64285714285714;
+23836     +          P_CLAIM_IND1  =     0.78571428571428;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '1' ;
+23837     +          Q_CLAIM_IND0  =     0.21428571428571;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 1;
+23838     +          Q_CLAIM_IND1  =     0.78571428571428;
+MPRINT(EM_DIAGRAM):   END;
+23839     +          V_CLAIM_IND0  =     0.35714285714285;
+23840     +          V_CLAIM_IND1  =     0.64285714285714;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23841     +          I_CLAIM_IND  = '1' ;
+MPRINT(EM_DIAGRAM):   _NODE_ = 35;
+23842     +          U_CLAIM_IND  =                    1;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 9;
+23843     +          END;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.65;
+23844     +        ELSE DO;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.35;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.65;
+23845     +          _NODE_  =                   35;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.35;
+23846     +          _LEAF_  =                    9;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.59493670886075;
+23847     +          P_CLAIM_IND0  =                 0.65;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.40506329113924;
+23848     +          P_CLAIM_IND1  =                 0.35;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '0' ;
+23849     +          Q_CLAIM_IND0  =                 0.65;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 0;
+23850     +          Q_CLAIM_IND1  =                 0.35;
+MPRINT(EM_DIAGRAM):   END;
+23851     +          V_CLAIM_IND0  =     0.59493670886075;
+MPRINT(EM_DIAGRAM):   END;
+23852     +          V_CLAIM_IND1  =     0.40506329113924;
+MPRINT(EM_DIAGRAM):   END;
+23853     +          I_CLAIM_IND  = '0' ;
+23854     +          U_CLAIM_IND  =                    0;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23855     +          END;
+MPRINT(EM_DIAGRAM):   _NODE_ = 10;
+23856     +        END;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 7;
+23857     +      END;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.83289986996098;
+23858     +    ELSE DO;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.16710013003901;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.83289986996098;
+23859     +      _NODE_  =                   10;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.16710013003901;
+23860     +      _LEAF_  =                    7;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.81057810578105;
+23861     +      P_CLAIM_IND0  =     0.83289986996098;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.18942189421894;
+23862     +      P_CLAIM_IND1  =     0.16710013003901;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '0' ;
+23863     +      Q_CLAIM_IND0  =     0.83289986996098;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 0;
+23864     +      Q_CLAIM_IND1  =     0.16710013003901;
+MPRINT(EM_DIAGRAM):   END;
+23865     +      V_CLAIM_IND0  =     0.81057810578105;
+MPRINT(EM_DIAGRAM):   END;
+23866     +      V_CLAIM_IND1  =     0.18942189421894;
+MPRINT(EM_DIAGRAM):   END;
+23867     +      I_CLAIM_IND  = '0' ;
+23868     +      U_CLAIM_IND  =                    0;
+MPRINT(EM_DIAGRAM):   ***** RESIDUALS R_ *************;
+23869     +      END;
+23870     +    END;
+MPRINT(EM_DIAGRAM):   IF F_CLAIM_IND NE '0' AND F_CLAIM_IND NE '1' THEN DO;
+23871     +  END;
+MPRINT(EM_DIAGRAM):   R_CLAIM_IND0 = .;
+23872     +
+MPRINT(EM_DIAGRAM):   R_CLAIM_IND1 = .;
+23873     +*****  RESIDUALS R_ *************;
+MPRINT(EM_DIAGRAM):   END;
+23874     +IF  F_CLAIM_IND  NE '0'
+23875     +AND F_CLAIM_IND  NE '1'  THEN DO;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23876     +        R_CLAIM_IND0  = .;
+MPRINT(EM_DIAGRAM):   R_CLAIM_IND0 = -P_CLAIM_IND0 ;
+23877     +        R_CLAIM_IND1  = .;
+MPRINT(EM_DIAGRAM):   R_CLAIM_IND1 = -P_CLAIM_IND1 ;
+23878     + END;
+MPRINT(EM_DIAGRAM):   SELECT( F_CLAIM_IND );
+23879     + ELSE DO;
+MPRINT(EM_DIAGRAM):   WHEN( '0' ) R_CLAIM_IND0 = R_CLAIM_IND0 +1;
+MPRINT(EM_DIAGRAM):   WHEN( '1' ) R_CLAIM_IND1 = R_CLAIM_IND1 +1;
+23880     +       R_CLAIM_IND0  =  -P_CLAIM_IND0 ;
+MPRINT(EM_DIAGRAM):   END;
+23881     +       R_CLAIM_IND1  =  -P_CLAIM_IND1 ;
+MPRINT(EM_DIAGRAM):   END;
+23882     +       SELECT( F_CLAIM_IND  );
+23883     +          WHEN( '0'  ) R_CLAIM_IND0  = R_CLAIM_IND0  +1;
+MPRINT(EM_DIAGRAM):   ****************************************************************;
+23884     +          WHEN( '1'  ) R_CLAIM_IND1  = R_CLAIM_IND1  +1;
+MPRINT(EM_DIAGRAM):   ****** END OF DECISION TREE SCORING CODE ******;
+23885     +       END;
+MPRINT(EM_DIAGRAM):   ****************************************************************;
+23886     + END;
+23887     +
+MPRINT(EM_DIAGRAM):   drop _LEAF_;
+23888     +****************************************************************;
+23889     +******          END OF DECISION TREE SCORING CODE         ******;
+23890     +****************************************************************;
+23891     +
+23892     +drop _LEAF_;
+NOTE: %INCLUDE (level 1) ending.
+MPRINT(EM_DIAGRAM):   run;
+23893      run;
+
+NOTE: DATA STEP view saved on file EMWS1.TREE2_TRAIN.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+      
+
+MPRINT(EM_DIAGRAM):   quit;
+23894      quit;
+23895      filename emflow;
+MPRINT(EM_DIAGRAM):   filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+23896      filename emflow "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMFLOWSCORE.sas";
+MPRINT(EM_DIAGRAM):    filename emflow "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMFLOWSCORE.sas";
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Tree2: Scoring VALIDATE data;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+23897      *------------------------------------------------------------*;
+23898      * Tree2: Scoring VALIDATE data;
+23899      *------------------------------------------------------------*;
+23900      data EMWS1.Tree2_VALIDATE
+23901      / view=EMWS1.Tree2_VALIDATE
+23902      ;
+MPRINT(EM_DIAGRAM):   data EMWS1.Tree2_VALIDATE / view=EMWS1.Tree2_VALIDATE ;
+23903      set EMWS1.Part_VALIDATE
+23904      ;
+MPRINT(EM_DIAGRAM):   set EMWS1.Part_VALIDATE ;
+23905      %inc emflow;
+NOTE: %INCLUDE (level 1) file EMFLOW is file C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\EMFLOWSCORE.sas.
+23906     +****************************************************************;
+MPRINT(EM_DIAGRAM):   ****************************************************************;
+23907     +******             DECISION TREE SCORING CODE             ******;
+MPRINT(EM_DIAGRAM):   ****** DECISION TREE SCORING CODE ******;
+23908     +****************************************************************;
+MPRINT(EM_DIAGRAM):   ****************************************************************;
+23909     +
+23910     +******         LENGTHS OF NEW CHARACTER VARIABLES         ******;
+MPRINT(EM_DIAGRAM):   ****** LENGTHS OF NEW CHARACTER VARIABLES ******;
+23911     +LENGTH F_CLAIM_IND  $   12;
+MPRINT(EM_DIAGRAM):   LENGTH F_CLAIM_IND $ 12;
+23912     +LENGTH I_CLAIM_IND  $   12;
+MPRINT(EM_DIAGRAM):   LENGTH I_CLAIM_IND $ 12;
+23913     +LENGTH _WARN_  $    4;
+MPRINT(EM_DIAGRAM):   LENGTH _WARN_ $ 4;
+23914     +
+23915     +******              LABELS FOR NEW VARIABLES              ******;
+MPRINT(EM_DIAGRAM):   ****** LABELS FOR NEW VARIABLES ******;
+23916     +label _NODE_ = 'Node' ;
+MPRINT(EM_DIAGRAM):   label _NODE_ = 'Node' ;
+23917     +label _LEAF_ = 'Leaf' ;
+MPRINT(EM_DIAGRAM):   label _LEAF_ = 'Leaf' ;
+23918     +label P_CLAIM_IND0 = 'Predicted: CLAIM_IND=0' ;
+MPRINT(EM_DIAGRAM):   label P_CLAIM_IND0 = 'Predicted: CLAIM_IND=0' ;
+23919     +label P_CLAIM_IND1 = 'Predicted: CLAIM_IND=1' ;
+MPRINT(EM_DIAGRAM):   label P_CLAIM_IND1 = 'Predicted: CLAIM_IND=1' ;
+23920     +label Q_CLAIM_IND0 = 'Unadjusted P: CLAIM_IND=0' ;
+MPRINT(EM_DIAGRAM):   label Q_CLAIM_IND0 = 'Unadjusted P: CLAIM_IND=0' ;
+23921     +label Q_CLAIM_IND1 = 'Unadjusted P: CLAIM_IND=1' ;
+MPRINT(EM_DIAGRAM):   label Q_CLAIM_IND1 = 'Unadjusted P: CLAIM_IND=1' ;
+23922     +label V_CLAIM_IND0 = 'Validated: CLAIM_IND=0' ;
+MPRINT(EM_DIAGRAM):   label V_CLAIM_IND0 = 'Validated: CLAIM_IND=0' ;
+23923     +label V_CLAIM_IND1 = 'Validated: CLAIM_IND=1' ;
+MPRINT(EM_DIAGRAM):   label V_CLAIM_IND1 = 'Validated: CLAIM_IND=1' ;
+23924     +label R_CLAIM_IND0 = 'Residual: CLAIM_IND=0' ;
+MPRINT(EM_DIAGRAM):   label R_CLAIM_IND0 = 'Residual: CLAIM_IND=0' ;
+23925     +label R_CLAIM_IND1 = 'Residual: CLAIM_IND=1' ;
+MPRINT(EM_DIAGRAM):   label R_CLAIM_IND1 = 'Residual: CLAIM_IND=1' ;
+23926     +label F_CLAIM_IND = 'From: CLAIM_IND' ;
+MPRINT(EM_DIAGRAM):   label F_CLAIM_IND = 'From: CLAIM_IND' ;
+23927     +label I_CLAIM_IND = 'Into: CLAIM_IND' ;
+MPRINT(EM_DIAGRAM):   label I_CLAIM_IND = 'Into: CLAIM_IND' ;
+23928     +label U_CLAIM_IND = 'Unnormalized Into: CLAIM_IND' ;
+MPRINT(EM_DIAGRAM):   label U_CLAIM_IND = 'Unnormalized Into: CLAIM_IND' ;
+23929     +label _WARN_ = 'Warnings' ;
+MPRINT(EM_DIAGRAM):   label _WARN_ = 'Warnings' ;
+23930     +
+23931     +
+23932     +******      TEMPORARY VARIABLES FOR FORMATTED VALUES      ******;
+MPRINT(EM_DIAGRAM):   ****** TEMPORARY VARIABLES FOR FORMATTED VALUES ******;
+23933     +LENGTH _ARBFMT_12 $     12; DROP _ARBFMT_12;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_12 $ 12;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_12;
+23934     +_ARBFMT_12 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_12 = ' ';
+23935     +LENGTH _ARBFMT_13 $     13; DROP _ARBFMT_13;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_13 $ 13;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_13;
+23936     +_ARBFMT_13 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_13 = ' ';
+23937     +LENGTH _ARBFMT_21 $     21; DROP _ARBFMT_21;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_21 $ 21;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_21;
+23938     +_ARBFMT_21 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_21 = ' ';
+23939     +LENGTH _ARBFMT_5 $      5; DROP _ARBFMT_5;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_5 $ 5;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_5;
+23940     +_ARBFMT_5 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_5 = ' ';
+23941     +LENGTH _ARBFMT_3 $      3; DROP _ARBFMT_3;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_3 $ 3;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_3;
+23942     +_ARBFMT_3 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_3 = ' ';
+23943     +LENGTH _ARBFMT_11 $     11; DROP _ARBFMT_11;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_11 $ 11;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_11;
+23944     +_ARBFMT_11 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_11 = ' ';
+23945     +LENGTH _ARBFMT_10 $     10; DROP _ARBFMT_10;
+MPRINT(EM_DIAGRAM):   LENGTH _ARBFMT_10 $ 10;
+MPRINT(EM_DIAGRAM):   DROP _ARBFMT_10;
+23946     +_ARBFMT_10 = ' '; /* Initialize to avoid warning. */
+MPRINT(EM_DIAGRAM):   _ARBFMT_10 = ' ';
+23947     +
+23948     +
+23949     +_ARBFMT_12 = PUT( CLAIM_IND , BEST12.);
+MPRINT(EM_DIAGRAM):   _ARBFMT_12 = PUT( CLAIM_IND , BEST12.);
+23950     + %DMNORMCP( _ARBFMT_12, F_CLAIM_IND );
+MPRINT(DMNORMCP):   F_CLAIM_IND=dmnorm(_ARBFMT_12,
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMCP):  );
+MPRINT(EM_DIAGRAM):  ;
+23951     +
+23952     +******             ASSIGN OBSERVATION TO NODE             ******;
+MPRINT(EM_DIAGRAM):   ****** ASSIGN OBSERVATION TO NODE ******;
+23953     +_ARBFMT_21 = PUT( AREA , $21.);
+MPRINT(EM_DIAGRAM):   _ARBFMT_21 = PUT( AREA , $21.);
+23954     + %DMNORMIP( _ARBFMT_21);
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_21,
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+23955     +IF _ARBFMT_21 IN ('Z_HIGHLY RURAL/ RURAL' ) THEN DO;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_21 IN ('Z_HIGHLY RURAL/ RURAL' ) THEN DO;
+23956     +  _NODE_  =                    3;
+MPRINT(EM_DIAGRAM):   _NODE_ = 3;
+23957     +  _LEAF_  =                   11;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 11;
+23958     +  P_CLAIM_IND0  =     0.93540669856459;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.93540669856459;
+23959     +  P_CLAIM_IND1  =      0.0645933014354;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.0645933014354;
+23960     +  Q_CLAIM_IND0  =     0.93540669856459;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.93540669856459;
+23961     +  Q_CLAIM_IND1  =      0.0645933014354;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.0645933014354;
+23962     +  V_CLAIM_IND0  =     0.93567961165048;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.93567961165048;
+23963     +  V_CLAIM_IND1  =     0.06432038834951;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.06432038834951;
+23964     +  I_CLAIM_IND  = '0' ;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '0' ;
+23965     +  U_CLAIM_IND  =                    0;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 0;
+23966     +  END;
+MPRINT(EM_DIAGRAM):   END;
+23967     +ELSE DO;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23968     +  _ARBFMT_13 = PUT( JOB , $13.);
+MPRINT(EM_DIAGRAM):   _ARBFMT_13 = PUT( JOB , $13.);
+23969     +   %DMNORMIP( _ARBFMT_13);
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_13,
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+23970     +  IF _ARBFMT_13 IN ('TEACHER' ,'HOME MAKER' ,'CLERICAL' ,'STUDENT' ) THEN DO;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_13 IN ('TEACHER' ,'HOME MAKER' ,'CLERICAL' ,'STUDENT' ) THEN DO;
+23971     +    _ARBFMT_5 = PUT( STATUS , $5.);
+MPRINT(EM_DIAGRAM):   _ARBFMT_5 = PUT( STATUS , $5.);
+23972     +     %DMNORMIP( _ARBFMT_5);
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_5,
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+23973     +    IF _ARBFMT_5 IN ('Z_NO' ) THEN DO;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_5 IN ('Z_NO' ) THEN DO;
+23974     +      _ARBFMT_11 = PUT( VEHICLE_TYPE , $11.);
+MPRINT(EM_DIAGRAM):   _ARBFMT_11 = PUT( VEHICLE_TYPE , $11.);
+23975     +       %DMNORMIP( _ARBFMT_11);
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_11,
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+23976     +      IF _ARBFMT_11 IN ('SPORTS CAR' ,'PANEL TRUCK' ,'VAN' ,'PICKUP' ) THEN
+23977     +        DO;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_11 IN ('SPORTS CAR' ,'PANEL TRUCK' ,'VAN' ,'PICKUP' ) THEN DO;
+23978     +        _NODE_  =                   16;
+MPRINT(EM_DIAGRAM):   _NODE_ = 16;
+23979     +        _LEAF_  =                    4;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 4;
+23980     +        P_CLAIM_IND0  =     0.29752066115702;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.29752066115702;
+23981     +        P_CLAIM_IND1  =     0.70247933884297;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.70247933884297;
+23982     +        Q_CLAIM_IND0  =     0.29752066115702;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.29752066115702;
+23983     +        Q_CLAIM_IND1  =     0.70247933884297;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.70247933884297;
+23984     +        V_CLAIM_IND0  =      0.4156378600823;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.4156378600823;
+23985     +        V_CLAIM_IND1  =     0.58436213991769;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.58436213991769;
+23986     +        I_CLAIM_IND  = '1' ;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '1' ;
+23987     +        U_CLAIM_IND  =                    1;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 1;
+23988     +        END;
+MPRINT(EM_DIAGRAM):   END;
+23989     +      ELSE DO;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+23990     +        IF  NOT MISSING(DISTANCE ) AND
+23991     +              85.9929255747592 <= DISTANCE  THEN DO;
+MPRINT(EM_DIAGRAM):   IF NOT MISSING(DISTANCE ) AND 85.9929255747592 <= DISTANCE THEN DO;
+23992     +          _NODE_  =                   29;
+MPRINT(EM_DIAGRAM):   _NODE_ = 29;
+23993     +          _LEAF_  =                    6;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 6;
+23994     +          P_CLAIM_IND0  =     0.35849056603773;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.35849056603773;
+23995     +          P_CLAIM_IND1  =     0.64150943396226;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.64150943396226;
+23996     +          Q_CLAIM_IND0  =     0.35849056603773;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.35849056603773;
+23997     +          Q_CLAIM_IND1  =     0.64150943396226;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.64150943396226;
+23998     +          V_CLAIM_IND0  =     0.45794392523364;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.45794392523364;
+23999     +          V_CLAIM_IND1  =     0.54205607476635;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.54205607476635;
+24000     +          I_CLAIM_IND  = '1' ;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '1' ;
+24001     +          U_CLAIM_IND  =                    1;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 1;
+24002     +          END;
+MPRINT(EM_DIAGRAM):   END;
+24003     +        ELSE DO;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+24004     +          _NODE_  =                   28;
+MPRINT(EM_DIAGRAM):   _NODE_ = 28;
+24005     +          _LEAF_  =                    5;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 5;
+24006     +          P_CLAIM_IND0  =     0.56981132075471;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.56981132075471;
+24007     +          P_CLAIM_IND1  =     0.43018867924528;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.43018867924528;
+24008     +          Q_CLAIM_IND0  =     0.56981132075471;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.56981132075471;
+24009     +          Q_CLAIM_IND1  =     0.43018867924528;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.43018867924528;
+24010     +          V_CLAIM_IND0  =      0.5042735042735;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.5042735042735;
+24011     +          V_CLAIM_IND1  =     0.49572649572649;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.49572649572649;
+24012     +          I_CLAIM_IND  = '0' ;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '0' ;
+24013     +          U_CLAIM_IND  =                    0;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 0;
+24014     +          END;
+MPRINT(EM_DIAGRAM):   END;
+24015     +        END;
+MPRINT(EM_DIAGRAM):   END;
+24016     +      END;
+MPRINT(EM_DIAGRAM):   END;
+24017     +    ELSE DO;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+24018     +      _ARBFMT_3 = PUT( REVOKED , $3.);
+MPRINT(EM_DIAGRAM):   _ARBFMT_3 = PUT( REVOKED , $3.);
+24019     +       %DMNORMIP( _ARBFMT_3);
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_3,
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+24020     +      IF _ARBFMT_3 IN ('YES' ) THEN DO;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_3 IN ('YES' ) THEN DO;
+24021     +        _ARBFMT_10 = PUT( CAR_USE , $10.);
+MPRINT(EM_DIAGRAM):   _ARBFMT_10 = PUT( CAR_USE , $10.);
+24022     +         %DMNORMIP( _ARBFMT_10);
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_10,
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+24023     +        IF _ARBFMT_10 IN ('PRIVATE' ) THEN DO;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_10 IN ('PRIVATE' ) THEN DO;
+24024     +          _NODE_  =                   22;
+MPRINT(EM_DIAGRAM):   _NODE_ = 22;
+24025     +          _LEAF_  =                    1;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 1;
+24026     +          P_CLAIM_IND0  =     0.56716417910447;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.56716417910447;
+24027     +          P_CLAIM_IND1  =     0.43283582089552;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.43283582089552;
+24028     +          Q_CLAIM_IND0  =     0.56716417910447;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.56716417910447;
+24029     +          Q_CLAIM_IND1  =     0.43283582089552;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.43283582089552;
+24030     +          V_CLAIM_IND0  =     0.54794520547945;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.54794520547945;
+24031     +          V_CLAIM_IND1  =     0.45205479452054;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.45205479452054;
+24032     +          I_CLAIM_IND  = '0' ;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '0' ;
+24033     +          U_CLAIM_IND  =                    0;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 0;
+24034     +          END;
+MPRINT(EM_DIAGRAM):   END;
+24035     +        ELSE DO;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+24036     +          _NODE_  =                   23;
+MPRINT(EM_DIAGRAM):   _NODE_ = 23;
+24037     +          _LEAF_  =                    2;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 2;
+24038     +          P_CLAIM_IND0  =     0.35211267605633;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.35211267605633;
+24039     +          P_CLAIM_IND1  =     0.64788732394366;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.64788732394366;
+24040     +          Q_CLAIM_IND0  =     0.35211267605633;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.35211267605633;
+24041     +          Q_CLAIM_IND1  =     0.64788732394366;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.64788732394366;
+24042     +          V_CLAIM_IND0  =     0.25454545454545;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.25454545454545;
+24043     +          V_CLAIM_IND1  =     0.74545454545454;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.74545454545454;
+24044     +          I_CLAIM_IND  = '1' ;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '1' ;
+24045     +          U_CLAIM_IND  =                    1;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 1;
+24046     +          END;
+MPRINT(EM_DIAGRAM):   END;
+24047     +        END;
+MPRINT(EM_DIAGRAM):   END;
+24048     +      ELSE DO;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+24049     +        _NODE_  =                   15;
+MPRINT(EM_DIAGRAM):   _NODE_ = 15;
+24050     +        _LEAF_  =                    3;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 3;
+24051     +        P_CLAIM_IND0  =     0.64819277108433;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.64819277108433;
+24052     +        P_CLAIM_IND1  =     0.35180722891566;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.35180722891566;
+24053     +        Q_CLAIM_IND0  =     0.64819277108433;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.64819277108433;
+24054     +        Q_CLAIM_IND1  =     0.35180722891566;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.35180722891566;
+24055     +        V_CLAIM_IND0  =     0.64713216957606;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.64713216957606;
+24056     +        V_CLAIM_IND1  =     0.35286783042394;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.35286783042394;
+24057     +        I_CLAIM_IND  = '0' ;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '0' ;
+24058     +        U_CLAIM_IND  =                    0;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 0;
+24059     +        END;
+MPRINT(EM_DIAGRAM):   END;
+24060     +      END;
+MPRINT(EM_DIAGRAM):   END;
+24061     +    END;
+MPRINT(EM_DIAGRAM):   END;
+24062     +  ELSE DO;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+24063     +    IF  NOT MISSING(CHILD_DRIV ) AND
+24064     +                       0.5 <= CHILD_DRIV  THEN DO;
+MPRINT(EM_DIAGRAM):   IF NOT MISSING(CHILD_DRIV ) AND 0.5 <= CHILD_DRIV THEN DO;
+24065     +      _ARBFMT_5 = PUT( STATUS , $5.);
+MPRINT(EM_DIAGRAM):   _ARBFMT_5 = PUT( STATUS , $5.);
+24066     +       %DMNORMIP( _ARBFMT_5);
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_5,
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+24067     +      IF _ARBFMT_5 IN ('Z_NO' ) THEN DO;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_5 IN ('Z_NO' ) THEN DO;
+24068     +        _NODE_  =                   21;
+MPRINT(EM_DIAGRAM):   _NODE_ = 21;
+24069     +        _LEAF_  =                   10;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 10;
+24070     +        P_CLAIM_IND0  =     0.34782608695652;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.34782608695652;
+24071     +        P_CLAIM_IND1  =     0.65217391304347;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.65217391304347;
+24072     +        Q_CLAIM_IND0  =     0.34782608695652;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.34782608695652;
+24073     +        Q_CLAIM_IND1  =     0.65217391304347;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.65217391304347;
+24074     +        V_CLAIM_IND0  =     0.36923076923076;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.36923076923076;
+24075     +        V_CLAIM_IND1  =     0.63076923076923;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.63076923076923;
+24076     +        I_CLAIM_IND  = '1' ;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '1' ;
+24077     +        U_CLAIM_IND  =                    1;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 1;
+24078     +        END;
+MPRINT(EM_DIAGRAM):   END;
+24079     +      ELSE DO;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+24080     +        _ARBFMT_3 = PUT( REVOKED , $3.);
+MPRINT(EM_DIAGRAM):   _ARBFMT_3 = PUT( REVOKED , $3.);
+24081     +         %DMNORMIP( _ARBFMT_3);
+MPRINT(DMNORMIP):   call dmnorm(_ARBFMT_3,
+MPRINT(DMNORLEN):  32
+MPRINT(DMNORMIP):  );
+MPRINT(EM_DIAGRAM):  ;
+24082     +        IF _ARBFMT_3 IN ('YES' ) THEN DO;
+MPRINT(EM_DIAGRAM):   IF _ARBFMT_3 IN ('YES' ) THEN DO;
+24083     +          _NODE_  =                   34;
+MPRINT(EM_DIAGRAM):   _NODE_ = 34;
+24084     +          _LEAF_  =                    8;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 8;
+24085     +          P_CLAIM_IND0  =     0.21428571428571;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.21428571428571;
+24086     +          P_CLAIM_IND1  =     0.78571428571428;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.78571428571428;
+24087     +          Q_CLAIM_IND0  =     0.21428571428571;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.21428571428571;
+24088     +          Q_CLAIM_IND1  =     0.78571428571428;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.78571428571428;
+24089     +          V_CLAIM_IND0  =     0.35714285714285;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.35714285714285;
+24090     +          V_CLAIM_IND1  =     0.64285714285714;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.64285714285714;
+24091     +          I_CLAIM_IND  = '1' ;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '1' ;
+24092     +          U_CLAIM_IND  =                    1;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 1;
+24093     +          END;
+MPRINT(EM_DIAGRAM):   END;
+24094     +        ELSE DO;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+24095     +          _NODE_  =                   35;
+MPRINT(EM_DIAGRAM):   _NODE_ = 35;
+24096     +          _LEAF_  =                    9;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 9;
+24097     +          P_CLAIM_IND0  =                 0.65;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.65;
+24098     +          P_CLAIM_IND1  =                 0.35;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.35;
+24099     +          Q_CLAIM_IND0  =                 0.65;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.65;
+24100     +          Q_CLAIM_IND1  =                 0.35;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.35;
+24101     +          V_CLAIM_IND0  =     0.59493670886075;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.59493670886075;
+24102     +          V_CLAIM_IND1  =     0.40506329113924;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.40506329113924;
+24103     +          I_CLAIM_IND  = '0' ;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '0' ;
+24104     +          U_CLAIM_IND  =                    0;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 0;
+24105     +          END;
+MPRINT(EM_DIAGRAM):   END;
+24106     +        END;
+MPRINT(EM_DIAGRAM):   END;
+24107     +      END;
+MPRINT(EM_DIAGRAM):   END;
+24108     +    ELSE DO;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+24109     +      _NODE_  =                   10;
+MPRINT(EM_DIAGRAM):   _NODE_ = 10;
+24110     +      _LEAF_  =                    7;
+MPRINT(EM_DIAGRAM):   _LEAF_ = 7;
+24111     +      P_CLAIM_IND0  =     0.83289986996098;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND0 = 0.83289986996098;
+24112     +      P_CLAIM_IND1  =     0.16710013003901;
+MPRINT(EM_DIAGRAM):   P_CLAIM_IND1 = 0.16710013003901;
+24113     +      Q_CLAIM_IND0  =     0.83289986996098;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND0 = 0.83289986996098;
+24114     +      Q_CLAIM_IND1  =     0.16710013003901;
+MPRINT(EM_DIAGRAM):   Q_CLAIM_IND1 = 0.16710013003901;
+24115     +      V_CLAIM_IND0  =     0.81057810578105;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND0 = 0.81057810578105;
+24116     +      V_CLAIM_IND1  =     0.18942189421894;
+MPRINT(EM_DIAGRAM):   V_CLAIM_IND1 = 0.18942189421894;
+24117     +      I_CLAIM_IND  = '0' ;
+MPRINT(EM_DIAGRAM):   I_CLAIM_IND = '0' ;
+24118     +      U_CLAIM_IND  =                    0;
+MPRINT(EM_DIAGRAM):   U_CLAIM_IND = 0;
+24119     +      END;
+MPRINT(EM_DIAGRAM):   END;
+24120     +    END;
+MPRINT(EM_DIAGRAM):   END;
+24121     +  END;
+MPRINT(EM_DIAGRAM):   END;
+24122     +
+24123     +*****  RESIDUALS R_ *************;
+MPRINT(EM_DIAGRAM):   ***** RESIDUALS R_ *************;
+24124     +IF  F_CLAIM_IND  NE '0'
+24125     +AND F_CLAIM_IND  NE '1'  THEN DO;
+MPRINT(EM_DIAGRAM):   IF F_CLAIM_IND NE '0' AND F_CLAIM_IND NE '1' THEN DO;
+24126     +        R_CLAIM_IND0  = .;
+MPRINT(EM_DIAGRAM):   R_CLAIM_IND0 = .;
+24127     +        R_CLAIM_IND1  = .;
+MPRINT(EM_DIAGRAM):   R_CLAIM_IND1 = .;
+24128     + END;
+MPRINT(EM_DIAGRAM):   END;
+24129     + ELSE DO;
+MPRINT(EM_DIAGRAM):   ELSE DO;
+24130     +       R_CLAIM_IND0  =  -P_CLAIM_IND0 ;
+MPRINT(EM_DIAGRAM):   R_CLAIM_IND0 = -P_CLAIM_IND0 ;
+24131     +       R_CLAIM_IND1  =  -P_CLAIM_IND1 ;
+MPRINT(EM_DIAGRAM):   R_CLAIM_IND1 = -P_CLAIM_IND1 ;
+24132     +       SELECT( F_CLAIM_IND  );
+MPRINT(EM_DIAGRAM):   SELECT( F_CLAIM_IND );
+24133     +          WHEN( '0'  ) R_CLAIM_IND0  = R_CLAIM_IND0  +1;
+MPRINT(EM_DIAGRAM):   WHEN( '0' ) R_CLAIM_IND0 = R_CLAIM_IND0 +1;
+24134     +          WHEN( '1'  ) R_CLAIM_IND1  = R_CLAIM_IND1  +1;
+MPRINT(EM_DIAGRAM):   WHEN( '1' ) R_CLAIM_IND1 = R_CLAIM_IND1 +1;
+24135     +       END;
+MPRINT(EM_DIAGRAM):   END;
+24136     + END;
+MPRINT(EM_DIAGRAM):   END;
+24137     +
+24138     +****************************************************************;
+MPRINT(EM_DIAGRAM):   ****************************************************************;
+24139     +******          END OF DECISION TREE SCORING CODE         ******;
+MPRINT(EM_DIAGRAM):   ****** END OF DECISION TREE SCORING CODE ******;
+24140     +****************************************************************;
+MPRINT(EM_DIAGRAM):   ****************************************************************;
+24141     +
+24142     +drop _LEAF_;
+MPRINT(EM_DIAGRAM):   drop _LEAF_;
+NOTE: %INCLUDE (level 1) ending.
+MPRINT(EM_DIAGRAM):   run;
+24143      run;
+
+NOTE: DATA STEP view saved on file EMWS1.TREE2_VALIDATE.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_DIAGRAM):   quit;
+24144      quit;
+24145      filename emflow;
+MPRINT(EM_DIAGRAM):   filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+NOTE: View EMWS1.TREE2_TRAIN.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+      
+24147      proc sort data=WORK.EM_USER_REPORT;
+MPRINT(EM_DIAGRAM):     proc sort data=WORK.EM_USER_REPORT;
+24148      by ID VIEW;
+MPRINT(EM_DIAGRAM):   by ID VIEW;
+24149      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: There were 132 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 132 observations and 4 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+24150      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):    *------------------------------------------------------------*;
+24151      * Tree2: Computing metadata for TRAIN data;
+MPRINT(EM_DIAGRAM):   * Tree2: Computing metadata for TRAIN data;
+24152      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+
+NOTE: View EMWS1.TREE2_TRAIN.VIEW used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+MPRINT(EM_DIAGRAM):    *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * &nodeid: Computing Metadata for TRAIN data;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   filename _delta "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree2\CDELTA_TRAIN.sas";
+MPRINT(EMADVISECOLUMNS):   proc display c=sashelp.emmeta.advisecolumns.scl;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    options validvarname=any;
+MPRINT(EMADVISECOLUMNS):   proc contents data=EMWS1.Tree2_TRAIN out=_tempAdvisor noprint;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):   options validvarname=V7;
+MPRINT(EMADVISECOLUMNS):    data _null_;
+MPRINT(EMADVISECOLUMNS):   dsid = open('EMWS1.Tree2_TRAIN');
+MPRINT(EMADVISECOLUMNS):   call symput('_dsidTable', strip(put(dsid, best.)));
+MPRINT(EMADVISECOLUMNS):   if dsid then do;
+MPRINT(EMADVISECOLUMNS):   call symput('_engineTable', attrc(dsid, 'ENGINE'));
+MPRINT(EMADVISECOLUMNS):   dsid = close(dsid);
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    proc contents data=EMWS1.Tree2_TRAIN out=WORK.M1V32_Y8 noprint;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M1V32_Y8;
+MPRINT(EMADVISECOLUMNS):   length NAME $ 64 TYPE $ 1 LABEL $ 200 FORMAT $ 36 INFORMAT $36 INDEX $ 1 INDEXTYPE $ 9;
+MPRINT(EMADVISECOLUMNS):   label NAME =;
+MPRINT(EMADVISECOLUMNS):   set WORK.M1V32_Y8(keep=name type length label format formatl formatd informat informl informd idxusage rename=(type=itype));
+MPRINT(EMADVISECOLUMNS):   if itype = 1 then type = 'N';
+MPRINT(EMADVISECOLUMNS):   else type = 'C';
+MPRINT(EMADVISECOLUMNS):   if formatl > 0 then do;
+MPRINT(EMADVISECOLUMNS):   if format ne '' then do;
+MPRINT(EMADVISECOLUMNS):   if type='N' then format = strip(format)!!strip(put(formatl, best12.))!!'.'!!strip(put(formatd, best12.));
+MPRINT(EMADVISECOLUMNS):   else format = strip(format)!!strip(put(formatl, best12.))!!'.';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else format = strip(put(formatl, best12.))!!'.'!!strip(put(formatd, best12.));
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if format ne '' then format = strip(format)!!'.';
+MPRINT(EMADVISECOLUMNS):   if informl > 0 then do;
+MPRINT(EMADVISECOLUMNS):   if informat ne ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if type='N' then informat = strip(informat)!!strip(put(informl, best12.))!!'.'!!strip(put(informd, best12.));
+MPRINT(EMADVISECOLUMNS):   else informat = strip(informat)!!strip(put(informl, best12.))!!'.';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else informat = strip(put(informl, best12.))!!'.'!!strip(put(informd, best12.));
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if informat ne '' then informat = strip(informat)!!'.';
+MPRINT(EMADVISECOLUMNS):   if idxusage = 'NONE' then index ="N";
+MPRINT(EMADVISECOLUMNS):   else index = "Y";
+MPRINT(EMADVISECOLUMNS):   indextype = idxusage;
+MPRINT(EMADVISECOLUMNS):   drop idxusage itype formatl formatd informl informd;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M1V32_Y8;
+MPRINT(EMADVISECOLUMNS):   length UNAME $64;
+MPRINT(EMADVISECOLUMNS):   set WORK.M1V32_Y8;
+MPRINT(EMADVISECOLUMNS):   UNAME = upcase(NAME);
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    proc sort data=WORK.M1ZU3RU0 NOTHREADS;
+MPRINT(EMADVISECOLUMNS):   by UNAME;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M1ZU3RU0;
+MPRINT(EMADVISECOLUMNS):   drop UNAME;
+MPRINT(EMADVISECOLUMNS):   set WORK.M1ZU3RU0;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M2T5WE4C(keep=NAME ATTR);
+MPRINT(EMADVISECOLUMNS):   length ATTR $ 20;
+MPRINT(EMADVISECOLUMNS):   set WORK.M1ZU3RU0;
+MPRINT(EMADVISECOLUMNS):   if level ne "INTERVAL" then do;
+MPRINT(EMADVISECOLUMNS):   if order = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'ORDER';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if format ne ' ' and formattype = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'FORMATTYPE';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if role = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'ROLE';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if level = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'LEVEL';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if type = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'TYPE';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if index = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'INDEX';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if report = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'REPORT';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):   proc sort NOTHREADS;
+MPRINT(EMADVISECOLUMNS):   by attr;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M1ZU3RU0;
+MPRINT(EMADVISECOLUMNS):   length NAME $64 ROLE $ 32 LEVEL $ 10 ORDER $ 8 CREATOR $32 FORMATTYPE $ 10 FAMILY $ 10 LOWERLIMIT 8 UPPERLIMIT 8 REPORT $1 DISTRIBUTION $ 20 COMMENT $64;
+MPRINT(EMADVISECOLUMNS):   length levelAssigned 8 roleAssigned 8 PRICE 8;
+MPRINT(EMADVISECOLUMNS):   set WORK.M1ZU3RU0;
+MPRINT(EMADVISECOLUMNS):   if formattype = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if format ne ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if type = 'N' then do;
+MPRINT(EMADVISECOLUMNS):   pos = indexc(format,'.1234567890');
+MPRINT(EMADVISECOLUMNS):   if pos > 1 then tempfmt = substr(format,1, pos-1);
+MPRINT(EMADVISECOLUMNS):   else tempfmt = ' ';
+MPRINT(EMADVISECOLUMNS):   flen = length(tempfmt);
+MPRINT(EMADVISECOLUMNS):   select;
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("DATE" "DAY" "DDMMYY" "DOWNAME" "JULDAY" "JULIAN" "MMDDYY" "MMDDYYD" "MMDDYYC" "MMDDYYN" "MMDDYYP" "MMDDYYS" "MONNAME" "MONTH" "MONYY" "NENGO" "QTR" "QTRR" "WEEKDATE" "WEEKDATX" "WEEKDAY" "WORDDATE" "WORDDATX" 
+"YEAR" "YYMMDD" "YYMON" "YYMMDDC" "YYMMDDD" "YYMMDDN" "YYMMDDP" "YYMMDDS" "EURDFDE" "NJDATE" "NLDATE" "EURDFDD" "EURDFDWN" "EURDFMN" "EURDFMY" "EURDFWK" "EURDFWKX" "EURDFWDX" "EURDFDN" "EURDFDE" )) formattype = 'DATE';
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("DATETIME" "EURDFDT" "TOD" )) formattype = "DATETIME";
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("HHMM" "HOUR" "MMSS" "TIME" "TIMEAMPM" )) formattype = "TIME";
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("COMMA" "COMMAX" "DOLLAR" "DOLLARX" "E" "FRACT" "NEGPAREN" "PERCENT")) formattype="QUANTITY";
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("BINARY" "HEX" "IB" "OCTAL" "PD" "PIB" "PK" "RB" "SSN" "Z" "ZD")) formattype = "CODING";
+MPRINT(EMADVISECOLUMNS):   otherwise do;
+MPRINT(EMADVISECOLUMNS):   formattype = "USER";
+MPRINT(EMADVISECOLUMNS):   if compress(tempfmt, '0123456789.', '') = '' then formattype='NUM';
+MPRINT(EMADVISECOLUMNS):   else if substr(tempfmt, 1, 6)='NLDATE' then formattype = "DATE";
+MPRINT(EMADVISECOLUMNS):   else if substr(tempfmt, 1, 6)='NLDATM' then formattype = "DATETIME";
+MPRINT(EMADVISECOLUMNS):   else if substr(tempfmt, 1, 4)='NLTIM' then formattype = "TIME";
+MPRINT(EMADVISECOLUMNS):   else if flen >= 4 then do;
+MPRINT(EMADVISECOLUMNS):   str = substr(tempfmt,1,4);
+MPRINT(EMADVISECOLUMNS):   if str in ("MMYY" "YYMM" "YYQR") then formattype ="DATE";
+MPRINT(EMADVISECOLUMNS):   else if str = "S370" then formattype = "CODING";
+MPRINT(EMADVISECOLUMNS):   else if str = "BEST" then formattype = "NUM";
+MPRINT(EMADVISECOLUMNS):   drop str;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if flen >=3 and substr(tempfmt,1,3) = "YYQ" then formatType = "DATE";
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   drop flen tempfmt pos;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else do;
+MPRINT(EMADVISECOLUMNS):   formatType = "CATEGORY";
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if formatType = "NUM" then do;
+MPRINT(EMADVISECOLUMNS):   if index = "Y" then formatType = "DISCRETE";
+MPRINT(EMADVISECOLUMNS):   else formatType = "QUANTITY";
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if level = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if formatType in ("CATEGORY", "CODING", "ID") or type = "C" then level = "NOMINAL";
+MPRINT(EMADVISECOLUMNS):   else level = "INTERVAL";
+MPRINT(EMADVISECOLUMNS):   levelAssigned = 1;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else level = upcase(level);
+MPRINT(EMADVISECOLUMNS):   if role = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   length name_prefix $8 _uname $64;
+MPRINT(EMADVISECOLUMNS):   drop name_prefix _uname _freqflag;
+MPRINT(EMADVISECOLUMNS):   retain _freqflag;
+MPRINT(EMADVISECOLUMNS):   if LENGTH> 80 then ROLE = 'TEXT';
+MPRINT(EMADVISECOLUMNS):   _uname = upcase(NAME);
+MPRINT(EMADVISECOLUMNS):   select(_uname);
+MPRINT(EMADVISECOLUMNS):   when('_PARTIND_') do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'ID';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   when('_WARN_') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_SEGMENT') do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'SEGMENT';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   when('_NODE_') do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'SEGMENT';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   when('EM_CLASSTARGET') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_VALUETARGET') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_PREDICTION') ROLE = 'PREDICT';
+MPRINT(EMADVISECOLUMNS):   when('EM_PROBABILITY') ROLE = 'PREDICT';
+MPRINT(EMADVISECOLUMNS):   when('EM_EVENTPROBABILITY') ROLE = 'PREDICT';
+MPRINT(EMADVISECOLUMNS):   when('EM_CLASSIFICATION') ROLE = 'CLASSIFICATION';
+MPRINT(EMADVISECOLUMNS):   when('EM_DECISION') ROLE = 'DECISION';
+MPRINT(EMADVISECOLUMNS):   when('EM_PROFIT') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_LOSS') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_ROI') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('URI') ROLE = 'URL';
+MPRINT(EMADVISECOLUMNS):   when('FILTERED') ROLE = 'TEXTLOC';
+MPRINT(EMADVISECOLUMNS):   otherwise do;
+MPRINT(EMADVISECOLUMNS):   if upcase(NAME) =: 'ZIP' then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'REJECTED';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   COMMENT = 'Rejected by: Exceed the maximum class level of %s';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if upcase(NAME) in('FREQ', 'FREQUENCY') then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'FREQ';
+MPRINT(EMADVISECOLUMNS):   if TYPE = 'C' then ROLE = 'INPUT';
+MPRINT(EMADVISECOLUMNS):   else if _freqflag =1 then ROLE='REJECTED';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else do;
+MPRINT(EMADVISECOLUMNS):   name_prefix = scan(_uname, 1, '_');
+MPRINT(EMADVISECOLUMNS):   if scan(_uname, 2, '_') = '' then name_prefix='';
+MPRINT(EMADVISECOLUMNS):   if name_prefix in('F', 'I', 'U') then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'CLASSIFICATION';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if name_prefix in('Q') then ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   else if name_prefix in('P', 'V') then ROLE = 'PREDICT';
+MPRINT(EMADVISECOLUMNS):   else if name_prefix in('R', 'RS', 'RT', 'RD', 'RDS', 'RDT', 'RA', 'RAS', 'RAT') then ROLE = 'RESIDUAL';
+MPRINT(EMADVISECOLUMNS):   else if name_prefix ='D' then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'DECISION';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if name_prefix ='B' then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'SEGMENT';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if name_prefix in('EP', 'BP', 'CP', 'EL', 'CL', 'BL', 'W', 'ROI', 'IC') then ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   else do;
+MPRINT(EMADVISECOLUMNS):   array _ROLE_ (19) $32 _TEMPORARY_ ('ASSESS','CLASSIFICATION','CENSOR', 'COST', 'CROSSID', 'DECISION', 'ID','INPUT', 'LABEL', 'MISSING','PREDICT','REFERRER','REJECTED', 'RESIDUAL','SEGMENT', 'SEQUENCE','TARGET', 'TEXT', 'TIMEID');
+MPRINT(EMADVISECOLUMNS):   drop _found_ i;
+MPRINT(EMADVISECOLUMNS):   _found_=0;
+MPRINT(EMADVISECOLUMNS):   do i=1 to 19 until(_found_=1);
+MPRINT(EMADVISECOLUMNS):   if index(_uname, trim(_ROLE_{i}))=1 then do;
+MPRINT(EMADVISECOLUMNS):   ROLE=_ROLE_{i};
+MPRINT(EMADVISECOLUMNS):   if ROLE = 'ID' then LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   else if ROLE = 'SEGMENT' then LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   else if ROLE = 'TIMEID' and TYPE='N' then LEVEL = 'INTERVAL';
+MPRINT(EMADVISECOLUMNS):   _found_=1;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if length(_uname)>2 then do;
+MPRINT(EMADVISECOLUMNS):   if substr(reverse(trim(_uname)), 1, 3) = 'DI_' then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'ID';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if ROLE='FREQ' then _freqflag=1;
+MPRINT(EMADVISECOLUMNS):   else if ROLE = 'CLASSIFICATION' then LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   if symexist('RATEMKG_ROLE') then do;
+MPRINT(EMADVISECOLUMNS):   if upcase(symget('RATEMKG_ROLE')) in('Y', 'YES') then do;
+MPRINT(EMADVISECOLUMNS):   if _uname =: 'POLICY' then ROLE = 'POLICYID';
+MPRINT(EMADVISECOLUMNS):   else if _uname in ('PARTITION', '_PARTIND_') then ROLE = 'PARTITION';
+MPRINT(EMADVISECOLUMNS):   else if type = 'N' then do;
+MPRINT(EMADVISECOLUMNS):   if _uname = 'EXPOSURE' then ROLE = 'EXPOSURE';
+MPRINT(EMADVISECOLUMNS):   else if _uname = 'YEAR' then ROLE = 'YEAR';
+MPRINT(EMADVISECOLUMNS):   else if _uname = 'WEIGHT' then ROLE = 'WEIGHT';
+MPRINT(EMADVISECOLUMNS):   else if _uname = 'OFFSET' then ROLE = 'OFFSET';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if role = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if formattype in('DATE', 'DATETIME', 'TIME') then role = 'TIMEID';
+MPRINT(EMADVISECOLUMNS):   else role = 'INPUT';
+MPRINT(EMADVISECOLUMNS):   roleAssigned = 1;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else role = upcase(role);
+MPRINT(EMADVISECOLUMNS):   if REPORT = '' then REPORT = 'N';
+MPRINT(EMADVISECOLUMNS):   if symexist('dmwb_product') then do;
+MPRINT(EMADVISECOLUMNS):   if upcase(symget('dmwb_product')) = 'FACTORYMINER_DATASOURCE' then do;
+MPRINT(EMADVISECOLUMNS):   if ROLE ^in('INPUT', 'TARGET', 'REJECTED', 'SEGMENT', 'FREQ', 'ID', 'KEY') then ROLE='REJECTED';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M1ZU3RU0;
+MPRINT(EMADVISECOLUMNS):   set WORK.M1ZU3RU0;
+MPRINT(EMADVISECOLUMNS):   label NAME = "Variable Name" TYPE = "Type" ROLE = "Role" LEVEL= "Measurement Level" ORDER= "Order" CREATOR= "Creator" FORMATTYPE= "Format Type" FAMILY= "Family" DISTRIBUTION= "Distribution" PRICE= "Price" LOWERLIMIT= "Lower 
+limit" UPPERLIMIT= "Upper Limit" REPORT= "Report" COMMENT= "Comment" INDEX= "Index" INDEXTYPE= "IndexType" LABEL= "Label" LENGTH= "Length";
+MPRINT(EMADVISECOLUMNS):   drop levelAssigned roleAssigned;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):   
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   proc sort data=WORK.COLUMNMETA;
+MPRINT(EM_DIAGRAM):   by NAME;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * &nodeid: Merge incoming metadata;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   proc contents data=EMWS1.Part_TRAIN noprint out=_temp2(keep=NAME);
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   proc sort data=_temp2;
+MPRINT(EM_DIAGRAM):   by NAME;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   proc sort data=EMWS1.Part_CMeta_TRAIN out=_temp;
+MPRINT(EM_DIAGRAM):   by NAME;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   data EMWS1.Tree2_CMeta_TRAIN;
+MPRINT(EM_DIAGRAM):   merge WORK.COLUMNMETA(in=_a) _temp2(in=_b) _temp(drop=FORMAT INFORMAT LENGTH INDEX INDEXTYPE in=_c) end=_eof_;
+MPRINT(EM_DIAGRAM):   by NAME;
+MPRINT(EM_DIAGRAM):   if (^_a and _b) or (^_c and _a and _b) then delete;
+MPRINT(EM_DIAGRAM):   if ^_b then CREATOR = "Tree2";
+MPRINT(EM_DIAGRAM):   length model $200;
+MPRINT(EM_DIAGRAM):   label MODEL = "Model Node";
+MPRINT(EM_DIAGRAM):   select(upcase(name));
+MPRINT(EM_DIAGRAM):   when("CLAIM_IND") model = "Tree2";
+MPRINT(EM_DIAGRAM):   when('');
+MPRINT(EM_DIAGRAM):   otherwise;
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Tree2: Apply Delta Code;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   if upcase(NAME) = "AGE" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "CHILDREN" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "CLM_FREQ" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "EDU_LEVEL" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "GENDER" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "HOUSE_VAL" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "INCOME" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "MVR_PTS" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "Q_CLAIM_IND0" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "ASSESS";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "Q_CLAIM_IND1" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "ASSESS";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "STATE_CODE" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "VEHICLE_AGE" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "VEHICLE_VAL" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "YOJ" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else if upcase(NAME) = "_NODE_" then do;
+MPRINT(EM_DIAGRAM):   ROLE = "SEGMENT";
+MPRINT(EM_DIAGRAM):   LEVEL = "NOMINAL";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   filename _delta;
+24557      data EMWS1.Tree2_EMINFO;
+MPRINT(EM_DIAGRAM):    data EMWS1.Tree2_EMINFO;
+24558      length TARGET KEY $32 DATA $43;
+MPRINT(EM_DIAGRAM):   length TARGET KEY $32 DATA $43;
+24559      input TARGET KEY DATA $;
+MPRINT(EM_DIAGRAM):   input TARGET KEY DATA $;
+24560      cards;
+MPRINT(EM_DIAGRAM):   cards;
+
+NOTE: The data set EMWS1.TREE2_EMINFO has 3 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_DIAGRAM):   run;
+24564      run;
+24565      proc sort data = EMWS1.Tree2_EMINFO NOTHREADS;
+MPRINT(EM_DIAGRAM):   proc sort data = EMWS1.Tree2_EMINFO NOTHREADS;
+24566      by TARGET KEY;
+MPRINT(EM_DIAGRAM):   by TARGET KEY;
+24567      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: There were 3 observations read from the data set EMWS1.TREE2_EMINFO.
+NOTE: The data set EMWS1.TREE2_EMINFO has 3 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+24568      proc sort data = EMWS1.Ids_EMINFO OUT=WORK.SORTEDEMINFO NOTHREADS;
+MPRINT(EM_DIAGRAM):    proc sort data = EMWS1.Ids_EMINFO OUT=WORK.SORTEDEMINFO NOTHREADS;
+24569      by TARGET KEY;
+MPRINT(EM_DIAGRAM):   by TARGET KEY;
+24570      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: There were 3 observations read from the data set EMWS1.IDS_EMINFO.
+NOTE: The data set WORK.SORTEDEMINFO has 3 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+24571      proc sort data = EMWS1.Tree2_EMINFO OUT=WORK.TEMP_INFO NOTHREADS;
+MPRINT(EM_DIAGRAM):   proc sort data = EMWS1.Tree2_EMINFO OUT=WORK.TEMP_INFO NOTHREADS;
+24572      by TARGET KEY;
+MPRINT(EM_DIAGRAM):   by TARGET KEY;
+24573      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: Input data set is already sorted; it has been copied to the output data set.
+NOTE: There were 3 observations read from the data set EMWS1.TREE2_EMINFO.
+NOTE: The data set WORK.TEMP_INFO has 3 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+24574      data EMWS1.Tree2_EMINFO;
+MPRINT(EM_DIAGRAM):   data EMWS1.Tree2_EMINFO;
+24575      merge WORK.SORTEDEMINFO WORK.TEMP_INFO;
+MPRINT(EM_DIAGRAM):   merge WORK.SORTEDEMINFO WORK.TEMP_INFO;
+24576      by TARGET KEY;
+MPRINT(EM_DIAGRAM):   by TARGET KEY;
+24577      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: There were 3 observations read from the data set WORK.SORTEDEMINFO.
+NOTE: There were 3 observations read from the data set WORK.TEMP_INFO.
+NOTE: The data set EMWS1.TREE2_EMINFO has 4 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+24578      proc datasets lib=work nolist;
+MPRINT(EM_DIAGRAM):   proc datasets lib=work nolist;
+24579      delete TEMP_INFO SORTEDEMINFO;
+MPRINT(EM_DIAGRAM):   delete TEMP_INFO SORTEDEMINFO;
+24580      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: Deleting WORK.TEMP_INFO (memtype=DATA).
+NOTE: Deleting WORK.SORTEDEMINFO (memtype=DATA).
+24581      quit;
+MPRINT(EM_DIAGRAM):   quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: View EMWS1.TREE2_TRAIN.VIEW used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+NOTE: View EMWS1.TREE2_VALIDATE.VIEW used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+MPRINT(EM_DIAGRAM):    proc printto;
+MPRINT(EM_DIAGRAM):   run;

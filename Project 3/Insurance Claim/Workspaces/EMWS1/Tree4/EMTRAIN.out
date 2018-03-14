@@ -1,0 +1,45 @@
+ 
+                                                                                               
+ 
+ 
+Variable Summary
+
+            Measurement    Frequency
+Role           Level         Count
+
+ID           INTERVAL           1   
+ID           NOMINAL            2   
+INPUT        BINARY             1   
+INPUT        INTERVAL          19   
+INPUT        NOMINAL            3   
+REJECTED     INTERVAL           9   
+SEGMENT      BINARY             9   
+SEGMENT      NOMINAL            1   
+TARGET       BINARY             1   
+TEXT         NOMINAL            1   
+ 
+                                                                                               
+ 
+ 
+Model Events
+
+                                     Number
+                      Measurement      of
+ Target      Event       Level       Levels      Order                Label
+
+SubroFlag      1        BINARY          2      Descending    Subrogation (1=Yes 0=No)
+ 
+                                                                                               
+ 
+ 
+Predicted and decision variables
+
+Type           Variable      Label
+
+TARGET       SubroFlag       Subrogation (1=Yes 0=No)
+PREDICTED    P_SubroFlag1    Predicted: SubroFlag=1  
+RESIDUAL     R_SubroFlag1    Residual: SubroFlag=1   
+PREDICTED    P_SubroFlag0    Predicted: SubroFlag=0  
+RESIDUAL     R_SubroFlag0    Residual: SubroFlag=0   
+FROM         F_SubroFlag     From: SubroFlag         
+INTO         I_SubroFlag     Into: SubroFlag         

@@ -1,0 +1,43 @@
+*------------------------------------------------------------*
+User:                Gaurav
+Date:                February 25, 2017
+Time:                16:20:24
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+            Measurement    Frequency
+Role           Level         Count
+ 
+INPUT        BINARY             4
+INPUT        INTERVAL          11
+INPUT        NOMINAL            5
+REJECTED     INTERVAL           1
+TARGET       BINARY             1
+ 
+ 
+ 
+Computed Transformations
+(maximum 500 observations printed)
+ 
+                         Input
+Input Name     Role      Level      Name                Level             Formula
+ 
+HOUSE_VAL      INPUT    INTERVAL    LOG_HOUSE_VAL      INTERVAL    log(HOUSE_VAL  + 1)
+INCOME         INPUT    INTERVAL    LOG_INCOME         INTERVAL    log(INCOME  + 1)
+VEHICLE_VAL    INPUT    INTERVAL    LOG_VEHICLE_VAL    INTERVAL    log(VEHICLE_VAL  + 1)
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*

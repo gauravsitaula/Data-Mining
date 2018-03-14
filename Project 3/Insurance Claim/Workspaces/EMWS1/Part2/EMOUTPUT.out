@@ -1,0 +1,74 @@
+*------------------------------------------------------------*
+User:                Gaurav
+Date:                April 27, 2017
+Time:                10:44:29
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+            Measurement    Frequency
+Role           Level         Count
+ 
+ID            NOMINAL          1
+INPUT         BINARY           1
+INPUT         NOMINAL          3
+REJECTED      NOMINAL          1
+TARGET        BINARY           1
+ 
+ 
+ 
+ 
+Partition Summary
+ 
+                                      Number of
+Type              Data Set          Observations
+ 
+DATA        EMWS1.Ids2_DATA             3037
+TRAIN       EMWS1.Part2_TRAIN           1518
+VALIDATE    EMWS1.Part2_VALIDATE        1519
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Summary Statistics for Class Targets
+ 
+Data=DATA
+ 
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent             Label
+ 
+SubroFlag       0           0           1902      62.6276    Subrogation (1=Yes 0=No)
+SubroFlag       1           1           1135      37.3724    Subrogation (1=Yes 0=No)
+ 
+ 
+Data=TRAIN
+ 
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent             Label
+ 
+SubroFlag       0           0           951       62.6482    Subrogation (1=Yes 0=No)
+SubroFlag       1           1           567       37.3518    Subrogation (1=Yes 0=No)
+ 
+ 
+Data=VALIDATE
+ 
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent             Label
+ 
+SubroFlag       0           0           951       62.6070    Subrogation (1=Yes 0=No)
+SubroFlag       1           1           568       37.3930    Subrogation (1=Yes 0=No)

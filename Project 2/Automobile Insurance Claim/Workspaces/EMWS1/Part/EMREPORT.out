@@ -1,0 +1,31 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Summary Statistics for Class Targets
+
+Data=DATA
+
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent      Label
+
+CLAIM_IND       0           0           6010      72.9369    Claim flag
+CLAIM_IND       1           1           2230      27.0631    Claim flag
+
+
+Data=TRAIN
+
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent      Label
+
+CLAIM_IND       0           0           3004      72.9480    Claim flag
+CLAIM_IND       1           1           1114      27.0520    Claim flag
+
+
+Data=VALIDATE
+
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent      Label
+
+CLAIM_IND       0           0           3006      72.9258    Claim flag
+CLAIM_IND       1           1           1116      27.0742    Claim flag

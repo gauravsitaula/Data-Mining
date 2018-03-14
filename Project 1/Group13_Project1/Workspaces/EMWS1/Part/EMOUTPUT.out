@@ -1,0 +1,73 @@
+*------------------------------------------------------------*
+User:                Gaurav
+Date:                February 08, 2017
+Time:                14:49:16
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+          Measurement    Frequency
+ Role        Level         Count
+ 
+INPUT      BINARY             3
+INPUT      INTERVAL          13
+INPUT      NOMINAL           21
+TARGET     BINARY             1
+ 
+ 
+ 
+ 
+Partition Summary
+ 
+                                     Number of
+Type             Data Set          Observations
+ 
+DATA        EMWS1.Ids_DATA             17097
+TRAIN       EMWS1.Part_TRAIN            8548
+VALIDATE    EMWS1.Part_VALIDATE         8549
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Summary Statistics for Class Targets
+ 
+Data=DATA
+ 
+            Numeric    Formatted    Frequency
+Variable     Value       Value        Count      Percent    Label
+ 
+  LBWT         0           0           8549      50.0029
+  LBWT         1           1           8548      49.9971
+ 
+ 
+Data=TRAIN
+ 
+            Numeric    Formatted    Frequency
+Variable     Value       Value        Count      Percent    Label
+ 
+  LBWT         0           0           4274         50
+  LBWT         1           1           4274         50
+ 
+ 
+Data=VALIDATE
+ 
+            Numeric    Formatted    Frequency
+Variable     Value       Value        Count      Percent    Label
+ 
+  LBWT         0           0           4275      50.0058
+  LBWT         1           1           4274      49.9942

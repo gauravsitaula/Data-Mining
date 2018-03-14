@@ -1,0 +1,59 @@
+*------------------------------------------------------------*
+ Node = 3
+*------------------------------------------------------------*
+if accident,+involve,+injury,+multiple,auto >= 0.004
+then 
+ Tree Node Identifier   = 3
+ Number of Observations = 37
+ Predicted: SubroFlag=1 = 0.92
+ Predicted: SubroFlag=0 = 0.08
+ 
+*------------------------------------------------------------*
+ Node = 4
+*------------------------------------------------------------*
+if accident,+involve,+injury,+multiple,auto < 0.004 or MISSING
+AND TextCluster2_SVD10 < 0.00793 or MISSING
+then 
+ Tree Node Identifier   = 4
+ Number of Observations = 230
+ Predicted: SubroFlag=1 = 0.24
+ Predicted: SubroFlag=0 = 0.76
+ 
+*------------------------------------------------------------*
+ Node = 11
+*------------------------------------------------------------*
+if accident,+involve,+injury,+multiple,auto < 0.004 or MISSING
+AND Vehicle Flag (1=Motor Vehicle Involved) IS ONE OF: 1
+AND TextCluster2_SVD10 >= 0.00793
+then 
+ Tree Node Identifier   = 11
+ Number of Observations = 10
+ Predicted: SubroFlag=1 = 1.00
+ Predicted: SubroFlag=0 = 0.00
+ 
+*------------------------------------------------------------*
+ Node = 12
+*------------------------------------------------------------*
+if accident,+involve,+injury,+multiple,auto < 0.004 or MISSING
+AND Vehicle Flag (1=Motor Vehicle Involved) IS ONE OF: 0 or MISSING
+AND TextCluster2_SVD10 >= 0.00793
+AND +strike,left,+finger,+claimant,+door < 0.0035 or MISSING
+then 
+ Tree Node Identifier   = 12
+ Number of Observations = 14
+ Predicted: SubroFlag=1 = 0.79
+ Predicted: SubroFlag=0 = 0.21
+ 
+*------------------------------------------------------------*
+ Node = 13
+*------------------------------------------------------------*
+if accident,+involve,+injury,+multiple,auto < 0.004 or MISSING
+AND Vehicle Flag (1=Motor Vehicle Involved) IS ONE OF: 0 or MISSING
+AND TextCluster2_SVD10 >= 0.00793
+AND +strike,left,+finger,+claimant,+door >= 0.0035
+then 
+ Tree Node Identifier   = 13
+ Number of Observations = 11
+ Predicted: SubroFlag=1 = 0.27
+ Predicted: SubroFlag=0 = 0.73
+ 

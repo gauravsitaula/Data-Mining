@@ -1,0 +1,32 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+Imputation Summary
+Number Of Observations
+
+                                                                                                                                          Number of
+                 Impute                         Indicator                                   Measurement                                     Missing
+Variable Name    Method    Imputed Variable     Variable           Impute Value    Role        Level       Label                          for TRAIN
+
+AGE              MEAN      IMP_AGE              M_AGE              53.745808019    INPUT     INTERVAL      Age                                    3
+JOB              COUNT     IMP_JOB              M_JOB              Teacher         INPUT     NOMINAL       Occupation of driver                 278
+LOG_HOUSE_VAL    MEAN      IMP_LOG_HOUSE_VAL    M_LOG_HOUSE_VAL     12.68340528    INPUT     INTERVAL      Transformed: Housing value           225
+LOG_INCOME       MEAN      IMP_LOG_INCOME       M_LOG_INCOME         10.5053851    INPUT     INTERVAL      Transformed: Income                  232
+VEHICLE_AGE      MEAN      IMP_VEHICLE_AGE      M_VEHICLE_AGE       10.19524179    INPUT     INTERVAL      Age of Vehicle                       251
+YOJ              MEAN      IMP_YOJ              M_YOJ               13.45563488    INPUT     INTERVAL      Years on Job                         196
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Distribution Training Data
+
+        Number of
+          Missing    Number of    Percent of
+Obs     for TRAIN    Variables     Variables
+
+ 1            278        1          16.6667 
+ 2            251        1          16.6667 
+ 3            232        1          16.6667 
+ 4            225        1          16.6667 
+ 5            196        1          16.6667 
+ 6              3        1          16.6667 

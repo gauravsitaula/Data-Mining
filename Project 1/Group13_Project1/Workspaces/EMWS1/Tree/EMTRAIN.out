@@ -1,0 +1,25 @@
+                                                           19:08 Thursday, February 9, 2017  25
+
+
+
+
+
+
+
+ 
+
+Obs NAME             LABEL                              NRULES IMPORTANCE VIMPORTANCE  RATIO
+
+  1 ETHNICITYDAD                                           1     1.00000    1.00000   1.00000
+  2 HYPERPR          Hypertension, preg.                   2     0.81105    0.90642   1.11759
+  3 smoker                                                 1     0.57627    0.76942   1.33516
+  4 HYDRAM           Hydramnios/Oligo.                     3     0.45437    0.45201   0.99481
+  5 YrsLastLiveBirth                                       1     0.44916    0.50914   1.13354
+  6 PRETERM          Prev. preterm/small                   2     0.41497    0.50642   1.22038
+  7 ECLAMP           Eclampsia                             2     0.36269    0.42556   1.17336
+  8 PRENATAL         Month of preg. prenatal care began    1     0.34342    0.36036   1.04933
+  9 CERVIX           Incompetent cervix                    1     0.25428    0.31048   1.22102
+ 10 UTERINE          Uterine bleeding                      1     0.15968    0.15351   0.96138
+ 11 ETHNICITYMOM                                           1     0.13870    0.00000   0.00000
+ 12 ANEMIA           Anemia -- mother                      1     0.12088    0.00000   0.00000
+ 13 MARITAL          Marital status                        1     0.07522    0.00000   0.00000

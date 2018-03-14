@@ -1,0 +1,2515 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+            Measurement    Frequency
+Role           Level         Count
+
+INPUT        BINARY            10   
+INPUT        INTERVAL          11   
+INPUT        NOMINAL            5   
+REJECTED     INTERVAL           1   
+TARGET       BINARY             1   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Model Events
+
+                                     Number
+                      Measurement      of
+ Target      Event       Level       Levels      Order         Label
+
+CLAIM_IND      1        BINARY          2      Descending    Claim flag
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Predicted and decision variables
+
+Type           Variable      Label
+
+TARGET       CLAIM_IND       Claim flag            
+PREDICTED    P_CLAIM_IND1    Predicted: CLAIM_IND=1
+RESIDUAL     R_CLAIM_IND1    Residual: CLAIM_IND=1 
+PREDICTED    P_CLAIM_IND0    Predicted: CLAIM_IND=0
+RESIDUAL     R_CLAIM_IND0    Residual: CLAIM_IND=0 
+FROM         F_CLAIM_IND     From: CLAIM_IND       
+INTO         I_CLAIM_IND     Into: CLAIM_IND       
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+                  Model Information
+
+Training Data Set              WORK.EM_DMREG.VIEW    
+DMDB Catalog                   WORK.REG_DMDB         
+Target Variable                CLAIM_IND (Claim flag)
+Target Measurement Level       Ordinal               
+Number of Target Categories    2                     
+Error                          MBernoulli            
+Link Function                  Logit                 
+Number of Model Parameters     53                    
+Number of Observations         4118                  
+
+
+           Target Profile
+ 
+ Ordered                       Total
+   Value     CLAIM_IND     Frequency
+
+       1             1          1114
+       2             0          3004
+
+
+
+
+Stepwise Selection Procedure
+
+
+Step 0: Intercept entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates               1
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 6.985523E-13                                                       
+
+                                            Optimization Results
+
+Iterations                                          0  Function Calls                                      3
+Hessian Calls                                       1  Active Constraints                                  0
+Objective Function                        2403.985576  Max Abs Gradient Element                 6.985523E-13
+Ridge                                               0  Actual Over Pred Change                             0
+
+Convergence criterion (ABSGCONV=0.00001) satisfied.                                               
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        4807.971         0.0000        0          .    
+
+
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -0.9920      0.0351        799.67        <.0001                       0.371
+
+
+
+
+Step 1: Effect AREA entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates               2
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             2277        126.7     52.6212         0        1.124
+   2            0           3              0             2265      11.9503      7.4799         0        1.119
+   3            0           4              0             2265       0.5059      0.4039         0        1.036
+   4            0           5              0             2265      0.00161     0.00139         0        1.002
+
+                                            Optimization Results
+
+Iterations                                          4  Function Calls                                      7
+Hessian Calls                                       5  Active Constraints                                  0
+Objective Function                       2264.8337644  Max Abs Gradient Element                 0.0013920279
+Ridge                                               0  Actual Over Pred Change                  1.0022988836
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+NOTE: At least one element of the gradient is greater than 1e-3.
+
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        4529.668       278.3036        1         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      176.2766        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -1.7065      0.0728        549.71        <.0001                       0.182
+AREA              Highly Urban/ Urban       1      0.9664      0.0728        176.28        <.0001                       2.628
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural         6.908
+
+
+Step 2: Effect IMP_JOB entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              12
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             2144        259.6       104.8         0        1.048
+   2            0           3              0             2127      17.8016     10.3566         0        1.109
+   3            0           4              0             2126       0.7846      0.5925         0        1.062
+   4            0           5              0             2126       0.0380      0.0225         0        1.242
+   5            0           6              0             2126       0.0129     0.00748         0        1.264
+   6            0           7              0             2126      0.00473     0.00275         0        1.264
+   7            0           8              0             2126      0.00174     0.00101         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          7  Function Calls                                     10
+Hessian Calls                                       8  Active Constraints                                  0
+Objective Function                       2125.7866586  Max Abs Gradient Element                 0.0010111748
+Ridge                                               0  Actual Over Pred Change                  1.2641701947
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+NOTE: At least one element of the gradient is greater than 1e-3.
+
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        4251.573       556.3978       11         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      245.3633        <.0001
+IMP_JOB                 9     1885.3477        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -3.7691      8.0672          0.22        0.6403                       0.023
+AREA              Highly Urban/ Urban       1      1.1661      0.0744        245.36        <.0001                       3.210
+IMP_JOB           Banking                   1     -3.5706     63.1340          0.00        0.9549                       0.028
+IMP_JOB           Clerical                  1      2.3945      8.0675          0.09        0.7666                      10.963
+IMP_JOB           Doctor                    1     -0.0360      8.0738          0.00        0.9964                       0.965
+IMP_JOB           Home Maker                1      2.1638      8.0680          0.07        0.7885                       8.704
+IMP_JOB           Manager                   1      0.7803      8.0679          0.01        0.9229                       2.182
+IMP_JOB           None                      1     -5.9029     37.1868          0.03        0.8739                       0.003
+IMP_JOB           Nurse                     1      1.2861      8.0679          0.03        0.8733                       3.619
+IMP_JOB           Police                    1     -3.5706           .           .           .                   .       0.028
+IMP_JOB           Professional              1      1.5529      8.0677          0.04        0.8474                       4.725
+IMP_JOB           Student                   1      2.7021      8.0677          0.11        0.7377                      14.910
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        10.301
+IMP_JOB           Banking vs Teacher                                   0.003
+IMP_JOB           Clerical vs Teacher                                  1.214
+IMP_JOB           Doctor vs Teacher                                    0.107
+IMP_JOB           Home Maker vs Teacher                                0.964
+IMP_JOB           Manager vs Teacher                                   0.242
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     0.401
+IMP_JOB           Police vs Teacher                                    0.003
+IMP_JOB           Professional vs Teacher                              0.523
+IMP_JOB           Student vs Teacher                                   1.651
+
+
+Step 3: Effect STATUS entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              13
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             2103        301.0       116.4         0        1.047
+   2            0           3              0             2081      21.4860     12.2203         0        1.111
+   3            0           4              0             2080       0.9733      0.7178         0        1.061
+   4            0           5              0             2080       0.0399      0.0239         0        1.233
+   5            0           6              0             2080       0.0132     0.00761         0        1.264
+   6            0           7              0             2080      0.00482     0.00280         0        1.264
+   7            0           8              0             2080      0.00177     0.00103         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          7  Function Calls                                     10
+Hessian Calls                                       8  Active Constraints                                  0
+Objective Function                       2080.4273831  Max Abs Gradient Element                 0.0010296525
+Ridge                                               0  Actual Over Pred Change                  1.2641627508
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+NOTE: At least one element of the gradient is greater than 1e-3.
+
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        4160.855       647.1164       12         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      247.6421        <.0001
+IMP_JOB                10      236.8818        <.0001
+STATUS                  1       89.8904        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -3.7384      9.7454          0.15        0.7013                       0.024
+AREA              Highly Urban/ Urban       1      1.1812      0.0751        247.64        <.0001                       3.258
+IMP_JOB           Banking                   1     -3.2228     64.3545          0.00        0.9601                       0.040
+IMP_JOB           Clerical                  1      2.4261      9.7457          0.06        0.8034                      11.315
+IMP_JOB           Doctor                    1     -0.1145      9.7511          0.00        0.9906                       0.892
+IMP_JOB           Home Maker                1      2.1799      9.7461          0.05        0.8230                       8.845
+IMP_JOB           Manager                   1      0.7692      9.7461          0.01        0.9371                       2.158
+IMP_JOB           None                      1     -5.8599     37.4699          0.02        0.8757                       0.003
+IMP_JOB           Nurse                     1      1.2648      9.7461          0.02        0.8967                       3.543
+IMP_JOB           Police                    1     -3.9497     64.3545          0.00        0.9511                       0.019
+IMP_JOB           Professional              1      1.5583      9.7459          0.03        0.8730                       4.751
+IMP_JOB           Student                   1      2.7358      9.7459          0.08        0.7789                      15.422
+STATUS            Yes                       1     -0.3634      0.0383         89.89        <.0001                       0.695
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        10.617
+IMP_JOB           Banking vs Teacher                                   0.004
+IMP_JOB           Clerical vs Teacher                                  1.238
+IMP_JOB           Doctor vs Teacher                                    0.098
+IMP_JOB           Home Maker vs Teacher                                0.968
+IMP_JOB           Manager vs Teacher                                   0.236
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     0.388
+IMP_JOB           Police vs Teacher                                    0.002
+IMP_JOB           Professional vs Teacher                              0.520
+IMP_JOB           Student vs Teacher                                   1.687
+STATUS            Yes vs z_No                                          0.483
+
+
+Step 4: Effect MVR_PTS entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              14
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             2071        332.6       124.1         0        1.040
+   2            0           3              0             2048      23.5860     13.1892         0        1.111
+   3            0           4              0             2047       1.0775      0.7843         0        1.060
+   4            0           5              0             2047       0.0405      0.0244         0        1.227
+   5            0           6              0             2047       0.0131     0.00758         0        1.264
+   6            0           7              0             2047      0.00480     0.00279         0        1.264
+   7            0           8              0             2047      0.00176     0.00102         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          7  Function Calls                                     10
+Hessian Calls                                       8  Active Constraints                                  0
+Objective Function                       2046.7090048  Max Abs Gradient Element                 0.0010243685
+Ridge                                               0  Actual Over Pred Change                  1.2641651478
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+NOTE: At least one element of the gradient is greater than 1e-3.
+
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        4093.418       714.5531       13         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      221.4061        <.0001
+IMP_JOB                10      220.0784        <.0001
+MVR_PTS                 1       66.6724        <.0001
+STATUS                  1       83.8512        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -4.0325      9.7513          0.17        0.6792                       0.018
+AREA              Highly Urban/ Urban       1      1.1246      0.0756        221.41        <.0001                       3.079
+IMP_JOB           Banking                   1     -2.9942     64.3554          0.00        0.9629                       0.050
+IMP_JOB           Clerical                  1      2.3425      9.7515          0.06        0.8102                      10.407
+IMP_JOB           Doctor                    1     -0.1906      9.7569          0.00        0.9844                       0.826
+IMP_JOB           Home Maker                1      2.0868      9.7519          0.05        0.8306                       8.059
+IMP_JOB           Manager                   1      0.7482      9.7519          0.01        0.9388                       2.113
+IMP_JOB           None                      1     -5.8095     37.6198          0.02        0.8773                       0.003
+IMP_JOB           Nurse                     1      1.2181      9.7519          0.02        0.9006                       3.381
+IMP_JOB           Police                    1     -3.7034     64.3554          0.00        0.9541                       0.025
+IMP_JOB           Professional              1      1.5115      9.7517          0.02        0.8768                       4.534
+IMP_JOB           Student                   1      2.6328      9.7517          0.07        0.7872                      13.913
+MVR_PTS                                     1      0.1149      0.0141         66.67        <.0001          0.1667       1.122
+STATUS            Yes                       1     -0.3546      0.0387         83.85        <.0001                       0.701
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural         9.480
+IMP_JOB           Banking vs Teacher                                   0.006
+IMP_JOB           Clerical vs Teacher                                  1.203
+IMP_JOB           Doctor vs Teacher                                    0.096
+IMP_JOB           Home Maker vs Teacher                                0.932
+IMP_JOB           Manager vs Teacher                                   0.244
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     0.391
+IMP_JOB           Police vs Teacher                                    0.003
+IMP_JOB           Professional vs Teacher                              0.524
+IMP_JOB           Student vs Teacher                                   1.608
+MVR_PTS                                                                1.122
+STATUS            Yes vs z_No                                          0.492
+
+
+Step 5: Effect IMP_LOG_INCOME entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              15
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             2051        353.1       128.7         0        1.040
+   2            0           3              0             2025      26.2430     14.4403         0        1.115
+   3            0           4              0             2023       1.2632      0.8987         0        1.060
+   4            0           5              0             2023       0.0420      0.0255         0        1.218
+   5            0           6              0             2023       0.0131     0.00758         0        1.264
+   6            0           7              0             2023      0.00480     0.00279         0        1.264
+   7            0           8              0             2023      0.00176     0.00102         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          7  Function Calls                                     10
+Hessian Calls                                       8  Active Constraints                                  0
+Objective Function                       2023.2900552  Max Abs Gradient Element                 0.0010243502
+Ridge                                               0  Actual Over Pred Change                  1.2641646547
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+NOTE: At least one element of the gradient is greater than 1e-3.
+
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        4046.580       761.3910       14         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      226.2786        <.0001
+IMP_JOB                10      163.3251        <.0001
+IMP_LOG_INCOME          1       45.6156        <.0001
+MVR_PTS                 1       61.2243        <.0001
+STATUS                  1       87.4087        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -0.7641      9.7631          0.01        0.9376                       0.466
+AREA              Highly Urban/ Urban       1      1.1462      0.0762        226.28        <.0001                       3.146
+IMP_JOB           Banking                   1     -2.7875     64.3554          0.00        0.9655                       0.062
+IMP_JOB           Clerical                  1      2.3454      9.7516          0.06        0.8099                      10.438
+IMP_JOB           Doctor                    1      0.1257      9.7572          0.00        0.9897                       1.134
+IMP_JOB           Home Maker                1      1.3827      9.7526          0.02        0.8873                       3.986
+IMP_JOB           Manager                   1      1.0016      9.7520          0.01        0.9182                       2.723
+IMP_JOB           None                      1     -5.6305     37.6204          0.02        0.8810                       0.004
+IMP_JOB           Nurse                     1      1.4844      9.7520          0.02        0.8790                       4.412
+IMP_JOB           Police                    1     -3.9858     64.3554          0.00        0.9506                       0.019
+IMP_JOB           Professional              1      1.7510      9.7518          0.03        0.8575                       5.760
+IMP_JOB           Student                   1      1.9387      9.7523          0.04        0.8424                       6.950
+IMP_LOG_INCOME                              1     -0.3164      0.0468         45.62        <.0001         -0.2374       0.729
+MVR_PTS                                     1      0.1111      0.0142         61.22        <.0001          0.1612       1.117
+STATUS            Yes                       1     -0.3651      0.0391         87.41        <.0001                       0.694
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural         9.899
+IMP_JOB           Banking vs Teacher                                   0.006
+IMP_JOB           Clerical vs Teacher                                  0.972
+IMP_JOB           Doctor vs Teacher                                    0.106
+IMP_JOB           Home Maker vs Teacher                                0.371
+IMP_JOB           Manager vs Teacher                                   0.253
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     0.411
+IMP_JOB           Police vs Teacher                                    0.002
+IMP_JOB           Professional vs Teacher                              0.536
+IMP_JOB           Student vs Teacher                                   0.647
+IMP_LOG_INCOME                                                         0.729
+MVR_PTS                                                                1.117
+STATUS            Yes vs z_No                                          0.482
+
+
+Step 6: Effect CHILD_DRIV entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              16
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             2032        372.2       133.7         0        1.041
+   2            0           3              0             2003      28.5615     15.5532         0        1.117
+   3            0           4              0             2002       1.4239      0.9957         0        1.060
+   4            0           5              0             2002       0.0436      0.0267         0        1.209
+   5            0           6              0             2002       0.0131     0.00759         0        1.264
+   6            0           7              0             2002      0.00480     0.00279         0        1.264
+   7            0           8              0             2002      0.00176     0.00103         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          7  Function Calls                                     10
+Hessian Calls                                       8  Active Constraints                                  0
+Objective Function                       2001.7866314  Max Abs Gradient Element                 0.0010259035
+Ridge                                               0  Actual Over Pred Change                  1.2641638595
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+NOTE: At least one element of the gradient is greater than 1e-3.
+
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        4003.573       804.3979       15         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      231.8364        <.0001
+CHILD_DRIV              1       43.6611        <.0001
+IMP_JOB                10      160.1596        <.0001
+IMP_LOG_INCOME          1       46.2985        <.0001
+MVR_PTS                 1       56.1883        <.0001
+STATUS                  1       94.6948        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -0.8220      9.7616          0.01        0.9329                       0.440
+AREA              Highly Urban/ Urban       1      1.1700      0.0768        231.84        <.0001                       3.222
+CHILD_DRIV                                  1      0.4766      0.0721         43.66        <.0001          0.1326       1.611
+IMP_JOB           Banking                   1     -2.6357     64.3552          0.00        0.9673                       0.072
+IMP_JOB           Clerical                  1      2.3409      9.7499          0.06        0.8103                      10.391
+IMP_JOB           Doctor                    1      0.1609      9.7556          0.00        0.9868                       1.175
+IMP_JOB           Home Maker                1      1.3992      9.7509          0.02        0.8859                       4.052
+IMP_JOB           Manager                   1      1.0003      9.7503          0.01        0.9183                       2.719
+IMP_JOB           None                      1     -5.5318     37.5761          0.02        0.8830                       0.004
+IMP_JOB           Nurse                     1      1.5044      9.7503          0.02        0.8774                       4.501
+IMP_JOB           Police                    1     -4.3553     64.3552          0.00        0.9460                       0.013
+IMP_JOB           Professional              1      1.7805      9.7501          0.03        0.8551                       5.933
+IMP_JOB           Student                   1      1.9451      9.7506          0.04        0.8419                       6.994
+IMP_LOG_INCOME                              1     -0.3211      0.0472         46.30        <.0001         -0.2409       0.725
+MVR_PTS                                     1      0.1069      0.0143         56.19        <.0001          0.1551       1.113
+STATUS            Yes                       1     -0.3840      0.0395         94.69        <.0001                       0.681
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        10.381
+CHILD_DRIV                                                             1.611
+IMP_JOB           Banking vs Teacher                                   0.007
+IMP_JOB           Clerical vs Teacher                                  0.951
+IMP_JOB           Doctor vs Teacher                                    0.107
+IMP_JOB           Home Maker vs Teacher                                0.371
+IMP_JOB           Manager vs Teacher                                   0.249
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     0.412
+IMP_JOB           Police vs Teacher                                    0.001
+IMP_JOB           Professional vs Teacher                              0.543
+IMP_JOB           Student vs Teacher                                   0.640
+IMP_LOG_INCOME                                                         0.725
+MVR_PTS                                                                1.113
+STATUS            Yes vs z_No                                          0.464
+
+
+Step 7: Effect VEHICLE_TYPE entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              23
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             2003        401.0       140.6         0        1.046
+   2            0           3              0             1970      32.7965     17.5718         0        1.120
+   3            0           4              0             1968       1.7409      1.1776         0        1.067
+   4            0           5              0             1968       0.0738      0.0438         0        1.227
+   5            0           6              0             1968       0.0245      0.0141         0        1.267
+   6            0           7              0             1968      0.00917     0.00531         0        1.265
+   7            0           8              0             1968      0.00340     0.00197         0        1.265
+   8            0           9              0             1968      0.00125    0.000729         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          8  Function Calls                                     11
+Hessian Calls                                       9  Active Constraints                                  0
+Objective Function                       1968.3803939  Max Abs Gradient Element                 0.0007294874
+Ridge                                               0  Actual Over Pred Change                  1.2643874999
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        3936.761       871.2104       22         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      234.5597        <.0001
+CHILD_DRIV              1       46.4167        <.0001
+IMP_JOB                 8     7583.0705        <.0001
+IMP_LOG_INCOME          1       45.0859        <.0001
+MVR_PTS                 1       50.8662        <.0001
+STATUS                  1      100.4053        <.0001
+VEHICLE_TYPE            6     6837.6730        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -2.9956     11.3296          0.07        0.7915                       0.050
+AREA              Highly Urban/ Urban       1      1.1853      0.0774        234.56        <.0001                       3.272
+CHILD_DRIV                                  1      0.4978      0.0731         46.42        <.0001          0.1385       1.645
+IMP_JOB           Banking                   1     -2.8851           .           .           .                   .       0.056
+IMP_JOB           Clerical                  1      2.5336      6.9441          0.13        0.7152                      12.599
+IMP_JOB           Doctor                    1      0.4314      6.9518          0.00        0.9505                       1.539
+IMP_JOB           Home Maker                1      1.4975      6.9457          0.05        0.8293                       4.471
+IMP_JOB           Manager                   1      1.2178      6.9447          0.03        0.8608                       3.380
+IMP_JOB           None                      1     -5.7889     55.5472          0.01        0.9170                       0.003
+IMP_JOB           Nurse                     1      1.7382      6.9447          0.06        0.8024                       5.687
+IMP_JOB           Police                    1     -5.4601           .           .           .                   .       0.004
+IMP_JOB           Professional              1      2.0132      6.9444          0.08        0.7719                       7.487
+IMP_JOB           Student                   1      2.1025      6.9453          0.09        0.7621                       8.186
+IMP_LOG_INCOME                              1     -0.3238      0.0482         45.09        <.0001         -0.2430       0.723
+MVR_PTS                                     1      0.1029      0.0144         50.87        <.0001          0.1494       1.108
+STATUS            Yes                       1     -0.4011      0.0400        100.41        <.0001                       0.670
+VEHICLE_TYPE      Family                    1     -4.9315     53.6611          0.01        0.9268                       0.007
+VEHICLE_TYPE      Minivan                   1      1.4851      8.9439          0.03        0.8681                       4.415
+VEHICLE_TYPE      Panel Truck               1      1.9469      8.9444          0.05        0.8277                       7.007
+VEHICLE_TYPE      Pickup                    1      2.2810      8.9439          0.07        0.7987                       9.786
+VEHICLE_TYPE      Racing                    1     -7.3143           .           .           .                   .       0.001
+VEHICLE_TYPE      Sports Car                1      2.4534      8.9441          0.08        0.7838                      11.628
+VEHICLE_TYPE      Van                       1      2.0178      8.9442          0.05        0.8215                       7.522
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        10.704
+CHILD_DRIV                                                             1.645
+IMP_JOB           Banking vs Teacher                                   0.004
+IMP_JOB           Clerical vs Teacher                                  0.936
+IMP_JOB           Doctor vs Teacher                                    0.114
+IMP_JOB           Home Maker vs Teacher                                0.332
+IMP_JOB           Manager vs Teacher                                   0.251
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     0.422
+IMP_JOB           Police vs Teacher                                   <0.001
+IMP_JOB           Professional vs Teacher                              0.556
+IMP_JOB           Student vs Teacher                                   0.608
+IMP_LOG_INCOME                                                         0.723
+MVR_PTS                                                                1.108
+STATUS            Yes vs z_No                                          0.448
+VEHICLE_TYPE      Family vs unknown                                   <0.001
+VEHICLE_TYPE      Minivan vs unknown                                   0.562
+VEHICLE_TYPE      Panel Truck vs unknown                               0.892
+VEHICLE_TYPE      Pickup vs unknown                                    1.245
+VEHICLE_TYPE      Racing vs unknown                                   <0.001
+VEHICLE_TYPE      Sports Car vs unknown                                1.480
+VEHICLE_TYPE      Van vs unknown                                       0.957
+
+
+Step 8: Effect EDU_LEVEL entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              27
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             1982        421.7       145.7         0        1.048
+   2            0           3              0             1946      35.8135     18.9663         0        1.122
+   3            0           4              0             1945       1.9333      1.2863         0        1.066
+   4            0           5              0             1944       0.0751      0.0447         0        1.221
+   5            0           6              0             1944       0.0245      0.0140         0        1.267
+   6            0           7              0             1944      0.00920     0.00532         0        1.265
+   7            0           8              0             1944      0.00342     0.00198         0        1.265
+   8            0           9              0             1944      0.00126    0.000733         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          8  Function Calls                                     11
+Hessian Calls                                       9  Active Constraints                                  0
+Objective Function                       1944.4210031  Max Abs Gradient Element                 0.0007332566
+Ridge                                               0  Actual Over Pred Change                  1.2644216408
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        3888.842       919.1291       26         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      246.0672        <.0001
+CHILD_DRIV              1       48.3454        <.0001
+EDU_LEVEL               4       47.1070        <.0001
+IMP_JOB                 8     6871.3009        <.0001
+IMP_LOG_INCOME          1       33.3816        <.0001
+MVR_PTS                 1       46.8411        <.0001
+STATUS                  1      107.1776        <.0001
+VEHICLE_TYPE            6     6666.6035        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -3.3439     11.2926          0.09        0.7671                       0.035
+AREA              Highly Urban/ Urban       1      1.2221      0.0779        246.07        <.0001                       3.394
+CHILD_DRIV                                  1      0.5121      0.0737         48.35        <.0001          0.1424       1.669
+EDU_LEVEL         <High School              1      0.0897      0.1049          0.73        0.3925                       1.094
+EDU_LEVEL         Bachelors                 1      0.0975      0.0847          1.33        0.2497                       1.102
+EDU_LEVEL         Masters                   1     -0.2584      0.1085          5.67        0.0173                       0.772
+EDU_LEVEL         PhD                       1     -0.4878      0.1519         10.31        0.0013                       0.614
+IMP_JOB           Banking                   1     -2.5363           .           .           .                   .       0.079
+IMP_JOB           Clerical                  1      2.2274      6.8977          0.10        0.7468                       9.276
+IMP_JOB           Doctor                    1      0.8868      6.9069          0.02        0.8978                       2.427
+IMP_JOB           Home Maker                1      1.4077      6.8990          0.04        0.8383                       4.086
+IMP_JOB           Manager                   1      1.1459      6.8981          0.03        0.8681                       3.145
+IMP_JOB           None                      1     -5.7244     55.1735          0.01        0.9174                       0.003
+IMP_JOB           Nurse                     1      2.0009      6.8986          0.08        0.7718                       7.395
+IMP_JOB           Police                    1     -5.5098           .           .           .                   .       0.004
+IMP_JOB           Professional              1      1.8232      6.8979          0.07        0.7915                       6.192
+IMP_JOB           Student                   1      1.8735      6.8987          0.07        0.7859                       6.511
+IMP_LOG_INCOME                              1     -0.2891      0.0500         33.38        <.0001         -0.2169       0.749
+MVR_PTS                                     1      0.0996      0.0146         46.84        <.0001          0.1446       1.105
+STATUS            Yes                       1     -0.4195      0.0405        107.18        <.0001                       0.657
+VEHICLE_TYPE      Family                    1     -4.9892     53.5972          0.01        0.9258                       0.007
+VEHICLE_TYPE      Minivan                   1      1.4196      8.9333          0.03        0.8737                       4.135
+VEHICLE_TYPE      Panel Truck               1      2.0979      8.9338          0.06        0.8143                       8.149
+VEHICLE_TYPE      Pickup                    1      2.2663      8.9333          0.06        0.7997                       9.644
+VEHICLE_TYPE      Racing                    1     -7.2873           .           .           .                   .       0.001
+VEHICLE_TYPE      Sports Car                1      2.4035      8.9334          0.07        0.7879                      11.062
+VEHICLE_TYPE      Van                       1      2.0947      8.9336          0.05        0.8146                       8.123
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        11.522
+CHILD_DRIV                                                             1.669
+EDU_LEVEL         <High School vs z_High School                        0.625
+EDU_LEVEL         Bachelors vs z_High School                           0.630
+EDU_LEVEL         Masters vs z_High School                             0.442
+EDU_LEVEL         PhD vs z_High School                                 0.351
+IMP_JOB           Banking vs Teacher                                   0.007
+IMP_JOB           Clerical vs Teacher                                  0.837
+IMP_JOB           Doctor vs Teacher                                    0.219
+IMP_JOB           Home Maker vs Teacher                                0.369
+IMP_JOB           Manager vs Teacher                                   0.284
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     0.667
+IMP_JOB           Police vs Teacher                                   <0.001
+IMP_JOB           Professional vs Teacher                              0.559
+IMP_JOB           Student vs Teacher                                   0.588
+IMP_LOG_INCOME                                                         0.749
+MVR_PTS                                                                1.105
+STATUS            Yes vs z_No                                          0.432
+VEHICLE_TYPE      Family vs unknown                                   <0.001
+VEHICLE_TYPE      Minivan vs unknown                                   0.563
+VEHICLE_TYPE      Panel Truck vs unknown                               1.109
+VEHICLE_TYPE      Pickup vs unknown                                    1.312
+VEHICLE_TYPE      Racing vs unknown                                   <0.001
+VEHICLE_TYPE      Sports Car vs unknown                                1.505
+VEHICLE_TYPE      Van vs unknown                                       1.105
+
+
+Step 9: Effect REVOKED entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              28
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             1970        434.3       148.0         0        1.045
+   2            0           3              0             1933      36.9230     19.4307         0        1.123
+   3            0           4              0             1931       2.0258      1.3370         0        1.066
+   4            0           5              0             1931       0.0774      0.0462         0        1.217
+   5            0           6              0             1931       0.0248      0.0142         0        1.266
+   6            0           7              0             1931      0.00926     0.00536         0        1.265
+   7            0           8              0             1931      0.00343     0.00199         0        1.265
+   8            0           9              0             1931      0.00127    0.000736         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          8  Function Calls                                     11
+Hessian Calls                                       9  Active Constraints                                  0
+Objective Function                       1930.6604041  Max Abs Gradient Element                 0.0007358608
+Ridge                                               0  Actual Over Pred Change                  1.2643721328
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        3861.321       946.6503       27         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      237.9014        <.0001
+CHILD_DRIV              1       46.1176        <.0001
+EDU_LEVEL               4       45.4630        <.0001
+IMP_JOB                 8     6701.0910        <.0001
+IMP_LOG_INCOME          1       31.6169        <.0001
+MVR_PTS                 1       46.5196        <.0001
+REVOKED                 1       27.9686        <.0001
+STATUS                  1      103.8100        <.0001
+VEHICLE_TYPE            6     6466.4328        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -3.1845     11.2579          0.08        0.7773                       0.041
+AREA              Highly Urban/ Urban       1      1.2064      0.0782        237.90        <.0001                       3.341
+CHILD_DRIV                                  1      0.5013      0.0738         46.12        <.0001          0.1394       1.651
+EDU_LEVEL         <High School              1      0.1149      0.1055          1.19        0.2761                       1.122
+EDU_LEVEL         Bachelors                 1      0.0960      0.0850          1.28        0.2587                       1.101
+EDU_LEVEL         Masters                   1     -0.2676      0.1092          6.01        0.0142                       0.765
+EDU_LEVEL         PhD                       1     -0.4949      0.1528         10.49        0.0012                       0.610
+IMP_JOB           Banking                   1     -2.5113           .           .           .                   .       0.081
+IMP_JOB           Clerical                  1      2.2071      6.9128          0.10        0.7495                       9.089
+IMP_JOB           Doctor                    1      0.8899      6.9219          0.02        0.8977                       2.435
+IMP_JOB           Home Maker                1      1.4100      6.9141          0.04        0.8384                       4.096
+IMP_JOB           Manager                   1      1.1367      6.9131          0.03        0.8694                       3.116
+IMP_JOB           None                      1     -5.6572     55.2941          0.01        0.9185                       0.003
+IMP_JOB           Nurse                     1      1.9743      6.9137          0.08        0.7752                       7.202
+IMP_JOB           Police                    1     -5.4711           .           .           .                   .       0.004
+IMP_JOB           Professional              1      1.7896      6.9129          0.07        0.7957                       5.987
+IMP_JOB           Student                   1      1.8541      6.9138          0.07        0.7886                       6.386
+IMP_LOG_INCOME                              1     -0.2832      0.0504         31.62        <.0001         -0.2125       0.753
+MVR_PTS                                     1      0.0998      0.0146         46.52        <.0001          0.1448       1.105
+REVOKED           No                        1     -0.2898      0.0548         27.97        <.0001                       0.748
+STATUS            Yes                       1     -0.4146      0.0407        103.81        <.0001                       0.661
+VEHICLE_TYPE      Family                    1     -5.2117     53.2534          0.01        0.9220                       0.005
+VEHICLE_TYPE      Minivan                   1      1.4498      8.8760          0.03        0.8702                       4.262
+VEHICLE_TYPE      Panel Truck               1      2.1366      8.8765          0.06        0.8098                       8.471
+VEHICLE_TYPE      Pickup                    1      2.2778      8.8760          0.07        0.7975                       9.755
+VEHICLE_TYPE      Racing                    1     -7.1973           .           .           .                   .       0.001
+VEHICLE_TYPE      Sports Car                1      2.4097      8.8762          0.07        0.7860                      11.131
+VEHICLE_TYPE      Van                       1      2.1273      8.8763          0.06        0.8106                       8.392
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        11.165
+CHILD_DRIV                                                             1.651
+EDU_LEVEL         <High School vs z_High School                        0.646
+EDU_LEVEL         Bachelors vs z_High School                           0.634
+EDU_LEVEL         Masters vs z_High School                             0.441
+EDU_LEVEL         PhD vs z_High School                                 0.351
+IMP_JOB           Banking vs Teacher                                   0.008
+IMP_JOB           Clerical vs Teacher                                  0.843
+IMP_JOB           Doctor vs Teacher                                    0.226
+IMP_JOB           Home Maker vs Teacher                                0.380
+IMP_JOB           Manager vs Teacher                                   0.289
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     0.668
+IMP_JOB           Police vs Teacher                                   <0.001
+IMP_JOB           Professional vs Teacher                              0.555
+IMP_JOB           Student vs Teacher                                   0.592
+IMP_LOG_INCOME                                                         0.753
+MVR_PTS                                                                1.105
+REVOKED           No vs Yes                                            0.560
+STATUS            Yes vs z_No                                          0.436
+VEHICLE_TYPE      Family vs unknown                                   <0.001
+VEHICLE_TYPE      Minivan vs unknown                                   0.572
+VEHICLE_TYPE      Panel Truck vs unknown                               1.138
+VEHICLE_TYPE      Pickup vs unknown                                    1.310
+VEHICLE_TYPE      Racing vs unknown                                   <0.001
+VEHICLE_TYPE      Sports Car vs unknown                                1.495
+VEHICLE_TYPE      Van vs unknown                                       1.127
+
+
+Step 10: Effect CAR_USE entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              29
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             1959        444.5       149.5         0        1.043
+   2            0           3              0             1922      37.8993     19.8208         0        1.124
+   3            0           4              0             1919       2.1163      1.3833         0        1.067
+   4            0           5              0             1919       0.0804      0.0480         0        1.215
+   5            0           6              0             1919       0.0252      0.0145         0        1.266
+   6            0           7              0             1919      0.00938     0.00543         0        1.265
+   7            0           8              0             1919      0.00347     0.00201         0        1.264
+   8            0           9              0             1919      0.00128    0.000743         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          8  Function Calls                                     11
+Hessian Calls                                       9  Active Constraints                                  0
+Objective Function                       1919.3040942  Max Abs Gradient Element                 0.0007426508
+Ridge                                               0  Actual Over Pred Change                  1.2643186833
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        3838.608       969.3630       28         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      241.8494        <.0001
+CAR_USE                 1       22.5081        <.0001
+CHILD_DRIV              1       47.0415        <.0001
+EDU_LEVEL               4       37.8545        <.0001
+IMP_JOB                 8     5351.8354        <.0001
+IMP_LOG_INCOME          1       30.2376        <.0001
+MVR_PTS                 1       42.0088        <.0001
+REVOKED                 1       26.4943        <.0001
+STATUS                  1      102.7487        <.0001
+VEHICLE_TYPE            6     5415.9839        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -3.1478     11.1717          0.08        0.7781                       0.043
+AREA              Highly Urban/ Urban       1      1.2215      0.0785        241.85        <.0001                       3.392
+CAR_USE           Commercial                1      0.2939      0.0620         22.51        <.0001                       1.342
+CHILD_DRIV                                  1      0.5090      0.0742         47.04        <.0001          0.1416       1.664
+EDU_LEVEL         <High School              1      0.2423      0.1093          4.91        0.0267                       1.274
+EDU_LEVEL         Bachelors                 1      0.0237      0.0865          0.07        0.7844                       1.024
+EDU_LEVEL         Masters                   1     -0.2665      0.1095          5.93        0.0149                       0.766
+EDU_LEVEL         PhD                       1     -0.4931      0.1528         10.42        0.0012                       0.611
+IMP_JOB           Banking                   1     -2.3976           .           .           .                   .       0.091
+IMP_JOB           Clerical                  1      2.2590      6.9231          0.11        0.7442                       9.573
+IMP_JOB           Doctor                    1      1.0286      6.9323          0.02        0.8820                       2.797
+IMP_JOB           Home Maker                1      1.5181      6.9245          0.05        0.8265                       4.563
+IMP_JOB           Manager                   1      1.1920      6.9235          0.03        0.8633                       3.294
+IMP_JOB           None                      1     -5.5357     55.3767          0.01        0.9204                       0.004
+IMP_JOB           Nurse                     1      2.0979      6.9240          0.09        0.7619                       8.149
+IMP_JOB           Police                    1     -5.9040           .           .           .                   .       0.003
+IMP_JOB           Professional              1      1.8766      6.9233          0.07        0.7863                       6.531
+IMP_JOB           Student                   1      1.7329      6.9242          0.06        0.8024                       5.657
+IMP_LOG_INCOME                              1     -0.2783      0.0506         30.24        <.0001         -0.2088       0.757
+MVR_PTS                                     1      0.0953      0.0147         42.01        <.0001          0.1383       1.100
+REVOKED           No                        1     -0.2833      0.0550         26.49        <.0001                       0.753
+STATUS            Yes                       1     -0.4141      0.0408        102.75        <.0001                       0.661
+VEHICLE_TYPE      Family                    1     -5.4119     52.5371          0.01        0.9180                       0.004
+VEHICLE_TYPE      Minivan                   1      1.5471      8.7566          0.03        0.8598                       4.698
+VEHICLE_TYPE      Panel Truck               1      1.8836      8.7572          0.05        0.8297                       6.577
+VEHICLE_TYPE      Pickup                    1      2.2081      8.7566          0.06        0.8009                       9.098
+VEHICLE_TYPE      Racing                    1     -6.8910           .           .           .                   .       0.001
+VEHICLE_TYPE      Sports Car                1      2.5327      8.7569          0.08        0.7724                      12.587
+VEHICLE_TYPE      Van                       1      2.0142      8.7570          0.05        0.8181                       7.494
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        11.508
+CAR_USE           Commercial vs Private                                1.800
+CHILD_DRIV                                                             1.664
+EDU_LEVEL         <High School vs z_High School                        0.778
+EDU_LEVEL         Bachelors vs z_High School                           0.625
+EDU_LEVEL         Masters vs z_High School                             0.468
+EDU_LEVEL         PhD vs z_High School                                 0.373
+IMP_JOB           Banking vs Teacher                                   0.011
+IMP_JOB           Clerical vs Teacher                                  1.135
+IMP_JOB           Doctor vs Teacher                                    0.332
+IMP_JOB           Home Maker vs Teacher                                0.541
+IMP_JOB           Manager vs Teacher                                   0.391
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     0.966
+IMP_JOB           Police vs Teacher                                   <0.001
+IMP_JOB           Professional vs Teacher                              0.774
+IMP_JOB           Student vs Teacher                                   0.671
+IMP_LOG_INCOME                                                         0.757
+MVR_PTS                                                                1.100
+REVOKED           No vs Yes                                            0.567
+STATUS            Yes vs z_No                                          0.437
+VEHICLE_TYPE      Family vs unknown                                   <0.001
+VEHICLE_TYPE      Minivan vs unknown                                   0.565
+VEHICLE_TYPE      Panel Truck vs unknown                               0.792
+VEHICLE_TYPE      Pickup vs unknown                                    1.095
+VEHICLE_TYPE      Racing vs unknown                                   <0.001
+VEHICLE_TYPE      Sports Car vs unknown                                1.515
+VEHICLE_TYPE      Van vs unknown                                       0.902
+
+
+Step 11: Effect DISTANCE entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              30
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             1951        453.0       151.6         0        1.045
+   2            0           3              0             1911      39.5485     20.5431         0        1.126
+   3            0           4              0             1909       2.2516      1.4582         0        1.067
+   4            0           5              0             1909       0.0825      0.0495         0        1.210
+   5            0           6              0             1909       0.0254      0.0146         0        1.265
+   6            0           7              0             1909      0.00941     0.00545         0        1.265
+   7            0           8              0             1909      0.00347     0.00202         0        1.264
+   8            0           9              0             1909      0.00128    0.000744         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          8  Function Calls                                     11
+Hessian Calls                                       9  Active Constraints                                  0
+Objective Function                       1909.0324413  Max Abs Gradient Element                 0.0007437731
+Ridge                                               0  Actual Over Pred Change                  1.2643006534
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        3818.065       989.9063       29         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      252.8447        <.0001
+CAR_USE                 1       22.2800        <.0001
+CHILD_DRIV              1       47.4876        <.0001
+DISTANCE                1       20.5714        <.0001
+EDU_LEVEL               4       37.2988        <.0001
+IMP_JOB                 8     5046.4610        <.0001
+IMP_LOG_INCOME          1       30.8612        <.0001
+MVR_PTS                 1       40.4346        <.0001
+REVOKED                 1       26.3312        <.0001
+STATUS                  1      105.2609        <.0001
+VEHICLE_TYPE            6     5328.1372        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -4.0521     11.1800          0.13        0.7170                       0.017
+AREA              Highly Urban/ Urban       1      1.2648      0.0795        252.84        <.0001                       3.542
+CAR_USE           Commercial                1      0.2932      0.0621         22.28        <.0001                       1.341
+CHILD_DRIV                                  1      0.5135      0.0745         47.49        <.0001          0.1428       1.671
+DISTANCE                                    1      0.0117     0.00259         20.57        <.0001          0.1034       1.012
+EDU_LEVEL         <High School              1      0.2383      0.1096          4.73        0.0296                       1.269
+EDU_LEVEL         Bachelors                 1      0.0181      0.0867          0.04        0.8341                       1.018
+EDU_LEVEL         Masters                   1     -0.2772      0.1097          6.38        0.0115                       0.758
+EDU_LEVEL         PhD                       1     -0.4697      0.1531          9.41        0.0022                       0.625
+IMP_JOB           Banking                   1     -2.3412           .           .           .                   .       0.096
+IMP_JOB           Clerical                  1      2.2386      6.8720          0.11        0.7446                       9.380
+IMP_JOB           Doctor                    1      0.9702      6.8812          0.02        0.8879                       2.638
+IMP_JOB           Home Maker                1      1.4946      6.8733          0.05        0.8279                       4.458
+IMP_JOB           Manager                   1      1.1996      6.8723          0.03        0.8614                       3.319
+IMP_JOB           None                      1     -5.6460     54.9675          0.01        0.9182                       0.004
+IMP_JOB           Nurse                     1      2.0962      6.8729          0.09        0.7604                       8.136
+IMP_JOB           Police                    1     -5.7442           .           .           .                   .       0.003
+IMP_JOB           Professional              1      1.8738      6.8721          0.07        0.7851                       6.513
+IMP_JOB           Student                   1      1.7373      6.8731          0.06        0.8004                       5.682
+IMP_LOG_INCOME                              1     -0.2810      0.0506         30.86        <.0001         -0.2109       0.755
+MVR_PTS                                     1      0.0937      0.0147         40.43        <.0001          0.1360       1.098
+REVOKED           No                        1     -0.2834      0.0552         26.33        <.0001                       0.753
+STATUS            Yes                       1     -0.4210      0.0410        105.26        <.0001                       0.656
+VEHICLE_TYPE      Family                    1     -5.3943     52.8243          0.01        0.9187                       0.005
+VEHICLE_TYPE      Minivan                   1      1.5387      8.8045          0.03        0.8613                       4.659
+VEHICLE_TYPE      Panel Truck               1      1.8683      8.8051          0.05        0.8320                       6.477
+VEHICLE_TYPE      Pickup                    1      2.2049      8.8045          0.06        0.8023                       9.069
+VEHICLE_TYPE      Racing                    1     -6.8601           .           .           .                   .       0.001
+VEHICLE_TYPE      Sports Car                1      2.5143      8.8047          0.08        0.7752                      12.358
+VEHICLE_TYPE      Van                       1      2.0218      8.8048          0.05        0.8184                       7.552
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        12.548
+CAR_USE           Commercial vs Private                                1.798
+CHILD_DRIV                                                             1.671
+DISTANCE                                                               1.012
+EDU_LEVEL         <High School vs z_High School                        0.777
+EDU_LEVEL         Bachelors vs z_High School                           0.624
+EDU_LEVEL         Masters vs z_High School                             0.464
+EDU_LEVEL         PhD vs z_High School                                 0.383
+IMP_JOB           Banking vs Teacher                                   0.012
+IMP_JOB           Clerical vs Teacher                                  1.125
+IMP_JOB           Doctor vs Teacher                                    0.316
+IMP_JOB           Home Maker vs Teacher                                0.535
+IMP_JOB           Manager vs Teacher                                   0.398
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     0.976
+IMP_JOB           Police vs Teacher                                   <0.001
+IMP_JOB           Professional vs Teacher                              0.781
+IMP_JOB           Student vs Teacher                                   0.681
+IMP_LOG_INCOME                                                         0.755
+MVR_PTS                                                                1.098
+REVOKED           No vs Yes                                            0.567
+STATUS            Yes vs z_No                                          0.431
+VEHICLE_TYPE      Family vs unknown                                   <0.001
+VEHICLE_TYPE      Minivan vs unknown                                   0.567
+VEHICLE_TYPE      Panel Truck vs unknown                               0.788
+VEHICLE_TYPE      Pickup vs unknown                                    1.104
+VEHICLE_TYPE      Racing vs unknown                                   <0.001
+VEHICLE_TYPE      Sports Car vs unknown                                1.504
+VEHICLE_TYPE      Van vs unknown                                       0.919
+
+
+Step 12: Effect LOG_VEHICLE_VAL entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              31
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             1945        459.0       153.0         0        1.046
+   2            0           3              0             1904      40.9538     21.1361         0        1.127
+   3            0           4              0             1902       2.3757      1.5240         0        1.066
+   4            0           5              0             1902       0.0837      0.0504         0        1.206
+   5            0           6              0             1902       0.0253      0.0145         0        1.265
+   6            0           7              0             1902      0.00937     0.00543         0        1.265
+   7            0           8              0             1902      0.00346     0.00201         0        1.264
+   8            0           9              0             1902      0.00127    0.000741         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          8  Function Calls                                     11
+Hessian Calls                                       9  Active Constraints                                  0
+Objective Function                       1901.5548072  Max Abs Gradient Element                 0.0007407759
+Ridge                                               0  Actual Over Pred Change                  1.2642966889
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        3803.110      1004.8615       30         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      255.2819        <.0001
+CAR_USE                 1       23.7945        <.0001
+CHILD_DRIV              1       49.1403        <.0001
+DISTANCE                1       20.8399        <.0001
+EDU_LEVEL               4       36.4725        <.0001
+IMP_JOB                 8     4689.5684        <.0001
+IMP_LOG_INCOME          1       24.9706        <.0001
+LOG_VEHICLE_VAL         1       15.0677        0.0001
+MVR_PTS                 1       39.0162        <.0001
+REVOKED                 1       26.5425        <.0001
+STATUS                  1      105.7869        <.0001
+VEHICLE_TYPE            6     5175.5643        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -1.5412     11.2267          0.02        0.8908                       0.214
+AREA              Highly Urban/ Urban       1      1.2740      0.0797        255.28        <.0001                       3.575
+CAR_USE           Commercial                1      0.3039      0.0623         23.79        <.0001                       1.355
+CHILD_DRIV                                  1      0.5227      0.0746         49.14        <.0001          0.1454       1.687
+DISTANCE                                    1      0.0118     0.00259         20.84        <.0001          0.1043       1.012
+EDU_LEVEL         <High School              1      0.2333      0.1097          4.52        0.0335                       1.263
+EDU_LEVEL         Bachelors                 1      0.0230      0.0868          0.07        0.7913                       1.023
+EDU_LEVEL         Masters                   1     -0.2853      0.1097          6.76        0.0093                       0.752
+EDU_LEVEL         PhD                       1     -0.4571      0.1534          8.88        0.0029                       0.633
+IMP_JOB           Banking                   1     -2.2071           .           .           .                   .       0.110
+IMP_JOB           Clerical                  1      2.1868      6.9027          0.10        0.7514                       8.907
+IMP_JOB           Doctor                    1      0.9413      6.9121          0.02        0.8917                       2.563
+IMP_JOB           Home Maker                1      1.4810      6.9041          0.05        0.8301                       4.398
+IMP_JOB           Manager                   1      1.1761      6.9031          0.03        0.8647                       3.242
+IMP_JOB           None                      1     -5.6262     55.2134          0.01        0.9188                       0.004
+IMP_JOB           Nurse                     1      2.0913      6.9036          0.09        0.7619                       8.096
+IMP_JOB           Police                    1     -5.6074           .           .           .                   .       0.004
+IMP_JOB           Professional              1      1.8330      6.9029          0.07        0.7906                       6.252
+IMP_JOB           Student                   1      1.6546      6.9038          0.06        0.8106                       5.231
+IMP_LOG_INCOME                              1     -0.2552      0.0511         24.97        <.0001         -0.1915       0.775
+LOG_VEHICLE_VAL                             1     -0.2865      0.0738         15.07        0.0001         -0.1019       0.751
+MVR_PTS                                     1      0.0923      0.0148         39.02        <.0001          0.1340       1.097
+REVOKED           No                        1     -0.2851      0.0553         26.54        <.0001                       0.752
+STATUS            Yes                       1     -0.4233      0.0412        105.79        <.0001                       0.655
+VEHICLE_TYPE      Family                    1     -5.4077     52.8968          0.01        0.9186                       0.004
+VEHICLE_TYPE      Minivan                   1      1.5071      8.8166          0.03        0.8643                       4.514
+VEHICLE_TYPE      Panel Truck               1      2.0283      8.8173          0.05        0.8181                       7.601
+VEHICLE_TYPE      Pickup                    1      2.1176      8.8166          0.06        0.8102                       8.311
+VEHICLE_TYPE      Racing                    1     -6.7713           .           .           .                   .       0.001
+VEHICLE_TYPE      Sports Car                1      2.4095      8.8168          0.07        0.7846                      11.128
+VEHICLE_TYPE      Van                       1      2.0918      8.8169          0.06        0.8125                       8.100
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        12.781
+CAR_USE           Commercial vs Private                                1.836
+CHILD_DRIV                                                             1.687
+DISTANCE                                                               1.012
+EDU_LEVEL         <High School vs z_High School                        0.777
+EDU_LEVEL         Bachelors vs z_High School                           0.629
+EDU_LEVEL         Masters vs z_High School                             0.462
+EDU_LEVEL         PhD vs z_High School                                 0.389
+IMP_JOB           Banking vs Teacher                                   0.014
+IMP_JOB           Clerical vs Teacher                                  1.117
+IMP_JOB           Doctor vs Teacher                                    0.321
+IMP_JOB           Home Maker vs Teacher                                0.551
+IMP_JOB           Manager vs Teacher                                   0.406
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     1.015
+IMP_JOB           Police vs Teacher                                   <0.001
+IMP_JOB           Professional vs Teacher                              0.784
+IMP_JOB           Student vs Teacher                                   0.656
+IMP_LOG_INCOME                                                         0.775
+LOG_VEHICLE_VAL                                                        0.751
+MVR_PTS                                                                1.097
+REVOKED           No vs Yes                                            0.565
+STATUS            Yes vs z_No                                          0.429
+VEHICLE_TYPE      Family vs unknown                                   <0.001
+VEHICLE_TYPE      Minivan vs unknown                                   0.596
+VEHICLE_TYPE      Panel Truck vs unknown                               1.004
+VEHICLE_TYPE      Pickup vs unknown                                    1.097
+VEHICLE_TYPE      Racing vs unknown                                   <0.001
+VEHICLE_TYPE      Sports Car vs unknown                                1.469
+VEHICLE_TYPE      Van vs unknown                                       1.069
+
+
+Step 13: Effect CLM_FREQ entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              32
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             1939        465.1       154.4         0        1.046
+   2            0           3              0             1897      41.5542     21.4152         0        1.127
+   3            0           4              0             1895       2.4073      1.5390         0        1.067
+   4            0           5              0             1895       0.0855      0.0513         0        1.206
+   5            0           6              0             1895       0.0258      0.0148         0        1.265
+   6            0           7              0             1895      0.00953     0.00552         0        1.264
+   7            0           8              0             1895      0.00351     0.00204         0        1.264
+   8            0           9              0             1895      0.00129    0.000752         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          8  Function Calls                                     11
+Hessian Calls                                       9  Active Constraints                                  0
+Objective Function                       1894.8263921  Max Abs Gradient Element                 0.0007518689
+Ridge                                               0  Actual Over Pred Change                  1.2642756523
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        3789.653      1018.3184       31         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      241.1576        <.0001
+CAR_USE                 1       22.7709        <.0001
+CHILD_DRIV              1       48.5164        <.0001
+CLM_FREQ                1       13.4814        0.0002
+DISTANCE                1       20.7007        <.0001
+EDU_LEVEL               4       35.3680        <.0001
+IMP_JOB                 8     4479.0285        <.0001
+IMP_LOG_INCOME          1       25.3251        <.0001
+LOG_VEHICLE_VAL         1       13.7875        0.0002
+MVR_PTS                 1       28.1419        <.0001
+REVOKED                 1       25.9575        <.0001
+STATUS                  1      100.3499        <.0001
+VEHICLE_TYPE            6     4930.7832        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -1.7230     11.1044          0.02        0.8767                       0.179
+AREA              Highly Urban/ Urban       1      1.2434      0.0801        241.16        <.0001                       3.468
+CAR_USE           Commercial                1      0.2983      0.0625         22.77        <.0001                       1.348
+CHILD_DRIV                                  1      0.5212      0.0748         48.52        <.0001          0.1450       1.684
+CLM_FREQ                                    1      0.0984      0.0268         13.48        0.0002          0.0822       1.103
+DISTANCE                                    1      0.0118     0.00260         20.70        <.0001          0.1041       1.012
+EDU_LEVEL         <High School              1      0.2290      0.1099          4.34        0.0372                       1.257
+EDU_LEVEL         Bachelors                 1      0.0194      0.0869          0.05        0.8234                       1.020
+EDU_LEVEL         Masters                   1     -0.2902      0.1101          6.95        0.0084                       0.748
+EDU_LEVEL         PhD                       1     -0.4361      0.1534          8.08        0.0045                       0.647
+IMP_JOB           Banking                   1     -2.1522           .           .           .                   .       0.116
+IMP_JOB           Clerical                  1      2.1556      6.8530          0.10        0.7531                       8.633
+IMP_JOB           Doctor                    1      0.9076      6.8624          0.02        0.8948                       2.478
+IMP_JOB           Home Maker                1      1.4601      6.8543          0.05        0.8313                       4.306
+IMP_JOB           Manager                   1      1.1505      6.8533          0.03        0.8667                       3.160
+IMP_JOB           None                      1     -5.5901     54.8153          0.01        0.9188                       0.004
+IMP_JOB           Nurse                     1      2.0708      6.8539          0.09        0.7626                       7.931
+IMP_JOB           Police                    1     -5.5195           .           .           .                   .       0.004
+IMP_JOB           Professional              1      1.8297      6.8531          0.07        0.7895                       6.232
+IMP_JOB           Student                   1      1.6302      6.8541          0.06        0.8120                       5.105
+IMP_LOG_INCOME                              1     -0.2569      0.0511         25.33        <.0001         -0.1928       0.773
+LOG_VEHICLE_VAL                             1     -0.2749      0.0740         13.79        0.0002         -0.0977       0.760
+MVR_PTS                                     1      0.0803      0.0151         28.14        <.0001          0.1165       1.084
+REVOKED           No                        1     -0.2825      0.0554         25.96        <.0001                       0.754
+STATUS            Yes                       1     -0.4137      0.0413        100.35        <.0001                       0.661
+VEHICLE_TYPE      Family                    1     -5.4773     52.1898          0.01        0.9164                       0.004
+VEHICLE_TYPE      Minivan                   1      1.4940      8.6988          0.03        0.8636                       4.455
+VEHICLE_TYPE      Panel Truck               1      2.0169      8.6995          0.05        0.8167                       7.515
+VEHICLE_TYPE      Pickup                    1      2.1026      8.6988          0.06        0.8090                       8.187
+VEHICLE_TYPE      Racing                    1     -6.6171           .           .           .                   .       0.001
+VEHICLE_TYPE      Sports Car                1      2.4039      8.6990          0.08        0.7823                      11.067
+VEHICLE_TYPE      Van                       1      2.0669      8.6991          0.06        0.8122                       7.900
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        12.024
+CAR_USE           Commercial vs Private                                1.816
+CHILD_DRIV                                                             1.684
+CLM_FREQ                                                               1.103
+DISTANCE                                                               1.012
+EDU_LEVEL         <High School vs z_High School                        0.780
+EDU_LEVEL         Bachelors vs z_High School                           0.632
+EDU_LEVEL         Masters vs z_High School                             0.464
+EDU_LEVEL         PhD vs z_High School                                 0.401
+IMP_JOB           Banking vs Teacher                                   0.015
+IMP_JOB           Clerical vs Teacher                                  1.103
+IMP_JOB           Doctor vs Teacher                                    0.317
+IMP_JOB           Home Maker vs Teacher                                0.550
+IMP_JOB           Manager vs Teacher                                   0.404
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     1.013
+IMP_JOB           Police vs Teacher                                   <0.001
+IMP_JOB           Professional vs Teacher                              0.796
+IMP_JOB           Student vs Teacher                                   0.652
+IMP_LOG_INCOME                                                         0.773
+LOG_VEHICLE_VAL                                                        0.760
+MVR_PTS                                                                1.084
+REVOKED           No vs Yes                                            0.568
+STATUS            Yes vs z_No                                          0.437
+VEHICLE_TYPE      Family vs unknown                                   <0.001
+VEHICLE_TYPE      Minivan vs unknown                                   0.597
+VEHICLE_TYPE      Panel Truck vs unknown                               1.007
+VEHICLE_TYPE      Pickup vs unknown                                    1.097
+VEHICLE_TYPE      Racing vs unknown                                   <0.001
+VEHICLE_TYPE      Sports Car vs unknown                                1.483
+VEHICLE_TYPE      Van vs unknown                                       1.059
+
+
+Step 14: Effect M_YOJ entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              33
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             1936        467.6       155.0         0        1.046
+   2            0           3              0             1894      41.8635     21.5581         0        1.127
+   3            0           4              0             1892       2.4370      1.5556         0        1.067
+   4            0           5              0             1892       0.0880      0.0527         0        1.206
+   5            0           6              0             1892       0.0264      0.0152         0        1.264
+   6            0           7              0             1892      0.00972     0.00563         0        1.264
+   7            0           8              0             1892      0.00358     0.00208         0        1.264
+   8            0           9              0             1892      0.00132    0.000765         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          8  Function Calls                                     11
+Hessian Calls                                       9  Active Constraints                                  0
+Objective Function                       1891.9084347  Max Abs Gradient Element                 0.0007654058
+Ridge                                               0  Actual Over Pred Change                  1.2642509997
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        3783.817      1024.1543       32         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      241.9438        <.0001
+CAR_USE                 1       22.5918        <.0001
+CHILD_DRIV              1       48.0075        <.0001
+CLM_FREQ                1       14.0151        0.0002
+DISTANCE                1       21.1006        <.0001
+EDU_LEVEL               4       35.8111        <.0001
+IMP_JOB                 8     4337.2279        <.0001
+IMP_LOG_INCOME          1       24.7431        <.0001
+LOG_VEHICLE_VAL         1       14.3214        0.0002
+MVR_PTS                 1       28.3586        <.0001
+M_YOJ                   1        6.0035        0.0143
+REVOKED                 1       26.0754        <.0001
+STATUS                  1      101.1814        <.0001
+VEHICLE_TYPE            6     4895.8252        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -1.5202     10.9903          0.02        0.8900                       0.219
+AREA              Highly Urban/ Urban       1      1.2453      0.0801        241.94        <.0001                       3.474
+CAR_USE           Commercial                1      0.2975      0.0626         22.59        <.0001                       1.346
+CHILD_DRIV                                  1      0.5197      0.0750         48.01        <.0001          0.1445       1.681
+CLM_FREQ                                    1      0.1005      0.0268         14.02        0.0002          0.0839       1.106
+DISTANCE                                    1      0.0119     0.00260         21.10        <.0001          0.1053       1.012
+EDU_LEVEL         <High School              1      0.2269      0.1100          4.26        0.0391                       1.255
+EDU_LEVEL         Bachelors                 1      0.0162      0.0871          0.03        0.8522                       1.016
+EDU_LEVEL         Masters                   1     -0.2923      0.1102          7.04        0.0080                       0.747
+EDU_LEVEL         PhD                       1     -0.4325      0.1535          7.94        0.0048                       0.649
+IMP_JOB           Banking                   1     -2.0958           .           .           .                   .       0.123
+IMP_JOB           Clerical                  1      2.1746      6.7142          0.10        0.7460                       8.798
+IMP_JOB           Doctor                    1      0.9209      6.7241          0.02        0.8911                       2.512
+IMP_JOB           Home Maker                1      1.4877      6.7157          0.05        0.8247                       4.427
+IMP_JOB           Manager                   1      1.1679      6.7146          0.03        0.8619                       3.215
+IMP_JOB           None                      1     -5.8494     53.7055          0.01        0.9133                       0.003
+IMP_JOB           Nurse                     1      2.0912      6.7153          0.10        0.7555                       8.095
+IMP_JOB           Police                    1     -5.4660           .           .           .                   .       0.004
+IMP_JOB           Professional              1      1.8453      6.7144          0.08        0.7834                       6.330
+IMP_JOB           Student                   1      1.6463      6.7154          0.06        0.8063                       5.188
+IMP_LOG_INCOME                              1     -0.2542      0.0511         24.74        <.0001         -0.1907       0.776
+LOG_VEHICLE_VAL                             1     -0.2807      0.0742         14.32        0.0002         -0.0998       0.755
+MVR_PTS                                     1      0.0807      0.0151         28.36        <.0001          0.1171       1.084
+M_YOJ             0                         1     -0.2264      0.0924          6.00        0.0143                       0.797
+REVOKED           No                        1     -0.2833      0.0555         26.08        <.0001                       0.753
+STATUS            Yes                       1     -0.4159      0.0413        101.18        <.0001                       0.660
+VEHICLE_TYPE      Family                    1     -5.4509     51.9622          0.01        0.9165                       0.004
+VEHICLE_TYPE      Minivan                   1      1.4854      8.6608          0.03        0.8638                       4.417
+VEHICLE_TYPE      Panel Truck               1      2.0134      8.6615          0.05        0.8162                       7.489
+VEHICLE_TYPE      Pickup                    1      2.0998      8.6608          0.06        0.8084                       8.165
+VEHICLE_TYPE      Racing                    1     -6.5976           .           .           .                   .       0.001
+VEHICLE_TYPE      Sports Car                1      2.3982      8.6611          0.08        0.7819                      11.004
+VEHICLE_TYPE      Van                       1      2.0503      8.6612          0.06        0.8129                       7.771
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        12.070
+CAR_USE           Commercial vs Private                                1.813
+CHILD_DRIV                                                             1.681
+CLM_FREQ                                                               1.106
+DISTANCE                                                               1.012
+EDU_LEVEL         <High School vs z_High School                        0.775
+EDU_LEVEL         Bachelors vs z_High School                           0.628
+EDU_LEVEL         Masters vs z_High School                             0.461
+EDU_LEVEL         PhD vs z_High School                                 0.401
+IMP_JOB           Banking vs Teacher                                   0.015
+IMP_JOB           Clerical vs Teacher                                  1.102
+IMP_JOB           Doctor vs Teacher                                    0.315
+IMP_JOB           Home Maker vs Teacher                                0.555
+IMP_JOB           Manager vs Teacher                                   0.403
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     1.014
+IMP_JOB           Police vs Teacher                                   <0.001
+IMP_JOB           Professional vs Teacher                              0.793
+IMP_JOB           Student vs Teacher                                   0.650
+IMP_LOG_INCOME                                                         0.776
+LOG_VEHICLE_VAL                                                        0.755
+MVR_PTS                                                                1.084
+M_YOJ             0 vs 1                                               0.636
+REVOKED           No vs Yes                                            0.567
+STATUS            Yes vs z_No                                          0.435
+VEHICLE_TYPE      Family vs unknown                                   <0.001
+VEHICLE_TYPE      Minivan vs unknown                                   0.597
+VEHICLE_TYPE      Panel Truck vs unknown                               1.012
+VEHICLE_TYPE      Pickup vs unknown                                    1.104
+VEHICLE_TYPE      Racing vs unknown                                   <0.001
+VEHICLE_TYPE      Sports Car vs unknown                                1.487
+VEHICLE_TYPE      Van vs unknown                                       1.050
+
+
+Step 15: Effect M_LOG_HOUSE_VAL entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              34
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             1934        469.6       155.3         0        1.046
+   2            0           3              0             1892      41.9900     21.6139         0        1.127
+   3            0           4              0             1890       2.4413      1.5577         0        1.067
+   4            0           5              0             1890       0.0881      0.0528         0        1.206
+   5            0           6              0             1890       0.0264      0.0152         0        1.264
+   6            0           7              0             1890      0.00972     0.00563         0        1.264
+   7            0           8              0             1890      0.00358     0.00208         0        1.264
+   8            0           9              0             1890      0.00132    0.000766         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          8  Function Calls                                     11
+Hessian Calls                                       9  Active Constraints                                  0
+Objective Function                       1889.7937371  Max Abs Gradient Element                 0.0007659267
+Ridge                                               0  Actual Over Pred Change                  1.2642494953
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        3779.587      1028.3837       33         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      242.3867        <.0001
+CAR_USE                 1       22.6714        <.0001
+CHILD_DRIV              1       47.7452        <.0001
+CLM_FREQ                1       13.9867        0.0002
+DISTANCE                1       20.8355        <.0001
+EDU_LEVEL               4       36.0335        <.0001
+IMP_JOB                 8     4355.9415        <.0001
+IMP_LOG_INCOME          1       24.8966        <.0001
+LOG_VEHICLE_VAL         1       14.4598        0.0001
+MVR_PTS                 1       28.8476        <.0001
+M_LOG_HOUSE_VAL         1        4.0643        0.0438
+M_YOJ                   1        6.0822        0.0137
+REVOKED                 1       25.4557        <.0001
+STATUS                  1       99.7730        <.0001
+VEHICLE_TYPE            6     4905.5040        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -1.6650     10.9856          0.02        0.8795                       0.189
+AREA              Highly Urban/ Urban       1      1.2464      0.0801        242.39        <.0001                       3.478
+CAR_USE           Commercial                1      0.2981      0.0626         22.67        <.0001                       1.347
+CHILD_DRIV                                  1      0.5188      0.0751         47.75        <.0001          0.1443       1.680
+CLM_FREQ                                    1      0.1005      0.0269         13.99        0.0002          0.0839       1.106
+DISTANCE                                    1      0.0119     0.00260         20.84        <.0001          0.1046       1.012
+EDU_LEVEL         <High School              1      0.2221      0.1100          4.07        0.0435                       1.249
+EDU_LEVEL         Bachelors                 1      0.0183      0.0871          0.04        0.8334                       1.018
+EDU_LEVEL         Masters                   1     -0.2885      0.1102          6.85        0.0089                       0.749
+EDU_LEVEL         PhD                       1     -0.4372      0.1536          8.10        0.0044                       0.646
+IMP_JOB           Banking                   1     -2.1086           .           .           .                   .       0.121
+IMP_JOB           Clerical                  1      2.1862      6.7111          0.11        0.7446                       8.901
+IMP_JOB           Doctor                    1      0.9297      6.7209          0.02        0.8900                       2.534
+IMP_JOB           Home Maker                1      1.4884      6.7125          0.05        0.8245                       4.430
+IMP_JOB           Manager                   1      1.1719      6.7115          0.03        0.8614                       3.228
+IMP_JOB           None                      1     -5.8670     53.6804          0.01        0.9130                       0.003
+IMP_JOB           Nurse                     1      2.0929      6.7121          0.10        0.7552                       8.108
+IMP_JOB           Police                    1     -5.4721           .           .           .                   .       0.004
+IMP_JOB           Professional              1      1.8495      6.7113          0.08        0.7829                       6.357
+IMP_JOB           Student                   1      1.6474      6.7123          0.06        0.8061                       5.193
+IMP_LOG_INCOME                              1     -0.2554      0.0512         24.90        <.0001         -0.1916       0.775
+LOG_VEHICLE_VAL                             1     -0.2823      0.0742         14.46        0.0001         -0.1004       0.754
+MVR_PTS                                     1      0.0815      0.0152         28.85        <.0001          0.1183       1.085
+M_LOG_HOUSE_VAL   0                         1      0.1846      0.0916          4.06        0.0438                       1.203
+M_YOJ             0                         1     -0.2281      0.0925          6.08        0.0137                       0.796
+REVOKED           No                        1     -0.2803      0.0556         25.46        <.0001                       0.756
+STATUS            Yes                       1     -0.4135      0.0414         99.77        <.0001                       0.661
+VEHICLE_TYPE      Family                    1     -5.4657     51.9382          0.01        0.9162                       0.004
+VEHICLE_TYPE      Minivan                   1      1.4868      8.6568          0.03        0.8636                       4.423
+VEHICLE_TYPE      Panel Truck               1      2.0172      8.6576          0.05        0.8158                       7.518
+VEHICLE_TYPE      Pickup                    1      2.1050      8.6568          0.06        0.8079                       8.207
+VEHICLE_TYPE      Racing                    1     -6.6036           .           .           .                   .       0.001
+VEHICLE_TYPE      Sports Car                1      2.4003      8.6571          0.08        0.7816                      11.027
+VEHICLE_TYPE      Van                       1      2.0583      8.6572          0.06        0.8121                       7.833
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        12.094
+CAR_USE           Commercial vs Private                                1.815
+CHILD_DRIV                                                             1.680
+CLM_FREQ                                                               1.106
+DISTANCE                                                               1.012
+EDU_LEVEL         <High School vs z_High School                        0.769
+EDU_LEVEL         Bachelors vs z_High School                           0.627
+EDU_LEVEL         Masters vs z_High School                             0.461
+EDU_LEVEL         PhD vs z_High School                                 0.398
+IMP_JOB           Banking vs Teacher                                   0.015
+IMP_JOB           Clerical vs Teacher                                  1.110
+IMP_JOB           Doctor vs Teacher                                    0.316
+IMP_JOB           Home Maker vs Teacher                                0.552
+IMP_JOB           Manager vs Teacher                                   0.403
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     1.011
+IMP_JOB           Police vs Teacher                                   <0.001
+IMP_JOB           Professional vs Teacher                              0.793
+IMP_JOB           Student vs Teacher                                   0.648
+IMP_LOG_INCOME                                                         0.775
+LOG_VEHICLE_VAL                                                        0.754
+MVR_PTS                                                                1.085
+M_LOG_HOUSE_VAL   0 vs 1                                               1.447
+M_YOJ             0 vs 1                                               0.634
+REVOKED           No vs Yes                                            0.571
+STATUS            Yes vs z_No                                          0.437
+VEHICLE_TYPE      Family vs unknown                                   <0.001
+VEHICLE_TYPE      Minivan vs unknown                                   0.598
+VEHICLE_TYPE      Panel Truck vs unknown                               1.016
+VEHICLE_TYPE      Pickup vs unknown                                    1.109
+VEHICLE_TYPE      Racing vs unknown                                   <0.001
+VEHICLE_TYPE      Sports Car vs unknown                                1.490
+VEHICLE_TYPE      Van vs unknown                                       1.058
+
+
+Step 16: Effect M_AGE entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              35
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             1934        470.4       155.3         0        1.046
+   2            0           3              0             1891      42.1300     21.6729         0        1.128
+   3            0           4              0             1889       2.4603      1.5691         0        1.067
+   4            0           5              0             1889       0.0884      0.0530         0        1.206
+   5            0           6              0             1889       0.0264      0.0152         0        1.264
+   6            0           7              0             1889      0.00973     0.00564         0        1.264
+   7            0           8              0             1889      0.00358     0.00208         0        1.264
+   8            0           9              0             1889      0.00132    0.000766         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          8  Function Calls                                     11
+Hessian Calls                                       9  Active Constraints                                  0
+Objective Function                       1888.8706171  Max Abs Gradient Element                 0.0007662576
+Ridge                                               0  Actual Over Pred Change                  1.2642489836
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        3777.741      1030.2299       34         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      242.7067        <.0001
+CAR_USE                 1       23.1206        <.0001
+CHILD_DRIV              1       47.9534        <.0001
+CLM_FREQ                1       14.0442        0.0002
+DISTANCE                1       20.8529        <.0001
+EDU_LEVEL               4       35.8611        <.0001
+IMP_JOB                 8     4359.5503        <.0001
+IMP_LOG_INCOME          1       24.8260        <.0001
+LOG_VEHICLE_VAL         1       14.1431        0.0002
+MVR_PTS                 1       28.2160        <.0001
+M_AGE                   1        1.7850        0.1815
+M_LOG_HOUSE_VAL         1        4.5067        0.0338
+M_YOJ                   1        6.1484        0.0132
+REVOKED                 1       25.5734        <.0001
+STATUS                  1       99.9787        <.0001
+VEHICLE_TYPE            6     4906.2342        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -0.7610     11.0038          0.00        0.9449                       0.467
+AREA              Highly Urban/ Urban       1      1.2488      0.0802        242.71        <.0001                       3.486
+CAR_USE           Commercial                1      0.3015      0.0627         23.12        <.0001                       1.352
+CHILD_DRIV                                  1      0.5202      0.0751         47.95        <.0001          0.1447       1.682
+CLM_FREQ                                    1      0.1007      0.0269         14.04        0.0002          0.0841       1.106
+DISTANCE                                    1      0.0119     0.00260         20.85        <.0001          0.1047       1.012
+EDU_LEVEL         <High School              1      0.2260      0.1101          4.22        0.0400                       1.254
+EDU_LEVEL         Bachelors                 1      0.0167      0.0872          0.04        0.8480                       1.017
+EDU_LEVEL         Masters                   1     -0.2886      0.1103          6.85        0.0089                       0.749
+EDU_LEVEL         PhD                       1     -0.4376      0.1537          8.11        0.0044                       0.646
+IMP_JOB           Banking                   1     -2.1039           .           .           .                   .       0.122
+IMP_JOB           Clerical                  1      2.1892      6.7085          0.11        0.7442                       8.928
+IMP_JOB           Doctor                    1      0.9333      6.7184          0.02        0.8895                       2.543
+IMP_JOB           Home Maker                1      1.4923      6.7100          0.05        0.8240                       4.447
+IMP_JOB           Manager                   1      1.1743      6.7089          0.03        0.8610                       3.236
+IMP_JOB           None                      1     -5.8677     53.6598          0.01        0.9129                       0.003
+IMP_JOB           Nurse                     1      2.0953      6.7095          0.10        0.7548                       8.128
+IMP_JOB           Police                    1     -5.4812           .           .           .                   .       0.004
+IMP_JOB           Professional              1      1.8532      6.7087          0.08        0.7824                       6.380
+IMP_JOB           Student                   1      1.6338      6.7097          0.06        0.8076                       5.123
+IMP_LOG_INCOME                              1     -0.2552      0.0512         24.83        <.0001         -0.1915       0.775
+LOG_VEHICLE_VAL                             1     -0.2796      0.0743         14.14        0.0002         -0.0994       0.756
+MVR_PTS                                     1      0.0807      0.0152         28.22        <.0001          0.1171       1.084
+M_AGE             0                         1     -0.9426      0.7055          1.79        0.1815                       0.390
+M_LOG_HOUSE_VAL   0                         1      0.1958      0.0922          4.51        0.0338                       1.216
+M_YOJ             0                         1     -0.2293      0.0925          6.15        0.0132                       0.795
+REVOKED           No                        1     -0.2810      0.0556         25.57        <.0001                       0.755
+STATUS            Yes                       1     -0.4141      0.0414         99.98        <.0001                       0.661
+VEHICLE_TYPE      Family                    1     -5.4678     51.9271          0.01        0.9161                       0.004
+VEHICLE_TYPE      Minivan                   1      1.4889      8.6550          0.03        0.8634                       4.432
+VEHICLE_TYPE      Panel Truck               1      2.0141      8.6557          0.05        0.8160                       7.494
+VEHICLE_TYPE      Pickup                    1      2.1080      8.6550          0.06        0.8076                       8.231
+VEHICLE_TYPE      Racing                    1     -6.6054           .           .           .                   .       0.001
+VEHICLE_TYPE      Sports Car                1      2.4068      8.6552          0.08        0.7810                      11.098
+VEHICLE_TYPE      Van                       1      2.0506      8.6554          0.06        0.8127                       7.772
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        12.153
+CAR_USE           Commercial vs Private                                1.828
+CHILD_DRIV                                                             1.682
+CLM_FREQ                                                               1.106
+DISTANCE                                                               1.012
+EDU_LEVEL         <High School vs z_High School                        0.773
+EDU_LEVEL         Bachelors vs z_High School                           0.627
+EDU_LEVEL         Masters vs z_High School                             0.462
+EDU_LEVEL         PhD vs z_High School                                 0.398
+IMP_JOB           Banking vs Teacher                                   0.015
+IMP_JOB           Clerical vs Teacher                                  1.114
+IMP_JOB           Doctor vs Teacher                                    0.317
+IMP_JOB           Home Maker vs Teacher                                0.555
+IMP_JOB           Manager vs Teacher                                   0.404
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     1.014
+IMP_JOB           Police vs Teacher                                   <0.001
+IMP_JOB           Professional vs Teacher                              0.796
+IMP_JOB           Student vs Teacher                                   0.639
+IMP_LOG_INCOME                                                         0.775
+LOG_VEHICLE_VAL                                                        0.756
+MVR_PTS                                                                1.084
+M_AGE             0 vs 1                                               0.152
+M_LOG_HOUSE_VAL   0 vs 1                                               1.479
+M_YOJ             0 vs 1                                               0.632
+REVOKED           No vs Yes                                            0.570
+STATUS            Yes vs z_No                                          0.437
+VEHICLE_TYPE      Family vs unknown                                   <0.001
+VEHICLE_TYPE      Minivan vs unknown                                   0.597
+VEHICLE_TYPE      Panel Truck vs unknown                               1.009
+VEHICLE_TYPE      Pickup vs unknown                                    1.109
+VEHICLE_TYPE      Racing vs unknown                                   <0.001
+VEHICLE_TYPE      Sports Car vs unknown                                1.495
+VEHICLE_TYPE      Van vs unknown                                       1.047
+
+
+Step 17: Effect M_AGE removed.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              34
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                        2403.985576
+Max Abs Gradient Element                 344.30888781                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0             1934        469.6       155.3         0        1.046
+   2            0           3              0             1892      41.9900     21.6139         0        1.127
+   3            0           4              0             1890       2.4413      1.5577         0        1.067
+   4            0           5              0             1890       0.0881      0.0528         0        1.206
+   5            0           6              0             1890       0.0264      0.0152         0        1.264
+   6            0           7              0             1890      0.00972     0.00563         0        1.264
+   7            0           8              0             1890      0.00358     0.00208         0        1.264
+   8            0           9              0             1890      0.00132    0.000766         0        1.264
+
+                                            Optimization Results
+
+Iterations                                          8  Function Calls                                     11
+Hessian Calls                                       9  Active Constraints                                  0
+Objective Function                       1889.7937371  Max Abs Gradient Element                 0.0007659267
+Ridge                                               0  Actual Over Pred Change                  1.2642494953
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        3779.587      1028.3837       33         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      242.3867        <.0001
+CAR_USE                 1       22.6714        <.0001
+CHILD_DRIV              1       47.7452        <.0001
+CLM_FREQ                1       13.9867        0.0002
+DISTANCE                1       20.8355        <.0001
+EDU_LEVEL               4       36.0335        <.0001
+IMP_JOB                 8     4355.9415        <.0001
+IMP_LOG_INCOME          1       24.8966        <.0001
+LOG_VEHICLE_VAL         1       14.4598        0.0001
+MVR_PTS                 1       28.8476        <.0001
+M_LOG_HOUSE_VAL         1        4.0643        0.0438
+M_YOJ                   1        6.0822        0.0137
+REVOKED                 1       25.4557        <.0001
+STATUS                  1       99.7730        <.0001
+VEHICLE_TYPE            6     4905.5040        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -1.6650     10.9856          0.02        0.8795                       0.189
+AREA              Highly Urban/ Urban       1      1.2464      0.0801        242.39        <.0001                       3.478
+CAR_USE           Commercial                1      0.2981      0.0626         22.67        <.0001                       1.347
+CHILD_DRIV                                  1      0.5188      0.0751         47.75        <.0001          0.1443       1.680
+CLM_FREQ                                    1      0.1005      0.0269         13.99        0.0002          0.0839       1.106
+DISTANCE                                    1      0.0119     0.00260         20.84        <.0001          0.1046       1.012
+EDU_LEVEL         <High School              1      0.2221      0.1100          4.07        0.0435                       1.249
+EDU_LEVEL         Bachelors                 1      0.0183      0.0871          0.04        0.8334                       1.018
+EDU_LEVEL         Masters                   1     -0.2885      0.1102          6.85        0.0089                       0.749
+EDU_LEVEL         PhD                       1     -0.4372      0.1536          8.10        0.0044                       0.646
+IMP_JOB           Banking                   1     -2.1086           .           .           .                   .       0.121
+IMP_JOB           Clerical                  1      2.1862      6.7111          0.11        0.7446                       8.901
+IMP_JOB           Doctor                    1      0.9297      6.7209          0.02        0.8900                       2.534
+IMP_JOB           Home Maker                1      1.4884      6.7125          0.05        0.8245                       4.430
+IMP_JOB           Manager                   1      1.1719      6.7115          0.03        0.8614                       3.228
+IMP_JOB           None                      1     -5.8670     53.6804          0.01        0.9130                       0.003
+IMP_JOB           Nurse                     1      2.0929      6.7121          0.10        0.7552                       8.108
+IMP_JOB           Police                    1     -5.4721           .           .           .                   .       0.004
+IMP_JOB           Professional              1      1.8495      6.7113          0.08        0.7829                       6.357
+IMP_JOB           Student                   1      1.6474      6.7123          0.06        0.8061                       5.193
+IMP_LOG_INCOME                              1     -0.2554      0.0512         24.90        <.0001         -0.1916       0.775
+LOG_VEHICLE_VAL                             1     -0.2823      0.0742         14.46        0.0001         -0.1004       0.754
+MVR_PTS                                     1      0.0815      0.0152         28.85        <.0001          0.1183       1.085
+M_LOG_HOUSE_VAL   0                         1      0.1846      0.0916          4.06        0.0438                       1.203
+M_YOJ             0                         1     -0.2281      0.0925          6.08        0.0137                       0.796
+REVOKED           No                        1     -0.2803      0.0556         25.46        <.0001                       0.756
+STATUS            Yes                       1     -0.4135      0.0414         99.77        <.0001                       0.661
+VEHICLE_TYPE      Family                    1     -5.4657     51.9382          0.01        0.9162                       0.004
+VEHICLE_TYPE      Minivan                   1      1.4868      8.6568          0.03        0.8636                       4.423
+VEHICLE_TYPE      Panel Truck               1      2.0172      8.6576          0.05        0.8158                       7.518
+VEHICLE_TYPE      Pickup                    1      2.1050      8.6568          0.06        0.8079                       8.207
+VEHICLE_TYPE      Racing                    1     -6.6036           .           .           .                   .       0.001
+VEHICLE_TYPE      Sports Car                1      2.4003      8.6571          0.08        0.7816                      11.027
+VEHICLE_TYPE      Van                       1      2.0583      8.6572          0.06        0.8121                       7.833
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        12.094
+CAR_USE           Commercial vs Private                                1.815
+CHILD_DRIV                                                             1.680
+CLM_FREQ                                                               1.106
+DISTANCE                                                               1.012
+EDU_LEVEL         <High School vs z_High School                        0.769
+EDU_LEVEL         Bachelors vs z_High School                           0.627
+EDU_LEVEL         Masters vs z_High School                             0.461
+EDU_LEVEL         PhD vs z_High School                                 0.398
+IMP_JOB           Banking vs Teacher                                   0.015
+IMP_JOB           Clerical vs Teacher                                  1.110
+IMP_JOB           Doctor vs Teacher                                    0.316
+IMP_JOB           Home Maker vs Teacher                                0.552
+IMP_JOB           Manager vs Teacher                                   0.403
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     1.011
+IMP_JOB           Police vs Teacher                                   <0.001
+IMP_JOB           Professional vs Teacher                              0.793
+IMP_JOB           Student vs Teacher                                   0.648
+IMP_LOG_INCOME                                                         0.775
+LOG_VEHICLE_VAL                                                        0.754
+MVR_PTS                                                                1.085
+M_LOG_HOUSE_VAL   0 vs 1                                               1.447
+M_YOJ             0 vs 1                                               0.634
+REVOKED           No vs Yes                                            0.571
+STATUS            Yes vs z_No                                          0.437
+VEHICLE_TYPE      Family vs unknown                                   <0.001
+VEHICLE_TYPE      Minivan vs unknown                                   0.598
+VEHICLE_TYPE      Panel Truck vs unknown                               1.016
+VEHICLE_TYPE      Pickup vs unknown                                    1.109
+VEHICLE_TYPE      Racing vs unknown                                   <0.001
+VEHICLE_TYPE      Sports Car vs unknown                                1.490
+VEHICLE_TYPE      Van vs unknown                                       1.058
+
+
+NOTE: Model building terminates because the last effect entered is removed by the Wald test criterion.
+
+
+                                             Summary of Stepwise Selection
+ 
+                                                                                                             Validation
+                      Effect                      Number         Score          Wald                  Misclassification
+    Step    Entered            Removed      DF        In    Chi-Square    Chi-Square    Pr > ChiSq                 Rate
+
+       1    AREA                             1         1      225.4060                      <.0001               0.2707
+       2    IMP_JOB                         10         2      257.6763                      <.0001               0.2720
+       3    STATUS                           1         3       91.4431                      <.0001               0.2639
+       4    MVR_PTS                          1         4       68.1933                      <.0001               0.2562
+       5    IMP_LOG_INCOME                   1         5       46.6689                      <.0001               0.2489
+       6    CHILD_DRIV                       1         6       45.6504                      <.0001               0.2453
+       7    VEHICLE_TYPE                     7         7       65.0863                      <.0001               0.2392
+       8    EDU_LEVEL                        4         8       47.7976                      <.0001               0.2329
+       9    REVOKED                          1         9       28.3167                      <.0001               0.2259
+      10    CAR_USE                          1        10       22.6786                      <.0001               0.2234
+      11    DISTANCE                         1        11       20.6836                      <.0001               0.2198
+      12    LOG_VEHICLE_VAL                  1        12       15.1654                      <.0001               0.2222
+      13    CLM_FREQ                         1        13       13.5351                      0.0002               0.2186
+      14    M_YOJ                            1        14        6.0577                      0.0138               0.2176
+      15    M_LOG_HOUSE_VAL                  1        15        4.0912                      0.0431               0.2181
+      16    M_AGE                            1        16        1.9642                      0.1611               0.2181
+      17                       M_AGE         1        15                      1.7850        0.1815               0.2181
+
+
+The selected model, based on the misclassification rate for the validation data, is the model trained in Step 14. It consists of the following effects:
+
+Intercept  AREA  CAR_USE  CHILD_DRIV  CLM_FREQ  DISTANCE  EDU_LEVEL  IMP_JOB  IMP_LOG_INCOME  LOG_VEHICLE_VAL  MVR_PTS  M_YOJ  REVOKED  STATUS  VEHICLE_TYPE  
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+   4807.971        3783.817      1024.1543       32         <.0001
+
+
+             Type 3 Analysis of Effects
+ 
+                                   Wald
+Effect                 DF    Chi-Square    Pr > ChiSq
+
+AREA                    1      241.9438        <.0001
+CAR_USE                 1       22.5918        <.0001
+CHILD_DRIV              1       48.0075        <.0001
+CLM_FREQ                1       14.0151        0.0002
+DISTANCE                1       21.1006        <.0001
+EDU_LEVEL               4       35.8111        <.0001
+IMP_JOB                 8     4337.2279        <.0001
+IMP_LOG_INCOME          1       24.7431        <.0001
+LOG_VEHICLE_VAL         1       14.3214        0.0002
+MVR_PTS                 1       28.3586        <.0001
+M_YOJ                   1        6.0035        0.0143
+REVOKED                 1       26.0754        <.0001
+STATUS                  1      101.1814        <.0001
+VEHICLE_TYPE            6     4895.8252        <.0001
+
+
+                                          Analysis of Maximum Likelihood Estimates
+ 
+                                                             Standard          Wald                  Standardized
+Parameter                                  DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                   1     -1.5202     10.9903          0.02        0.8900                       0.219
+AREA              Highly Urban/ Urban       1      1.2453      0.0801        241.94        <.0001                       3.474
+CAR_USE           Commercial                1      0.2975      0.0626         22.59        <.0001                       1.346
+CHILD_DRIV                                  1      0.5197      0.0750         48.01        <.0001          0.1445       1.681
+CLM_FREQ                                    1      0.1005      0.0268         14.02        0.0002          0.0839       1.106
+DISTANCE                                    1      0.0119     0.00260         21.10        <.0001          0.1053       1.012
+EDU_LEVEL         <High School              1      0.2269      0.1100          4.26        0.0391                       1.255
+EDU_LEVEL         Bachelors                 1      0.0162      0.0871          0.03        0.8522                       1.016
+EDU_LEVEL         Masters                   1     -0.2923      0.1102          7.04        0.0080                       0.747
+EDU_LEVEL         PhD                       1     -0.4325      0.1535          7.94        0.0048                       0.649
+IMP_JOB           Banking                   1     -2.0958           .           .           .                   .       0.123
+IMP_JOB           Clerical                  1      2.1746      6.7142          0.10        0.7460                       8.798
+IMP_JOB           Doctor                    1      0.9209      6.7241          0.02        0.8911                       2.512
+IMP_JOB           Home Maker                1      1.4877      6.7157          0.05        0.8247                       4.427
+IMP_JOB           Manager                   1      1.1679      6.7146          0.03        0.8619                       3.215
+IMP_JOB           None                      1     -5.8494     53.7055          0.01        0.9133                       0.003
+IMP_JOB           Nurse                     1      2.0912      6.7153          0.10        0.7555                       8.095
+IMP_JOB           Police                    1     -5.4660           .           .           .                   .       0.004
+IMP_JOB           Professional              1      1.8453      6.7144          0.08        0.7834                       6.330
+IMP_JOB           Student                   1      1.6463      6.7154          0.06        0.8063                       5.188
+IMP_LOG_INCOME                              1     -0.2542      0.0511         24.74        <.0001         -0.1907       0.776
+LOG_VEHICLE_VAL                             1     -0.2807      0.0742         14.32        0.0002         -0.0998       0.755
+MVR_PTS                                     1      0.0807      0.0151         28.36        <.0001          0.1171       1.084
+M_YOJ             0                         1     -0.2264      0.0924          6.00        0.0143                       0.797
+REVOKED           No                        1     -0.2833      0.0555         26.08        <.0001                       0.753
+STATUS            Yes                       1     -0.4159      0.0413        101.18        <.0001                       0.660
+VEHICLE_TYPE      Family                    1     -5.4509     51.9622          0.01        0.9165                       0.004
+VEHICLE_TYPE      Minivan                   1      1.4854      8.6608          0.03        0.8638                       4.417
+VEHICLE_TYPE      Panel Truck               1      2.0134      8.6615          0.05        0.8162                       7.489
+VEHICLE_TYPE      Pickup                    1      2.0998      8.6608          0.06        0.8084                       8.165
+VEHICLE_TYPE      Racing                    1     -6.5976           .           .           .                   .       0.001
+VEHICLE_TYPE      Sports Car                1      2.3982      8.6611          0.08        0.7819                      11.004
+VEHICLE_TYPE      Van                       1      2.0503      8.6612          0.06        0.8129                       7.771
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                       Point
+Effect                                                              Estimate
+
+AREA              Highly Urban/ Urban vs z_Highly Rural/ Rural        12.070
+CAR_USE           Commercial vs Private                                1.813
+CHILD_DRIV                                                             1.681
+CLM_FREQ                                                               1.106
+DISTANCE                                                               1.012
+EDU_LEVEL         <High School vs z_High School                        0.775
+EDU_LEVEL         Bachelors vs z_High School                           0.628
+EDU_LEVEL         Masters vs z_High School                             0.461
+EDU_LEVEL         PhD vs z_High School                                 0.401
+IMP_JOB           Banking vs Teacher                                   0.015
+IMP_JOB           Clerical vs Teacher                                  1.102
+IMP_JOB           Doctor vs Teacher                                    0.315
+IMP_JOB           Home Maker vs Teacher                                0.555
+IMP_JOB           Manager vs Teacher                                   0.403
+IMP_JOB           None vs Teacher                                     <0.001
+IMP_JOB           Nurse vs Teacher                                     1.014
+IMP_JOB           Police vs Teacher                                   <0.001
+IMP_JOB           Professional vs Teacher                              0.793
+IMP_JOB           Student vs Teacher                                   0.650
+IMP_LOG_INCOME                                                         0.776
+LOG_VEHICLE_VAL                                                        0.755
+MVR_PTS                                                                1.084
+M_YOJ             0 vs 1                                               0.636
+REVOKED           No vs Yes                                            0.567
+STATUS            Yes vs z_No                                          0.435
+VEHICLE_TYPE      Family vs unknown                                   <0.001
+VEHICLE_TYPE      Minivan vs unknown                                   0.597
+VEHICLE_TYPE      Panel Truck vs unknown                               1.012
+VEHICLE_TYPE      Pickup vs unknown                                    1.104
+VEHICLE_TYPE      Racing vs unknown                                   <0.001
+VEHICLE_TYPE      Sports Car vs unknown                                1.487
+VEHICLE_TYPE      Van vs unknown                                       1.050

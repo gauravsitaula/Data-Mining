@@ -1,0 +1,32 @@
+*------------------------------------------------------------*
+ Node = 2
+*------------------------------------------------------------*
+if Cause of Injury IS ONE OF: MVA
+then 
+ Tree Node Identifier   = 2
+ Number of Observations = 176
+ Predicted: SubroFlag=1 = 0.91
+ Predicted: SubroFlag=0 = 0.09
+ 
+*------------------------------------------------------------*
+ Node = 4
+*------------------------------------------------------------*
+if Cause of Injury IS ONE OF: SLIP/FALL, STRUCK OBJECT, REPETITIVE MOTION, LIFTING, CONTACT WITH OBJECT, CAUGHT IN MACHINE, UNKNOWN, ANIMAL ATTACK, UNUSUAL BODY MOVEMENT, PUSHING/PULLING, FOREIGN BODY
+AND Body Part IS ONE OF: MULTIPLE, FINGER, ANKLE, KNEE, HAND, BACK, ARM, WRIST, LEG, SPINE, FOOT, HEAD, TOES, JAW, GROIN, EYE, TORSO, ELBOW, RIBS, FACE, TOOTH
+then 
+ Tree Node Identifier   = 4
+ Number of Observations = 1273
+ Predicted: SubroFlag=1 = 0.28
+ Predicted: SubroFlag=0 = 0.72
+ 
+*------------------------------------------------------------*
+ Node = 5
+*------------------------------------------------------------*
+if Cause of Injury IS ONE OF: SLIP/FALL, STRUCK OBJECT, REPETITIVE MOTION, LIFTING, CONTACT WITH OBJECT, CAUGHT IN MACHINE, UNKNOWN, ANIMAL ATTACK, UNUSUAL BODY MOVEMENT, PUSHING/PULLING, FOREIGN BODY
+AND Body Part IS ONE OF: NECK, SHOULDER or MISSING
+then 
+ Tree Node Identifier   = 5
+ Number of Observations = 69
+ Predicted: SubroFlag=1 = 0.78
+ Predicted: SubroFlag=0 = 0.22
+ 

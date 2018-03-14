@@ -1,0 +1,31 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Summary Statistics for Class Targets
+
+Data=DATA
+
+            Numeric    Formatted    Frequency
+Variable     Value       Value        Count      Percent    Label
+
+  LBWT         0           0           8549      50.0029         
+  LBWT         1           1           8548      49.9971         
+
+
+Data=TRAIN
+
+            Numeric    Formatted    Frequency
+Variable     Value       Value        Count      Percent    Label
+
+  LBWT         0           0           4274         50           
+  LBWT         1           1           4274         50           
+
+
+Data=VALIDATE
+
+            Numeric    Formatted    Frequency
+Variable     Value       Value        Count      Percent    Label
+
+  LBWT         0           0           4275      50.0058         
+  LBWT         1           1           4274      49.9942         

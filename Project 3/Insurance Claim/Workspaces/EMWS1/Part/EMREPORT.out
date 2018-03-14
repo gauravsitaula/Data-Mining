@@ -1,0 +1,31 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Summary Statistics for Class Targets
+
+Data=DATA
+
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent             Label
+
+SubroFlag       0           0           380       62.6030    Subrogation (1=Yes 0=No)
+SubroFlag       1           1           227       37.3970    Subrogation (1=Yes 0=No)
+
+
+Data=TRAIN
+
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent             Label
+
+SubroFlag       0           0           189       62.5828    Subrogation (1=Yes 0=No)
+SubroFlag       1           1           113       37.4172    Subrogation (1=Yes 0=No)
+
+
+Data=VALIDATE
+
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent             Label
+
+SubroFlag       0           0           191       62.6230    Subrogation (1=Yes 0=No)
+SubroFlag       1           1           114       37.3770    Subrogation (1=Yes 0=No)

@@ -1,0 +1,75 @@
+*------------------------------------------------------------*
+User:                Gaurav
+Date:                February 25, 2017
+Time:                15:06:18
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+            Measurement    Frequency
+Role           Level         Count
+ 
+ID           NOMINAL            1
+INPUT        BINARY             4
+INPUT        INTERVAL          12
+INPUT        NOMINAL            5
+REJECTED     INTERVAL           1
+TARGET       BINARY             1
+ 
+ 
+ 
+ 
+Partition Summary
+ 
+                                     Number of
+Type             Data Set          Observations
+ 
+DATA        EMWS1.Ids_DATA             8240
+TRAIN       EMWS1.Part_TRAIN           4118
+VALIDATE    EMWS1.Part_VALIDATE        4122
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Summary Statistics for Class Targets
+ 
+Data=DATA
+ 
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent      Label
+ 
+CLAIM_IND       0           0           6010      72.9369    Claim flag
+CLAIM_IND       1           1           2230      27.0631    Claim flag
+ 
+ 
+Data=TRAIN
+ 
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent      Label
+ 
+CLAIM_IND       0           0           3004      72.9480    Claim flag
+CLAIM_IND       1           1           1114      27.0520    Claim flag
+ 
+ 
+Data=VALIDATE
+ 
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent      Label
+ 
+CLAIM_IND       0           0           3006      72.9258    Claim flag
+CLAIM_IND       1           1           1116      27.0742    Claim flag

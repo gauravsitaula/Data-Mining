@@ -1,0 +1,335 @@
+NOTE: PROCEDURE PRINTTO used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+1 
+Traverser: Traverser invoked.  MPCONNECT command is sas. 
+Traverser: Beginning flow traversal 
+*------------------------------------------------------------* 
+* 
+* Ids : Beginning Update 
+* datetime : 27APR2017:17:08:09 
+* 
+*------------------------------------------------------------* 
+118490     %let _HPDMGRIDHOST=;
+118491     %let _HPDMGRIDINSTALLLOC=;
+118492     %let _HPDMGRIDDATASERVER=;
+118493     %hpdm_gridSetOPtions;
+
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+*------------------------------------------------------------* 
+* 
+* Ids : End Update 
+* datetime : 27APR2017:17:08:09 
+* 
+*------------------------------------------------------------* 
+Traverser: WaitingNode "TEXTPARSING" 
+Traverser: WaitingNode "TEXTFILTER" 
+Traverser: WaitingNode "TEXTCLUSTER" 
+Traverser: WaitingNode "TEXTTOPIC" 
+traverser_readyNode_note 
+*------------------------------------------------------------* 
+* 
+* Part : Beginning Update 
+* datetime : 27APR2017:17:08:10 
+* 
+*------------------------------------------------------------* 
+118512     %let _HPDMGRIDHOST=;
+118513     %let _HPDMGRIDINSTALLLOC=;
+118514     %let _HPDMGRIDDATASERVER=;
+118515     %hpdm_gridSetOPtions;
+
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+*------------------------------------------------------------* 
+* 
+* Part : End Update 
+* datetime : 27APR2017:17:08:10 
+* 
+*------------------------------------------------------------* 
+Traverser: WaitingNode "TEXTFILTER" 
+Traverser: WaitingNode "TEXTCLUSTER" 
+Traverser: WaitingNode "TEXTTOPIC" 
+traverser_readyNode_note 
+*------------------------------------------------------------* 
+* 
+* TextParsing : Beginning Update 
+* datetime : 27APR2017:17:08:11 
+* 
+*------------------------------------------------------------* 
+PERFORMANCE  DETAILS
+118773     %let emexceptionString =;
+118774     %let EMEXCEPTIONSTRING=;
+118775     *------------------------------------------------------------*;
+118776     * UPDATE: TextParsing;
+118777     *------------------------------------------------------------*;
+118778     %let EM_ACTION = UPDATE;
+118779     %let syscc = 0;
+118780     %macro main();
+118781       %if %upcase(&EM_ACTION) eq CREATE %then %do;
+118782         filename temp catalog 'sashelp.emtxtext.parse_create.source';
+118783         %include temp;
+118784         %create();
+118785       %end;
+118786       %if %upcase(&EM_ACTION) eq TRAIN %then %do;
+118787         filename temp catalog 'sashelp.emtxtext.parse_train.source';
+118788         %include temp;
+118789         %train();
+118790       %end;
+118791       %if %upcase(&EM_ACTION) eq REPORT %then %do;
+118792         filename temp catalog 'sashelp.emtxtext.parse_report.source';
+118793         %include temp;
+118794         %report();
+118795       %end;
+118796       %if %upcase(&EM_ACTION) eq SCORE %then %do;
+118797         filename temp catalog 'sashelp.emtxtext.parse_score.source';
+118798         %include temp;
+118799         %score();
+118800       %end;
+118801         %if %upcase(&EM_ACTION) eq OPENTABLE1 %then %do;
+118802            filename temp catalog 'sashelp.emtxtext.parse_actions.source';
+118803            %include temp;
+118804            filename temp;
+118805            %openTable1;
+118806        %end;
+118807     %mend main;
+118808     
+118809     %main();
+118810     *------------------------------------------------------------*;
+118811     * End UPDATE: TextParsing;
+118812     *------------------------------------------------------------*;
+118813     
+118814     
+118815     
+118816     
+
+118817     %em_delMacro;
+
+118819     %let _HPDMGRIDHOST=;
+118820     %let _HPDMGRIDINSTALLLOC=;
+118821     %let _HPDMGRIDDATASERVER=;
+118822     %hpdm_gridSetOPtions;
+
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+*------------------------------------------------------------* 
+* 
+* TextParsing : End Update 
+* datetime : 27APR2017:17:08:12 
+* 
+*------------------------------------------------------------* 
+Traverser: WaitingNode "TEXTCLUSTER" 
+Traverser: WaitingNode "TEXTTOPIC" 
+traverser_readyNode_note 
+*------------------------------------------------------------* 
+* 
+* TextFilter : Beginning Update 
+* datetime : 27APR2017:17:08:12 
+* 
+*------------------------------------------------------------* 
+PERFORMANCE  DETAILS
+119097     %let emexceptionString =;
+119098     %let EMEXCEPTIONSTRING=;
+119099     *------------------------------------------------------------*;
+119100     * UPDATE: TextFilter;
+119101     *------------------------------------------------------------*;
+119102     %let EM_ACTION = UPDATE;
+119103     %let syscc = 0;
+119104     %macro main();
+119105         %if %upcase("&EM_ACTION") eq "CREATE" %then %do;
+119106             filename temp catalog 'sashelp.emtxtext.filter_create.source';
+119107             %include temp;
+119108             %create();
+119109         %end;
+119110         %if %upcase("&EM_ACTION") eq "TRAIN" %then %do;
+119111             filename temp catalog 'sashelp.emtxtext.filter_train.source';
+119112             %include temp;
+119113             %train();
+119114         %end;
+119115         %if %upcase("&EM_ACTION") eq "SCORE" %then %do;
+119116             filename temp catalog 'sashelp.emtxtext.filter_score.source';
+119117             %include temp;
+119118             %score();
+119119         %end;
+119120         %if %upcase("&EM_ACTION") eq "REPORT" %then %do;
+119121             filename temp catalog 'sashelp.emtxtext.filter_report.source';
+119122             %include temp;
+119123            %report();
+119124         %end;
+119125          %if %upcase(&EM_ACTION) eq OPENTABLE1 %then %do;
+119126            filename temp catalog 'sashelp.emtxtext.filter_actions.source';
+119127            %include temp;
+119128            filename temp;
+119129            %openTable1;
+119130        %end;
+119131     %mend main;
+119132     
+119133     %main();
+119134     *------------------------------------------------------------*;
+119135     * End UPDATE: TextFilter;
+119136     *------------------------------------------------------------*;
+
+119137     %em_delMacro;
+
+119139     %let _HPDMGRIDHOST=;
+119140     %let _HPDMGRIDINSTALLLOC=;
+119141     %let _HPDMGRIDDATASERVER=;
+119142     %hpdm_gridSetOPtions;
+
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+*------------------------------------------------------------* 
+* 
+* TextFilter : End Update 
+* datetime : 27APR2017:17:08:13 
+* 
+*------------------------------------------------------------* 
+Traverser: WaitingNode "TEXTTOPIC" 
+traverser_readyNode_note 
+*------------------------------------------------------------* 
+* 
+* TextCluster : Beginning Update 
+* datetime : 27APR2017:17:08:13 
+* 
+*------------------------------------------------------------* 
+PERFORMANCE  DETAILS
+119377     %let emexceptionString =;
+119378     %let EMEXCEPTIONSTRING=;
+119379     *------------------------------------------------------------*;
+119380     * UPDATE: TextCluster;
+119381     *------------------------------------------------------------*;
+119382     %let EM_ACTION = UPDATE;
+119383     %let syscc = 0;
+119384     %macro main();
+119385     
+119386        %if %upcase(&EM_ACTION) eq CREATE %then %do;
+119387           filename temp catalog 'sashelp.emtxtext.cluster_create.source';
+119388           %include temp;
+119389           %create();
+119390        %end;
+119391        %if %upcase(&EM_ACTION) eq TRAIN %then %do;
+119392           filename temp catalog 'sashelp.emtxtext.cluster_train.source';
+119393           %include temp;
+119394           %train();
+119395        %end;
+119396        %if %upcase(&EM_ACTION) eq REPORT %then %do;
+119397           filename temp catalog 'sashelp.emtxtext.cluster_report.source';
+119398           %include temp;
+119399           %report();
+119400        %end;
+119401        %if %upcase(&EM_ACTION) eq SCORE %then %do;
+119402           filename temp catalog 'sashelp.emtxtext.cluster_score.source';
+119403           %include temp;
+119404           %score();
+119405        %end;
+119406     %mend main;
+119407     
+119408     %main();
+119409     *------------------------------------------------------------*;
+119410     * End UPDATE: TextCluster;
+119411     *------------------------------------------------------------*;
+
+119412     %em_delMacro;
+
+119414     %let _HPDMGRIDHOST=;
+119415     %let _HPDMGRIDINSTALLLOC=;
+119416     %let _HPDMGRIDDATASERVER=;
+119417     %hpdm_gridSetOPtions;
+
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+*------------------------------------------------------------* 
+* 
+* TextCluster : End Update 
+* datetime : 27APR2017:17:08:14 
+* 
+*------------------------------------------------------------* 
+traverser_readyNode_note 
+*------------------------------------------------------------* 
+* 
+* TextTopic : Beginning Update 
+* datetime : 27APR2017:17:08:14 
+* 
+*------------------------------------------------------------* 
+PERFORMANCE  DETAILS
+119677     %let emexceptionString =;
+119678     %let EMEXCEPTIONSTRING=;
+119679     *------------------------------------------------------------*;
+119680     * UPDATE: TextTopic;
+119681     *------------------------------------------------------------*;
+119682     %let EM_ACTION = UPDATE;
+119683     %let syscc = 0;
+119684     %macro main;
+119685         %if %upcase(&EM_ACTION) = CREATE %then %do;
+119686             filename temp catalog 'sashelp.emtxtext.topic_create.source';
+119687             %include temp;
+119688             %create;
+119689         %end;
+119690         %if %upcase(&EM_ACTION) = TRAIN %then %do;
+119691             filename temp catalog 'sashelp.emtxtext.topic_train.source';
+119692             %include temp;
+119693             %train;
+119694         %end;
+119695        %if %upcase(&EM_ACTION) = SCORE %then %do;
+119696             filename temp catalog 'sashelp.emtxtext.topic_score.source';
+119697             %include temp;
+119698             %score;
+119699         %end;
+119700         %if %upcase(&EM_ACTION) = REPORT %then %do;
+119701             filename temp catalog 'sashelp.emtxtext.topic_report.source';
+119702             %include temp;
+119703             %report;
+119704         %end;
+119705     %mend main;
+119706     
+119707     %main;
+119708     *------------------------------------------------------------*;
+119709     * End UPDATE: TextTopic;
+119710     *------------------------------------------------------------*;
+119711     
+
+119712     %em_delMacro;
+
+119714     %let _HPDMGRIDHOST=;
+119715     %let _HPDMGRIDINSTALLLOC=;
+119716     %let _HPDMGRIDDATASERVER=;
+119717     %hpdm_gridSetOPtions;
+
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+
+*------------------------------------------------------------* 
+* 
+* TextTopic : End Update 
+* datetime : 27APR2017:17:08:14 
+* 
+*------------------------------------------------------------* 
+Traverser: Run Completed 
+119718     proc printto;
+119719     run;
+

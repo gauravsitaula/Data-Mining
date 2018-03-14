@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?><_ROOT_  DataSource="subrogatenew" Scope="LOCAL" Role="RAW" Library="INSUR" Table="SUBROGATENEW"
+ NCols="7" NObs="3037" NBytes="1115136" Segment="" DataSourceRole="RAW" OutputType="VIEW"
+ ForceRun="N" ComputeStatistics="N" DataSelection="DATASOURCE" NewTable="" MetaAdvisor="BASIC"
+ ApplyIntervalLevelLowerLimit="Y" IntervalLowerLimit="20" ApplyMaxPercentMissing="Y"
+ MaxPercentMissing="50" ApplyMaxClassLevels="Y" MaxClassLevels="20" IdentifyEmptyColumns="Y"
+ VariableValidation="STRICT" NewVariableRole="REJECT" DropMapVariables="Y" DsId="subrogatenew"
+ DsSampleName="" DsSampleSizeType="" DsSampleSize="" DsCreatedBy="Gaurav" DsCreateDate="1808500840.7"
+ DsModifiedBy="Gaurav" DsModifyDate="1808500840.8" DsScope="LOCAL" Sample="D" SampleSizeType="PERCENT"
+ SampleSizePercent="20" SampleSizeObs="10000" DBPassThrough="Y" RunAction="Train"
+ Component="DataSource" RawCreateTime="1808594125.1" CreateTime="23APR2017:19:15:25"
+ Description="" Data="INSUR.SUBROGATENEW" CMeta="WORK.M1OQBLAD" RunId="90568f5e-0112-4ada-9d6f-fcbd9ac3ddf4"
+ RawLastTimeRun="1808594213.9" RawRunTime="6.6919999123" LastTimeRun="23APR2017:19:16:54"
+ RunTime="0 Hr. 0 Min. 6.69 Sec.">
+<VARIABLEPROPERTIES/>
+<FILEPROPERTIES/>
+</_ROOT_>

@@ -1,0 +1,25 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+          Measurement    Frequency
+ Role        Level         Count
+
+INPUT      BINARY             3   
+INPUT      INTERVAL          13   
+INPUT      NOMINAL           21   
+TARGET     BINARY             1   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Partition Summary
+
+                                     Number of
+Type             Data Set          Observations
+
+DATA        EMWS1.Ids_DATA             17097   
+TRAIN       EMWS1.Part_TRAIN            8548   
+VALIDATE    EMWS1.Part_VALIDATE         8549   

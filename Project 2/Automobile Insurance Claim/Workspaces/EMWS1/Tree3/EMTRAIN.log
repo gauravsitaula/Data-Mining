@@ -1,0 +1,2718 @@
+MPRINT(EM_DIAGRAM):    data _null_;
+MPRINT(EM_DIAGRAM):   call symput('NLDATE', strip(put(date(), NLDATE.)));
+MPRINT(EM_DIAGRAM):   call symput('NLTIME', strip(put(datetime(), NLTIME.)));
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   data _null_;
+MPRINT(EM_DIAGRAM):   nldate= sasmsg("sashelp.dmine", "log_date_note", 'N', "February 25, 2017" );
+MPRINT(EM_DIAGRAM):   nltime= sasmsg("sashelp.dmine", "log_time_note", 'N', "15:23:38" );
+MPRINT(EM_DIAGRAM):   put "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   put "* Training Log";
+MPRINT(EM_DIAGRAM):   put nldate;
+MPRINT(EM_DIAGRAM):   put nltime;
+MPRINT(EM_DIAGRAM):   put "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   run;
+*------------------------------------------------------------*
+* Training Log
+Date:                February 25, 2017
+Time:                15:23:38
+*------------------------------------------------------------*
+MPRINT(EM_DIAGRAM):    filename O2IQG01C "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\EMTRAIN.out" encoding="UTF-8" NOBOM;
+MPRINT(EM_DIAGRAM):   proc printto print=O2IQG01C new;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):    filename _LOG "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\EMLOG.log" encoding="UTF-8" NOBOM;
+MPRINT(EM_DIAGRAM):    data _null_;
+MPRINT(EM_DIAGRAM):   call symput('NLDATE', strip(put(date(), NLDATE.)));
+MPRINT(EM_DIAGRAM):   call symput('NLTIME', strip(put(datetime(), NLTIME.)));
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   data _null_;
+MPRINT(EM_DIAGRAM):   nldate= sasmsg("sashelp.dmine", "log_date_note", 'N', "February 25, 2017" );
+MPRINT(EM_DIAGRAM):   nltime= sasmsg("sashelp.dmine", "log_time_note", 'N', "15:23:38" );
+MPRINT(EM_DIAGRAM):   file _LOG;
+MPRINT(EM_DIAGRAM):   put "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   put "User:                Gaurav";
+MPRINT(EM_DIAGRAM):   put nldate;
+MPRINT(EM_DIAGRAM):   put nltime;
+MPRINT(EM_DIAGRAM):   put "Site:                70125477";
+MPRINT(EM_DIAGRAM):   put "Platform:            X64_8HOME";
+MPRINT(EM_DIAGRAM):   put "Maintenance Release: 9.04.01M3P062415";
+MPRINT(EM_DIAGRAM):   put "EM Version:          14.1";
+MPRINT(EM_DIAGRAM):   put "* ";
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):    filename _LOGIN "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\EMTRAIN.log" encoding="UTF-8" NOBOM;
+MPRINT(EM_COPYFILE):   data _null_;
+MPRINT(EM_COPYFILE):   length line $20000;
+MPRINT(EM_COPYFILE):   file _LOG MOD lrecl=20000;
+MPRINT(EM_COPYFILE):   fid=fopen("_LOGIN",'i',20000,'v');
+MPRINT(EM_COPYFILE):   if fid > 0 then do;
+MPRINT(EM_COPYFILE):   do while(^fread(fid));
+MPRINT(EM_COPYFILE):   rlen = frlen(fid);
+MPRINT(EM_COPYFILE):   rc= fget(fid,line,20000);
+MPRINT(EM_COPYFILE):   start = length(line)-length(left(line))+1;
+MPRINT(EM_COPYFILE):   line=strip(line);
+MPRINT(EM_COPYFILE):   put @start line;
+MPRINT(EM_COPYFILE):   end;
+MPRINT(EM_COPYFILE):   if fid > 0 then rc=fclose(fid);
+MPRINT(EM_COPYFILE):   end;
+MPRINT(EM_COPYFILE):   run;
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   filename _LOGIN;
+MPRINT(EM_DIAGRAM):    data _null_;
+MPRINT(EM_DIAGRAM):   file _LOG mod;
+MPRINT(EM_DIAGRAM):   put _page_;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   filename _LOGIN "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\EMSCORE.log" encoding="UTF-8" NOBOM;
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   data _null_;
+MPRINT(EM_DIAGRAM):   file _LOG mod;
+MPRINT(EM_DIAGRAM):   put _page_;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):    filename _LOGIN "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\EMREPORT.log" encoding="UTF-8" NOBOM;
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   filename _LOGIN;
+MPRINT(EM_DIAGRAM):    filename _LOG;
+MPRINT(EM_DIAGRAM):    filename _OUT "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\EMOUTPUT.out" encoding="UTF-8" NOBOM;
+MPRINT(EM_DIAGRAM):    data _null_;
+MPRINT(EM_DIAGRAM):   call symput('NLDATE', strip(put(date(), NLDATE.)));
+MPRINT(EM_DIAGRAM):   call symput('NLTIME', strip(put(datetime(), NLTIME.)));
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   data _null_;
+MPRINT(EM_DIAGRAM):   nldate= sasmsg("sashelp.dmine", "log_date_note", 'N', "February 25, 2017" );
+MPRINT(EM_DIAGRAM):   nltime= sasmsg("sashelp.dmine", "log_time_note", 'N', "15:23:38" );
+MPRINT(EM_DIAGRAM):   file _OUT;
+MPRINT(EM_DIAGRAM):   put "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   put "User:                Gaurav";
+MPRINT(EM_DIAGRAM):   put nldate;
+MPRINT(EM_DIAGRAM):   put nltime;
+MPRINT(EM_DIAGRAM):   put "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   put "* Training Output";
+MPRINT(EM_DIAGRAM):   put "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):    filename _OUTIN "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\EMTRAIN.out" encoding="UTF-8" NOBOM;
+MPRINT(EM_DIAGRAM):   ;
+MPRINT(EM_COPYFILE):   data _null_;
+MPRINT(EM_COPYFILE):   length line $20000;
+MPRINT(EM_COPYFILE):   file _OUT MOD lrecl=20000;
+MPRINT(EM_COPYFILE):   fid=fopen("_OUTIN",'i',20000,'v');
+MPRINT(EM_COPYFILE):   if fid > 0 then do;
+MPRINT(EM_COPYFILE):   do while(^fread(fid));
+MPRINT(EM_COPYFILE):   rlen = frlen(fid);
+MPRINT(EM_COPYFILE):   rc= fget(fid,line,20000);
+MPRINT(EM_COPYFILE):   start = length(line)-length(left(line))+1;
+MPRINT(EM_COPYFILE):   line=strip(line);
+MPRINT(EM_COPYFILE):   put @start line;
+MPRINT(EM_COPYFILE):   end;
+MPRINT(EM_COPYFILE):   if fid > 0 then rc=fclose(fid);
+MPRINT(EM_COPYFILE):   end;
+MPRINT(EM_COPYFILE):   run;
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   filename _OUTIN;
+MPRINT(EM_DIAGRAM):    data _null_;
+MPRINT(EM_DIAGRAM):   file _OUT mod;
+MPRINT(EM_DIAGRAM):   put _page_;
+MPRINT(EM_DIAGRAM):   put // "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   put "* Score Output";
+MPRINT(EM_DIAGRAM):   put "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):    filename _OUTIN "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\EMSCORE.out" encoding="UTF-8" NOBOM;
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   filename _OUTIN;
+MPRINT(EM_DIAGRAM):    data _null_;
+MPRINT(EM_DIAGRAM):   file _OUT mod;
+MPRINT(EM_DIAGRAM):   put _page_;
+MPRINT(EM_DIAGRAM):   put // "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   put "* Report Output";
+MPRINT(EM_DIAGRAM):   put "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):    filename _OUTIN "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\EMREPORT.out" encoding="UTF-8" NOBOM;
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   filename _OUTIN;
+MPRINT(EM_DIAGRAM):    filename _OUT;
+MPRINT(EM_DIAGRAM):    filename _emtool_ 'C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\EMRUNSTATUS.xml' encoding="UTF-8" NOBOM;
+21507      proc freq data=EMWS1.Tree3_VariableSet noprint;
+MPRINT(EM_DIAGRAM):    proc freq data=EMWS1.Tree3_VariableSet noprint;
+21508      table ROLE*LEVEL/out=WORK.Tree3META;
+MPRINT(EM_DIAGRAM):   table ROLE*LEVEL/out=WORK.Tree3META;
+21509      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: There were 24 observations read from the data set EMWS1.TREE3_VARIABLESET.
+NOTE: The data set WORK.TREE3META has 7 observations and 4 variables.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.01 seconds
+      
+
+21510      proc print data=WORK.Tree3META label noobs;
+MPRINT(EM_DIAGRAM):   proc print data=WORK.Tree3META label noobs;
+21511      var ROLE LEVEL COUNT;
+MPRINT(EM_DIAGRAM):   var ROLE LEVEL COUNT;
+21512      label ROLE = "%sysfunc(sasmsg(sashelp.dmine, meta_role_vlabel, NOQUOTE))" LEVEL = "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel, NOQUOTE))" COUNT = "%sysfunc(sasmsg(sashelp.dmine, rpt_count_vlabel, NOQUOTE))";
+MPRINT(EM_DIAGRAM):   label ROLE = "Role" LEVEL = "Measurement Level" COUNT = "Frequency Count";
+21513      title9 ' ';
+MPRINT(EM_DIAGRAM):   title9 ' ';
+21514      title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_varSummary_title  , NOQUOTE))";
+MPRINT(EM_DIAGRAM):   title10 "Variable Summary";
+MPRINT(EM_DIAGRAM):   run;
+21515      run;
+
+NOTE: There were 7 observations read from the data set WORK.TREE3META.
+NOTE: The PROCEDURE PRINT printed page 1.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+21516      title10;
+MPRINT(EM_DIAGRAM):   title10;
+21517      %let EMNORLEN = %DMNORLEN;
+MPRINT(EM_DIAGRAM):   
+EMWS1.Part_TRAIN EMWS1.Part_TRAIN 
+EMWS1.Part_TRAIN EMWS1.Part_TRAIN EMWS1 Part_TRAIN 
+EMWS1.Part_TRAIN EMWS1.Part_TRAIN 
+EMWS1.Part_TRAIN EMWS1.Part_TRAIN EMWS1 Part_TRAIN 
+MPRINT(EM_DIAGRAM):    proc dmdb data=EMWS1.Part_TRAIN classout=WORK._DMDBCLASSTARGET(keep=NAME NRAW CRAW LEVEL FREQUENCY NMISSPERCENT);
+MPRINT(EM_DIAGRAM):   class CLAIM_IND(DESC) ;
+MPRINT(EM_DIAGRAM):   run;
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL _INIT >> 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL setMetaData >> 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL next >> 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL next >> 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL setMetaData >> 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL next >> 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL next >> 
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL _term >> 
+MPRINT(EM_DIAGRAM):    data _null_;
+MPRINT(EM_DIAGRAM):   set WORK._DMDBCLASSTARGET;
+MPRINT(EM_DIAGRAM):   where ^(NRAW eq . and CRAW eq '') and NAME="CLAIM_IND";
+MPRINT(EM_DIAGRAM):   if _N_=1 then call symput('_newevent', strip(LEVEL));
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   proc sort data=WORK._DMDBCLASSTARGET out=_TEMPCLASS(keep=LEVEL FREQUENCY NMISSPERCENT rename=(LEVEL=CLAIM_IND));
+MPRINT(EM_DIAGRAM):   by LEVEL;
+MPRINT(EM_DIAGRAM):   where ^(NRAW eq . and CRAW eq '') and NAME="CLAIM_IND";
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   data _TEMPCLASS;
+MPRINT(EM_DIAGRAM):   set _TEMPCLASS;
+MPRINT(EM_DIAGRAM):   NMISSPERCENT= NMISSPERCENT/100;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):    proc sort data=EMWS1.Ids_CLAIM_IND_DD out=_sortedDecdata;
+MPRINT(EM_DIAGRAM):   by CLAIM_IND;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   data _null_;
+MPRINT(EM_DIAGRAM):   merge _TEMPCLASS(in=_a) _sortedDecdata(in=_b);
+MPRINT(EM_DIAGRAM):   by CLAIM_IND;
+MPRINT(EM_DIAGRAM):   if (_a and ^_b) or (^_a and _b) then call symput('_emresetDec', '1');
+MPRINT(EM_DIAGRAM):   run;
+21546      data WORK.Tree3_EVENT(KEEP=VARIABLE LABEL LEVEL EVENT NUMLEVELS ORDER);
+MPRINT(EM_DIAGRAM):    data WORK.Tree3_EVENT(KEEP=VARIABLE LABEL LEVEL EVENT NUMLEVELS ORDER);
+21547      length ORDER $20;
+MPRINT(EM_DIAGRAM):   length ORDER $20;
+21548      label VARIABLE = "%sysfunc(sasmsg(sashelp.dmine, rpt_target_vlabel,  NOQUOTE))" EVENT = "%sysfunc(sasmsg(sashelp.dmine, assmt_event_vlabel, NOQUOTE))" NUMLEVELS = "%sysfunc(sasmsg(sashelp.dmine, rpt_numcat_vlabel, NOQUOTE))" LEVEL =
+21549         "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel, NOQUOTE))" ORDER = "%sysfunc(sasmsg(sashelp.dmine, meta_order_vlabel, NOQUOTE))" LABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel, NOQUOTE))";
+MPRINT(EM_DIAGRAM):   label VARIABLE = "Target" EVENT = "Event" NUMLEVELS = "Number of Levels" LEVEL = "Measurement Level" ORDER = "Order" LABEL = "Label";
+21550      set EMWS1.IDS_CLAIM_IND_DM( where=(_TYPE_="TARGET"));
+MPRINT(EM_DIAGRAM):   set EMWS1.IDS_CLAIM_IND_DM( where=(_TYPE_="TARGET"));
+21551      NumLevels=2;
+MPRINT(EM_DIAGRAM):   NumLevels=2;
+21552      select(upcase(ORDER));
+MPRINT(EM_DIAGRAM):   select(upcase(ORDER));
+21553      when('DESC') ORDER = 'Descending';
+MPRINT(EM_DIAGRAM):   when('DESC') ORDER = 'Descending';
+21554      when('ASC') ORDER = 'Ascending';
+MPRINT(EM_DIAGRAM):   when('ASC') ORDER = 'Ascending';
+21555      when('FMTDESC') ORDER = 'Formatted Descending';
+MPRINT(EM_DIAGRAM):   when('FMTDESC') ORDER = 'Formatted Descending';
+21556      when('FMTASC') ORDER = 'Formatted Ascending';
+MPRINT(EM_DIAGRAM):   when('FMTASC') ORDER = 'Formatted Ascending';
+21557      otherwise ORDER = 'Descending';
+MPRINT(EM_DIAGRAM):   otherwise ORDER = 'Descending';
+21558      end;
+MPRINT(EM_DIAGRAM):   end;
+21559      output;
+MPRINT(EM_DIAGRAM):   output;
+21560      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: There were 1 observations read from the data set EMWS1.IDS_CLAIM_IND_DM.
+      WHERE _TYPE_='TARGET';
+NOTE: The data set WORK.TREE3_EVENT has 1 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+21561      title9 ' ';
+MPRINT(EM_DIAGRAM):   title9 ' ';
+21562      proc print data=WORK.Tree3_EVENT noobs label;
+MPRINT(EM_DIAGRAM):   proc print data=WORK.Tree3_EVENT noobs label;
+21563      var VARIABLE EVENT LEVEL NUMLEVELS ORDER LABEL;
+MPRINT(EM_DIAGRAM):   var VARIABLE EVENT LEVEL NUMLEVELS ORDER LABEL;
+21564      title9 ' ';
+MPRINT(EM_DIAGRAM):   title9 ' ';
+21565      title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_modelEvent_title  , NOQUOTE))";
+MPRINT(EM_DIAGRAM):   title10 "Model Events";
+MPRINT(EM_DIAGRAM):   run;
+21566      run;
+
+NOTE: There were 1 observations read from the data set WORK.TREE3_EVENT.
+NOTE: The PROCEDURE PRINT printed page 2.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+21567      title10;
+MPRINT(EM_DIAGRAM):   title10;
+"No decisions defined for target "CLAIM_IND"." 
+21568      proc print data = EMWS1.Ids_CLAIM_IND_DM noobs label;
+MPRINT(EM_DIAGRAM):    proc print data = EMWS1.Ids_CLAIM_IND_DM noobs label;
+21569      var _type_ variable label;
+MPRINT(EM_DIAGRAM):   var _type_ variable label;
+21570      where _type_ ^in('MATRIX', 'DECISION', 'TRAINPRIOR', 'DATAPRIOR', 'DECPRIOR');
+MPRINT(EM_DIAGRAM):   where _type_ ^in('MATRIX', 'DECISION', 'TRAINPRIOR', 'DATAPRIOR', 'DECPRIOR');
+21571      label _TYPE_ = "%sysfunc(sasmsg(sashelp.dmine, rpt_type_vlabel,     NOQUOTE))" VARIABLE = "%sysfunc(sasmsg(sashelp.dmine, rpt_variable_vlabel, NOQUOTE))" LABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel, NOQUOTE))";
+MPRINT(EM_DIAGRAM):   label _TYPE_ = "Type" VARIABLE = "Variable" LABEL = "Label";
+21572      title9 ' ';
+MPRINT(EM_DIAGRAM):   title9 ' ';
+21573      title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_predDecVars_title  , NOQUOTE))";
+MPRINT(EM_DIAGRAM):   title10 "Predicted and decision variables";
+MPRINT(EM_DIAGRAM):   run;
+21574      run;
+
+NOTE: There were 7 observations read from the data set EMWS1.IDS_CLAIM_IND_DM.
+      WHERE _type_ not in ('DATAPRIOR', 'DECISION', 'DECPRIOR', 'MATRIX', 'TRAINPRIOR');
+NOTE: The PROCEDURE PRINT printed page 3.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+21575      title10;
+MPRINT(EM_DIAGRAM):   title10;
+21576      %let EMEXCEPTIONSTRING=;
+MPRINT(EM_DIAGRAM):     proc datasets lib=work nolist;
+MPRINT(EM_DIAGRAM):   modify CLAIM_IND(type=PROFIT label= CLAIM_IND);
+MPRINT(EM_DIAGRAM):   label DECISION1= "1";
+MPRINT(EM_DIAGRAM):   label DECISION2= "0";
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   quit;
+MPRINT(EM_DIAGRAM):    *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Tree3: Generation of macros and macro variables;
+MPRINT(EM_DIAGRAM):   * To see the code generated, set the EM_DEBUG macro variable to SOURCE or _ALL_;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Tree3: EM Macro Variables and Macros;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------* ;
+MPRINT(EM_DIAGRAM):   * System Macro Variables;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------* ;
+MPRINT(EM_DIAGRAM):   data _null_;
+MPRINT(EM_DIAGRAM):   length string $2000;
+MPRINT(EM_DIAGRAM):   string = 'Automobile Insurance Claim';
+MPRINT(EM_DIAGRAM):   call symput('EM_PROJECTNAME', trim(string));
+MPRINT(EM_DIAGRAM):   string = 'Predictive Modelling';
+MPRINT(EM_DIAGRAM):   call symput('EM_WSNAME', trim(string));
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------* ;
+MPRINT(EM_DIAGRAM):   * Properties Macro Variables ;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------* ;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Files Macro Variables;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Import Macro Variables;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Export Macro Variables;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Decision Macro Variables;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   filename temp catalog 'sashelp.emutil.em_decdata.source';
+MPRINT(EM_DIAGRAM):   filename temp;
+MPRINT(EM_DECDATA):   proc display cat=sashelp.emutil.makedecdata.scl;
+MPRINT(EM_DECDATA):   run;
+MPRINT(EM_DECDATA):   *------------------------------------------------------------*;
+MPRINT(EM_DECDATA):   * Tree3: Create decision matrix;
+MPRINT(EM_DECDATA):   *------------------------------------------------------------*;
+MPRINT(EM_DECDATA):   data WORK.CLAIM_IND;
+MPRINT(EM_DECDATA):   length CLAIM_IND $ 32 COUNT 8 DATAPRIOR 8 TRAINPRIOR 8 DECPRIOR 8 DECISION1 8 DECISION2 8 ;
+MPRINT(EM_DECDATA):   label COUNT= "Level Counts" DATAPRIOR= "Data Proportions" TRAINPRIOR= "Training Proportions" DECPRIOR= "Decision Priors" DECISION1= "1" DECISION2= "0" ;
+MPRINT(EM_DECDATA):   format COUNT 10. ;
+MPRINT(EM_DECDATA):   CLAIM_IND="1";
+MPRINT(EM_DECDATA):   COUNT=2230;
+MPRINT(EM_DECDATA):   DATAPRIOR=0.27063106796116;
+MPRINT(EM_DECDATA):   TRAINPRIOR=0.27063106796116;
+MPRINT(EM_DECDATA):   DECPRIOR=.;
+MPRINT(EM_DECDATA):   DECISION1=1;
+MPRINT(EM_DECDATA):   DECISION2=0;
+MPRINT(EM_DECDATA):   output;
+MPRINT(EM_DECDATA):   CLAIM_IND="0";
+MPRINT(EM_DECDATA):   COUNT=6010;
+MPRINT(EM_DECDATA):   DATAPRIOR=0.72936893203883;
+MPRINT(EM_DECDATA):   TRAINPRIOR=0.72936893203883;
+MPRINT(EM_DECDATA):   DECPRIOR=.;
+MPRINT(EM_DECDATA):   DECISION1=0;
+MPRINT(EM_DECDATA):   DECISION2=1;
+MPRINT(EM_DECDATA):   output;
+MPRINT(EM_DECDATA):   ;
+MPRINT(EM_DECDATA):   run;
+MPRINT(EM_DECDATA):   proc datasets lib=work nolist;
+MPRINT(EM_DECDATA):   modify CLAIM_IND(type=PROFIT label= CLAIM_IND);
+MPRINT(EM_DECDATA):   label DECISION1= '1';
+MPRINT(EM_DECDATA):   label DECISION2= '0';
+MPRINT(EM_DECDATA):   run;
+MPRINT(EM_DECDATA):   quit;
+MPRINT(EM_DECDATA):   
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   proc datasets lib=work nolist;
+MPRINT(EM_DIAGRAM):   modify CLAIM_IND(type=PROFIT label= CLAIM_IND);
+MPRINT(EM_DIAGRAM):   label DECISION1= "1";
+MPRINT(EM_DIAGRAM):   label DECISION2= "0";
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   quit;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Statement Macro Variables;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   data _null_;
+MPRINT(EM_DIAGRAM):   set EMWS1.Ids_EMINFO;
+MPRINT(EM_DIAGRAM):   where key in('HPDMSAMPLE', 'IDSTABLE');
+MPRINT(EM_DIAGRAM):   if key = 'HPDMSAMPLE' then call symput('_ForceGrid', '1');
+MPRINT(EM_DIAGRAM):   else call symput('_IDS_TABLE', DATA);
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(HPDM_PERFORMANCE):  ;
+PERFORMANCE  DETAILS
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Variable Macros;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * General Variable Macros;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Target Variable Macros;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Input Variable Macros;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Rejected Variable Macros;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * Misc Variable Macros;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * End Create EM Macro Variables and Macros;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   data EM_TARGETDECINFO;
+MPRINT(EM_DIAGRAM):   length TARGET $32 DECDATA DECMETA $43;
+MPRINT(EM_DIAGRAM):   TARGET="CLAIM_IND";
+MPRINT(EM_DIAGRAM):   DECDATA="EMWS1.Ids_CLAIM_IND_DD";
+MPRINT(EM_DIAGRAM):   DECMETA="EMWS1.Ids_CLAIM_IND_DM";
+MPRINT(EM_DIAGRAM):   output;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   data EM_TARGETDECINFO;
+MPRINT(EM_DIAGRAM):   length TARGET $32 DECDATA DECMETA $43;
+MPRINT(EM_DIAGRAM):   TARGET="CLAIM_IND";
+MPRINT(EM_DIAGRAM):   DECDATA="EMWS1.Ids_CLAIM_IND_DD";
+MPRINT(EM_DIAGRAM):   DECMETA="EMWS1.Ids_CLAIM_IND_DM";
+MPRINT(EM_DIAGRAM):   output;
+MPRINT(EM_DIAGRAM):   run;
+22108      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):    *------------------------------------------------------------*;
+22109      * Tree3: Generation of macros and macro variables;
+MPRINT(EM_DIAGRAM):   * Tree3: Generation of macros and macro variables;
+22110      * To see the code generated, set the EM_DEBUG macro variable to SOURCE or _ALL_;
+MPRINT(EM_DIAGRAM):   * To see the code generated, set the EM_DEBUG macro variable to SOURCE or _ALL_;
+22111      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+
+22112      %let EMEXCEPTIONSTRING=;
+22113      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):    *------------------------------------------------------------*;
+22114      * TRAIN: Tree3;
+MPRINT(EM_DIAGRAM):   * TRAIN: Tree3;
+22115      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+22116      %let EM_ACTION = TRAIN;
+22117      %let syscc = 0;
+22118      %macro main;
+22119      
+22120        %if %upcase(&EM_ACTION) = CREATE %then %do;
+22121          filename temp catalog 'sashelp.emmodl.tree_create.source';
+22122          %include temp;
+22123          filename temp;
+22124      
+22125          %em_tree_create;
+22126        %end;
+22127      
+22128         %else
+22129         %if %upcase(&EM_ACTION) = TRAIN %then %do;
+22130      
+22131             filename temp catalog 'sashelp.emmodl.tree_train.source';
+22132             %include temp;
+22133             filename temp;
+22134             %em_tree_train;
+22135         %end;
+22136      
+22137        %else
+22138        %if %upcase(&EM_ACTION) = SCORE %then %do;
+22139          filename temp catalog 'sashelp.emmodl.tree_score.source';
+22140          %include temp;
+22141          filename temp;
+22142      
+22143          %em_tree_score;
+22144      
+22145        %end;
+22146      
+22147        %else
+22148        %if %upcase(&EM_ACTION) = REPORT %then %do;
+22149      
+22150             filename temp catalog 'sashelp.emmodl.tree_report.source';
+22151             %include temp;
+22152             filename temp;
+22153      
+22154             %em_tree_report;
+22155         %end;
+22156      
+22157        %else
+22158        %if %upcase(&EM_ACTION) = OPENINT %then %do;
+22159      
+22160             filename temp catalog 'sashelp.emmodl.tree_actions.source';
+22161             %include temp;
+22162             filename temp;
+22163             %EM_TREE_OPENTREEVIEWER;
+22164      
+22165         %end;
+22166      
+22167        %else
+22168        %if %upcase(&EM_ACTION) = CLOSEINT %then %do;
+22169      
+22170             filename temp catalog 'sashelp.emmodl.tree_actions.source';
+22171             %include temp;
+22172             filename temp;
+22173             %EM_TREE_CLOSETREEVIEWER;
+22174      
+22175         %end;
+22176      
+22177      
+22178         %doendm:
+22179      %mend main;
+22180      
+22181      %main;
+MPRINT(EM_DIAGRAM):    
+MPRINT(MAIN):   filename temp catalog 'sashelp.emmodl.tree_train.source';
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMMODL.TREE_TRAIN.SOURCE.
+22183     +%macro em_tree_train;
+22185     +   %if &EM_IMPORT_DATA eq %then %do;
+22186     +       %let EMEXCEPTIONSTRING = exception.server.IMPORT.NOTRAIN,1;
+22187     +       %put &em_codebar;
+22188     +       %let errormsg = %sysfunc(sasmsg(sashelp.dmine, error_nodeTrainRawData_note, NOQUOTE));
+22189     +       %put &errormsg;
+22190     +       %put &em_codebar;
+22191     +       %goto doendm;
+22192     +   %end;
+22193     +   %else
+22194     +       %let EMEXCEPTIONSTRING =;
+22196     +   %if  &EM_NUM_TARGET lt 1 %then %do;
+22197     +        %let EMEXCEPTIONSTRING = exception.server.USE1TARGET;
+22198     +        %put &em_codebar;
+22199     +        %let errormsg = %sysfunc(sasmsg(sashelp.dmine, metadata.use01target_err, NOQUOTE));
+22200     +        %put &errormsg;
+22201     +        %put &em_codebar;
+22202     +        %goto doendm;
+22203     +   %end;
+22205     +   %if  (&EM_NUM_INTERVAL_INPUT < 1) and (&EM_NUM_BINARY_INPUT < 1) and (&EM_NUM_ORDINAL_INPUT < 1)
+22206     +        and (&EM_NUM_NOMINAL_INPUT < 1) and (&EM_NUM_INTERVAL_REJECTED < 1) and (&EM_NUM_BINARY_REJECTED <1)
+22207     +        and (&EM_NUM_ORDINAL_REJECTED < 1) and (&EM_NUM_NOMINAL_REJECTED < 1) %then %do;
+22208     +        %let EMEXCEPTIONSTRING = exception.server.USEATLEAST1INPUTREJECT;
+22209     +        %put &em_codebar;
+22210     +        %let errormsg = %sysfunc(sasmsg(sashelp.dmine, error_noInput_note, NOQUOTE));
+22211     +        %put &errormsg;
+22212     +        %put &em_codebar;
+22213     +        %goto doendm;
+22214     +   %end;
+22216     +   /* Initialize property macro variables */
+22217     +   filename temp catalog 'sashelp.emmodl.tree_macros.source';
+22218     +   %include temp;
+22219     +   filename temp;
+22221     +   %EM_SetProperties;
+22223     +   /* need to delete EMTREE if not used as import tree data since AUTODELETE=N */
+22224     +   %EM_GETNAME(key=EMTREE, type=DATA);
+22225     +   %if "&EM_PROPERTY_IMPORTMODEL" eq "Y" %then %do;
+22226     +     /* if import eq Y and no importtable defined, throw an exception */
+22227     +      %if %length(&EM_PROPERTY_ImportedTreeData)=0 %then %do;
+22228     +         %let EMEXCEPTIONSTRING = exception.server.EMTOOL.NOTREEMODELDATASET;
+22229     +         %let  errmsg = %sysfunc(sasmsg(sashelp.dmine, NOTREEMODELDATASET_ERR , NOQUOTE));
+22230     +         %put &em_codebar;
+22231     +         %put &errmsg;
+22232     +         %put &em_codebar;
+22233     +         %goto doendm;
+22234     +      %end;
+22235     +      %else %if %sysfunc(exist(&EM_PROPERTY_ImportedTreeData))=0 %then %do;
+22236     +         %let EMEXCEPTIONSTRING = exception.server.EMTOOL.INVALIDTREEMODELDATASET;
+22237     +         %put &em_codebar;
+22238     +         %let errormsg = %sysfunc(sasmsg(sashelp.dmine, emtool.INVALIDTREEMODELDATASET_ERR, NOQUOTE));
+22239     +         %put &errormsg;
+22240     +         %put &em_codebar;
+22241     +         %goto doendm;
+22242     +      %end;
+22243     +      %else %do;
+22244     +         %let dsid=%sysfunc(open(&EM_PROPERTY_ImportedTreeData));
+22245     +         %let varnumID = %sysfunc(varnum(&dsid,ID));
+22246     +         %let varnumLabel = %sysfunc(varnum(&dsid,LABEL));
+22247     +         %let varnumX = %sysfunc(varnum(&dsid,X));
+22248     +         %let varnumY = %sysfunc(varnum(&dsid,Y));
+22249     +         %let dsid = %sysfunc(close(&dsid));
+22250     +         %if &varnumID=0 or &varnumLabel=0 or &varnumX=0 or &varnumY=0 %then %do;
+22251     +            %let EMEXCEPTIONSTRING = exception.server.EMTOOL.INVALIDTREEMODELDATASET;
+22252     +            %put &em_codebar;
+22253     +            %let errormsg = %sysfunc(sasmsg(sashelp.dmine, emtool.INVALIDTREEMODELDATASET_ERR, NOQUOTE));
+22254     +            %put &errormsg;
+22255     +            %put &em_codebar;
+22256     +            %goto doendm;
+22257     +         %end;
+22258     +      %end;
+22259     +      %if %qupcase(&EM_USER_EMTREE) ne %qupcase(&EM_PROPERTY_ImportedTreeData) and (%sysfunc(exist(&EM_USER_EMTREE)) or %sysfunc(exist(&EM_USER_EMTREE, VIEW))) %then %do;
+22260     +         proc delete data=&EM_USER_EMTREE;
+22261     +         run;
+22262     +      %end;
+22263     +   %end;
+22264     +   %else %if "&EM_PROPERTY_FREEZE" ne "Y" and (%sysfunc(exist(&EM_USER_EMTREE)) or %sysfunc(exist(&EM_USER_EMTREE, VIEW))) %then %do;
+22265     +      proc delete data=&EM_USER_EMTREE;
+22266     +      run;
+22267     +   %end;
+22269     +   /* load tree macros */
+22270     +   filename temp catalog 'sashelp.emmodl.tree_trainmacros.source';
+22271     +   %include temp;
+22272     +   filename temp;
+22274     +   /* data sets */
+22275     +   %EM_GETNAME(key=OUTSTATS,   type=DATA);
+22276     +   %EM_GETNAME(key=EXPORTTREE, type=DATA);
+22277     +   %EM_GETNAME(key=TREE_PLOT,     type=DATA);
+22279     +   /* files */
+22280     +   %EM_REGISTER(key=ENGLISHRULES, type=FILE, extension=txt);
+22282     +   /* check actual num of target levels */
+22283     +   %if ("%EM_TARGET_LEVEL" eq "BINARY") %then %do;
+22284     +      %EM_CheckBinaryTargetLevel(indata=&EM_IMPORT_DATA, target=%EM_TARGET,
+22285     +                              nLevel=_nTargetLevel );
+22286     +      %if &_nTargetLevel  > 2 %then %do;
+22287     +        %let EMEXCEPTIONSTRING = exception.server.METADATA.WRONGTARGETLEVEL,&target_Var;
+22288     +        %put &em_codebar;
+22289     +        %let errormsg = %sysfunc(sasmsg(sashelp.dmine, metadata.wrongtargetlevel, NOQUOTE));
+22290     +        %put &errormsg;
+22291     +        %put &em_codebar;
+22292     +        %goto doendm;
+22293     +      %end;
+22294     +   %end;
+22296     +   /* neither cost variables nor constant cost are valid with USEDECISIONS */
+22297     +   %if "&EM_PROPERTY_USEDECISION" eq "Y" %then %do;
+22298     +     %if %sysfunc(exist(&EM_DEC_DECMETA)) %then %do;
+22299     +        %let costflag=0;
+22300     +        data _null_;
+22301     +          set &EM_DEC_DECMETA(where=(_TYPE_="DECISION" AND USE="Y" AND ^missing(COST) )) end=eof;
+22302     +          if eof then call symput("costflag", _N_);
+22303     +        run;
+22304     +        %if &costflag gt 0 %then %do;
+22305     +          %let EMEXCEPTIONSTRING = exception.server.TREE.INVALIDDECISION;
+22306     +          %put &em_codebar;
+22307     +          %let errormsg = %sysfunc(sasmsg(sashelp.dmine, costnotvalidwithusedecisions_note_err, NOQUOTE));
+22308     +          %put &errormsg;
+22309     +          %put &em_codebar;
+22310     +          %goto doendm;
+22311     +       %end;
+22312     +     %end;
+22313     +   %end;
+22315     +   /* determine if multiple targets will be processed */
+22316     +   %let em_tree_multipleTargets=N;
+22317     +   %let em_tree_numTarget = 1;
+22318     +   %let em_tree_targetVars=;
+22320     +   %if "&EM_PROPERTY_USEMULTIPLETARGET" eq "Y" %then %do;
+22321     +      /* determine if there are any ordinal target variables - if so, multiple targets are not supported */
+22322     +      %if &EM_NUM_ORDINAL_TARGET gt 0 %then %do;
+22323     +         %let em_tree_multipleTargets=N;
+22324     +      %end;
+22325     +      %else %do;
+22326     +         /* create macro array of targets  */
+22327     +         data _null_;
+22328     +           set &EM_DATA_VARIABLESET(where=(ROLE='TARGET' AND LEVEL^='ORDINAL')) end=eof;
+22329     +           call symput('em_tree_targetVars'!!strip(put(_N_, BEST.)), strip(Name));
+22330     +           if eof then
+22331     +             call symput('em_tree_numTarget', strip(put(_N_, BEST.)));
+22332     +        run;
+22334     +        %if &em_tree_numTarget gt 1 %then %do;
+22335     +           %let em_tree_multipleTargets=Y;
+22336     +        %end;
+22337     +      %end;
+22338     +   %end;
+22340     +   /* create view of only necessary variable for performance reasons */
+22341     +   %let tempData = &EM_LIB..em_&EM_NODEID;
+22342     +   data &tempData / view=&tempData;
+22343     +     set &EM_IMPORT_DATA (keep=%EM_INPUT %EM_REJECTED %EM_TARGET %EM_FREQ %EM_COST
+22344     +     %if "&em_tree_multipleTargets" eq "N" %then %do;
+22345     +       %EM_TARGET
+22346     +     %end;
+22347     +     %else %do;
+22348     +       %if &em_tree_numTarget ne 0 %then %do;
+22349     +         %do i=1 %to &em_tree_numTarget;
+22350     +            &&em_tree_targetVars&i
+22351     +         %end;
+22352     +       %end;
+22353     +     %end;
+22354     +     );
+22355     +   run;
+22357     +   /* run Tree procedure */
+22358     +   %em_tree_runTreeProcedure(indata=&tempData, multipleTar=&em_tree_multipleTargets);
+22360     +   /* Check return code and throw exception if error is detected */
+22361     +   %if %length(&EMEXCEPTIONSTRING) %then %goto doendm;
+22362     +   %if &syserr %then %do;
+22363     +     %let EMEXCEPTIONSTRING = exception.server.EMTOOL.GENERICRUNTIMEEXCEPTION;
+22364     +     %goto doendm;
+22365     +   %end;
+22367     +   /* add decision score code if multiple targets are processed */
+22368     +   %if "&em_tree_multipleTargets" eq "Y" %then %do;
+22369     +     %EM_MODEL(TARGET=%EM_TARGET, DECSCORECODE=Y, CLASSIFICATION=Y, FITSTATISTICS=N);
+22370     +   %end;
+22372     +   /* create outfit dataset if multiple score statements have been executed */
+22373     +   %em_tree_createFitStats(multipleTar=&em_tree_multipleTargets);
+22375     +   /* create English Rules */
+22376     +   filename X "&EM_USER_ENGLISHRULES" encoding='utf-8' NOBOM;
+22377     +     %if "&em_Tree_multipleTargets" eq "N" %then %do;
+22378     +       %em_tree_makeEnglishRules;
+22380     +       /* English Rules */
+22381     +       %EM_REPORT(key=ENGLISHRULES, viewtype=SOURCE, block=MODEL, description=ENGLISHRULES, autodisplay=N);
+22383     +     %end;
+22384     +   filename x;
+22386     +   %doendm:
+22387     +%mend em_tree_train;
+NOTE: %INCLUDE (level 1) ending.
+MPRINT(MAIN):   filename temp;
+NOTE: Fileref TEMP has been deassigned.
+MPRINT(EM_TREE_TRAIN):   filename temp catalog 'sashelp.emmodl.tree_macros.source';
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMMODL.TREE_MACROS.SOURCE.
+22388     +%macro EM_SetProperties;
+22390     +   /* train properties */
+22391     +   %em_checkmacro(name=EM_PROPERTY_ImportModel,            value=N, global=Y);
+22392     +   %em_checkmacro(name=EM_PROPERTY_ImportedTreeData,       value=, global=Y);
+22393     +   %em_checkmacro(name=EM_PROPERTY_FREEZE,                 value=N, global=Y);
+22394     +   %em_checkmacro(name=EM_PROPERTY_USEMULTIPLETARGET,      value=N, global=Y);
+22395     +   %em_checkmacro(name=EM_PROPERTY_NOMINALCRITERION,       value=PROBCHISQ, global=Y);
+22396     +   %em_checkmacro(name=EM_PROPERTY_ORDINALCRITERION,       value=ENTROPY, global=Y);
+22397     +   %em_checkmacro(name=EM_PROPERTY_INTERVALCRITERION,      value=PROBF, global=Y);
+22398     +   %em_checkmacro(name=EM_PROPERTY_CRITERION,              value=DEFAULT, global=Y);
+22399     +   %em_checkmacro(name=EM_PROPERTY_SIGLEVEL,               value=0.2, global=Y);
+22400     +   %em_checkmacro(name=EM_PROPERTY_SPLITSIZE,              value=., global=Y);
+22401     +   %em_checkmacro(name=EM_PROPERTY_LEAFSIZE,               value=5, global=Y);
+22402     +   %em_checkmacro(name=EM_PROPERTY_MINCATSIZE,             value=5, global=Y);
+22403     +   %em_checkmacro(name=EM_PROPERTY_MAXBRANCH,              value=2, global=Y);
+22404     +   %em_checkmacro(name=EM_PROPERTY_MAXDEPTH,               value=6, global=Y);
+22405     +   %em_checkmacro(name=EM_PROPERTY_NRULES,                 value=5, global=Y);
+22406     +   %em_checkmacro(name=EM_PROPERTY_NSURRS,                 value=0, global=Y);
+22407     +   %em_checkmacro(name=EM_PROPERTY_MISSINGVALUE,           value=USEINSEARCH, global=Y);
+22408     +   %em_checkmacro(name=EM_PROPERTY_USEVARONCE,             value=N, global=Y);
+22409     +   %em_checkmacro(name=EM_PROPERTY_SUBTREE,                value=ASSESSMENT, global=Y);
+22410     +   %em_checkmacro(name=EM_PROPERTY_NSUBTREE,               value=1, global=Y);
+22411     +   %em_checkmacro(name=EM_PROPERTY_ASSESSMEASURE,          value=PROFIT/LOSS, global=Y);
+22412     +   %em_checkmacro(name=EM_PROPERTY_ASSESSPERCENTAGE,       value=0.25, global=Y);
+22413     +   %em_checkmacro(name=EM_PROPERTY_NODESAMPLE,             value=20000, global=Y);
+22414     +   %em_checkmacro(name=EM_PROPERTY_EXHAUSTIVE,             value=5000, global=Y);
+22415     +   %em_checkmacro(name=EM_PROPERTY_USEDECISION,            value=N, global=Y);
+22416     +   %em_checkmacro(name=EM_PROPERTY_USEPRIORS,              value=N, global=Y);
+22417     +   %em_checkmacro(name=EM_PROPERTY_KASS,                   value=Y, global=Y);
+22418     +   %em_checkmacro(name=EM_PROPERTY_KASSAPPLY,              value=BEFORE, global=Y);
+22419     +   %em_checkmacro(name=EM_PROPERTY_DEPTH,                  value=Y, global=Y);
+22420     +   %em_checkmacro(name=EM_PROPERTY_INPUTS,                 value=N, global=Y);
+22421     +   %em_checkmacro(name=EM_PROPERTY_NUMINPUTS,              value=1, global=Y);
+22422     +   %em_checkmacro(name=EM_PROPERTY_DUMMY,                  value=N, global=Y);
+22423     +   %em_checkmacro(name=EM_PROPERTY_LEAFID,                 value=Y, global=Y);
+22424     +   %em_checkmacro(name=EM_PROPERTY_PREDICT,                value=Y, global=Y);
+22425     +   %em_checkmacro(name=EM_PROPERTY_PERFORMANCE,            value=DISK, global=Y);
+22426     +   %em_checkmacro(name=EM_PROPERTY_CV,                     value=N, global=Y);
+22427     +   %em_checkmacro(name=EM_PROPERTY_CVNITER,                value=10, global=Y);
+22428     +   %em_checkmacro(name=EM_PROPERTY_CVREPEAT,               value=1, global=Y);
+22429     +   %em_checkmacro(name=EM_PROPERTY_CVSEED,                 value=12345, global=Y);
+22430     +   %em_checkmacro(name=EM_PROPERTY_OBSIMPORTANCE,          value=N, global=Y);
+22431     +   %em_checkmacro(name=EM_PROPERTY_NUMSINGLEIMP,           value=5, global=Y);
+22433     +   /* properties for interactive sample */
+22434     +   %em_checkmacro(name=EM_PROPERTY_CREATESAMPLE,           value=DEFAULT, global=Y);
+22435     +   %em_checkmacro(name=EM_PROPERTY_SAMPLEMETHOD,           value=RANDOM, global=Y);
+22436     +   %em_checkmacro(name=EM_PROPERTY_SAMPLESIZE,             value=10000, global=Y);
+22437     +   %em_checkmacro(name=EM_PROPERTY_SAMPLESEED,             value=12345, global=Y);
+22439     +   /* report properties */
+22440     +   %em_checkmacro(name=EM_PROPERTY_PRECISION,              value=4, global=Y);
+22441     +   %em_checkmacro(name=EM_PROPERTY_SPLITPRECISION,         value=4, global=Y);
+22442     +   %em_checkmacro(name=EM_PROPERTY_CLASSCOLORBY,           value=PERCENTEVEN, global=Y);
+22443     +   %em_checkmacro(name=EM_PROPERTY_INTCOLORBY,             value=AVG, global=Y);
+22444     +   %em_checkmacro(name=EM_PROPERTY_SHOWNODEID,             value=Y, global=Y);
+22445     +   %em_checkmacro(name=EM_PROPERTY_SHOWVALID,              value=Y, global=Y);
+22446     +   %em_checkmacro(name=EM_PROPERTY_PRED,                   value=N, global=Y);
+22447     +   %em_checkmacro(name=EM_PROPERTY_TARGET,                 value=ALL, global=Y);
+22448     +   %em_checkmacro(name=EM_PROPERTY_COUNT,                  value=Y, global=Y);
+22449     +   %em_checkmacro(name=EM_PROPERTY_PERCENTCORRECT,         value=N, global=Y);
+22450     +   %em_checkmacro(name=EM_PROPERTY_PROFITLOSS,             value=NONE, global=Y);
+22451     +   %em_checkmacro(name=EM_PROPERTY_AVG,                    value=Y, global=Y);
+22452     +   %em_checkmacro(name=EM_PROPERTY_RASE,                   value=N, global=Y);
+22454     +   /* score properties */
+22455     +   %em_checkmacro(name=EM_PROPERTY_VARSELECTION,           value=Y, global=Y);
+22456     +   %em_checkmacro(name=EM_PROPERTY_NODEROLE,               value=SEGMENT, global=Y);
+22458     +%mend EM_SetProperties;
+NOTE: %INCLUDE (level 1) ending.
+MPRINT(EM_TREE_TRAIN):   filename temp;
+NOTE: Fileref TEMP has been deassigned.
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_SETPROPERTIES):  ;
+MPRINT(EM_TREE_TRAIN):  ;
+MPRINT(EM_TREE_TRAIN):  ;
+MPRINT(EM_TREE_TRAIN):   proc delete data=EMWS1.Tree3_EMTREE;
+MPRINT(EM_TREE_TRAIN):   run;
+
+NOTE: Deleting EMWS1.TREE3_EMTREE (memtype=DATA).
+NOTE: PROCEDURE DELETE used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_TRAIN):   filename temp catalog 'sashelp.emmodl.tree_trainmacros.source';
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMMODL.TREE_TRAINMACROS.SOURCE.
+22460     +%Macro EM_CheckBinaryTargetLevel(indata=, target=,  nLevel= );
+22461     +  %global &nLevel;
+22462     +  proc dmdb batch data=&indata
+22463     +    classout=_tmp_dmdbout;
+22464     +    class &target;
+22465     +  run;
+22466     +  data _tmp_dmdbout;
+22467     +    set _tmp_dmdbout;
+22468     +    if strip(TYPE) = 'N' and  strip(LEVEL) = '.' then delete;
+22469     +    if strip(TYPE) = 'C' and  strip(LEVEL) = '' then delete;
+22470     +  run;
+22471     +  data _null_;
+22472     +    %let dsid = %sysfunc(open(work._tmp_dmdbout));
+22473     +    %let _obs = %sysfunc(attrn(&dsid, NOBS));
+22474     +    %let dsid = %sysfunc(close(&dsid));
+22475     +     call symput("&nLevel", put(&_obs, Best12.));
+22476     +  run;
+22478     +  proc datasets lib=work nolist;
+22479     +     delete _tmp_dmdbout;
+22480     +  run;
+22481     +  quit;
+22482     +%Mend EM_CheckBinaryTargetLevel;
+22485     +%macro em_tree_runTreeProcedure(indata= , multipleTar= , intFlag= );
+22487     +  /* determine the number of obs in training data */
+22488     +  proc sql;
+22489     +    reset noprint;
+22490     +    select count(*) into :em_nobs from &indata;
+22491     +  quit;
+22493     +  /* determine the number of input variables */
+22494     +  %let numinputs = %eval(&EM_NUM_BINARY_INPUT + &EM_NUM_NOMINAL_INPUT + &EM_NUM_ORDINAL_INPUT + &EM_NUM_INTERVAL_INPUT+
+22495     +                         &EM_NUM_BINARY_REJECTED + &EM_NUM_NOMINAL_REJECTED + &EM_NUM_ORDINAL_REJECTED + &EM_NUM_INTERVAL_REJECTED);
+22497     +  /* retrieve targetEvent from decmeta */
+22498     +  %let targetEvent=;
+22499     +  %if "%EM_TARGET_LEVEL" ne "INTERVAL" %then %do;
+22500     +    %if %sysfunc(exist(&EM_DEC_DECMETA)) %then %do;
+22501     +      data _null_;
+22502     +       set &EM_DEC_DECMETA(where=(_TYPE_="TARGET"));
+22503     +       call symput('targetEvent', strip(tranwrd(EVENT,'"','""')));
+22504     +      run;
+22505     +    %end;
+22506     +  %end;
+22508     +  /* create targetTable if multipleTar eq Y */
+22509     +  data temptarget;
+22510     +    set &EM_DATA_VARIABLESET;
+22511     +    where ROLE="TARGET" AND LEVEL^="ORDINAL";
+22512     +  run;
+22514     + /* data sets */
+22515     + %EM_GETNAME(key=OUTSTATS,      type=DATA);
+22516     + %EM_GETNAME(key=EMTREE,        type=DATA);
+22517     + %EM_GETNAME(key=OUTOBSIMP,     type=DATA);
+22518     + %EM_GETNAME(key=OUTSEQ,        type=DATA);
+22519     + %EM_GETNAME(key=OUTIMPORT,     type=DATA);
+22520     + %EM_GETNAME(key=OUTNODES,      type=DATA);
+22521     + %EM_GETNAME(key=OUTSUMMARY,    type=DATA);
+22522     + %EM_GETNAME(key=OUTTOPOLOGY,   type=DATA);
+22523     + %EM_GETNAME(key=OUTPATH,       type=DATA);
+22524     + %EM_GETNAME(key=OUTRULES,      type=DATA);
+22526     + /* files */
+22527     + %EM_GETNAME(key=TREEFLOW, type=FILE, extension=sas);
+22528     + %EM_GETNAME(key=TREEPUBLISH, type=FILE, extension=sas);
+22530     + /* turn on pmml if requested */
+22531     + %let nnpmml=0;
+22532     + %if %symexist(EM_PMML) %then %do;
+22533     +    %if %upcase(&EM_PMML)=Y or %upcase(&EM_PMML)=YES %then %do;
+22534     +       %let nnpmml=1;
+22536     +       ods pmml file="&EM_FILE_EMPMML" encoding="UTF-8";
+22537     +%end;
+22539     + %let numClassTarget = %sysevalf(&EM_NUM_BINARY_TARGET + &EM_NUM_NOMINAL_TARGET + &EM_NUM_ORDINAL_TARGET);
+22541     + %if &nnpmml or &numClassTarget %then %do;
+22543     +       /* create dmdb needed for pmml generation */
+22544     +       %let tree_maxlevel = 512;
+22545     +       %if %symexist(EM_TRAIN_MAXLEVELS) %then %do;
+22546     +         %if &EM_TRAIN_MAXLEVELS ne %then %do;
+22547     +           %let tree_maxlevel = &EM_TRAIN_MAXLEVELS;
+22548     +         %end;
+22549     +       %end;
+22550     +       %if &tree_maxlevel gt 0 %then %do;
+22551     +           %let tree_maxlevel=%sysevalf(&tree_maxlevel+1);
+22552     +          %let tree_maxlevel=%sysfunc(max(3, &tree_maxlevel ));
+22553     +       %end;
+22555     +       %let targetOrderString =;
+22556     +       %let targetString = ;
+22557     +       data _null_;
+22558     +          length orderString nameString $10000;
+22559     +          retain orderString nameString;
+22560     +          set &em_data_variableset end=eof;
+22561     +          %if "&EM_PROPERTY_USEMULTIPLETARGET" eq "Y" and ^&em_num_ordinal_target %then %do;
+22562     +              where ROLE="TARGET" and LEVEL in("BINARY", "NOMINAL");
+22563     +          %end;
+22564     +          %else %do;
+22565     +              where ROLE="TARGET" and LEVEL in("BINARY", "NOMINAL", "ORDINAL") and USE ='Y';
+22566     +          %end;          select(order);
+22567     +            when('')        order ='DESC';
+22568     +            when('FMTASC')  order='ASCFMT';
+22569     +            when('FMTDESC') order='DESFMT';
+22570     +            otherwise;
+22571     +          end;
+22572     +          orderString = trim(orderString)!!' '!!trim(NAME)!!'('!!trim(order)!!')';
+22573     +          nameString = trim(nameString)!!' '!!trim(NAME);
+22575     +          if eof then do;
+22576     +             call symput('targetOrderString', trim(orderString));
+22577     +             call symput('targetString', trim(nameString));
+22578     +          end;
+22579     +       run;
+22581     +       %let arborkluge= "work._treeDMDB";
+22583     +       proc dmdb batch data=&indata
+22584     +       %if &nnpmml %then %do;
+22585     +           PMML
+22586     +       %end;
+22587     +        dmdbcat=_treeDMDB classout=classout varout=varout maxlevel=&tree_maxlevel;
+22590     +   %if &nnpmml %then %do;
+22591     +        %if "%EM_ID" ne "" %then %do;
+22592     +          id %EM_ID;
+22593     +        %end;
+22594     +        %if &EM_NUM_CLASS gt 0 %then %do;
+22595     +          class %EM_BINARY_INPUT %EM_NOMINAL_INPUT %EM_ORDINAL_INPUT
+22596     +               %EM_BINARY_REJECTED %EM_NOMINAL_REJECTED %EM_ORDINAL_REJECTED
+22597     +               &targetOrderString;
+22598     +        %end;
+22599     +        %if &EM_NUM_INTERVAL gt 0 %then %do;
+22600     +          var %EM_INTERVAL;
+22601     +        %end;
+22602     +        target &targetString %EM_INTERVAL_TARGET;
+22603     +        %if "%EM_FREQ" ne "" %then %do;
+22604     +          freq %EM_FREQ;
+22605     +        %end;
+22606     +  %end;
+22607     +  %else %do;
+22608     +      class  &targetOrderString;
+22609     +      target &targetString %EM_INTERVAL_TARGET;
+22610     +  %end;
+22611     +       run;
+22612     +       quit;
+22614     +       proc datasets lib=work nolist;
+22615     +          delete classout varout;
+22616     +       run;
+22617     +       quit;
+22619     +    %end;
+22620     + %end;
+22622     + /* run Arbor procedure */
+22623     + %if "&EM_PROPERTY_FREEZE" eq "N" and "&EM_PROPERTY_IMPORTMODEL" eq "N" %then %do;
+22624     +  proc arbor data=&INDATA
+22626     +  %if "&EM_PROPERTY_LEAFSIZE" ne "" %then %do;
+22627     +    Leafsize = &EM_PROPERTY_LEAFSIZE
+22628     +  %end;
+22630     +  %if (("&EM_PROPERTY_SPLITSIZE" ne ".") AND (&EM_PROPERTY_SPLITSIZE lt &em_nobs)) %then %do;
+22631     +    Splitsize = &EM_PROPERTY_SPLITSIZE
+22632     +  %end;
+22634     +  %if "&EM_PROPERTY_MINCATSIZE" ne "" %then %do;
+22635     +    MinCatSize = &EM_PROPERTY_MINCATSIZE
+22636     +  %end;
+22638     +  %if "&EM_PROPERTY_MAXBRANCH" ne "" %then %do;
+22639     +    MaxBranch = &EM_PROPERTY_MAXBRANCH
+22640     +  %end;
+22642     +  %if "&EM_PROPERTY_MAXDEPTH" ne "" %then %do;
+22643     +    MaxDepth = &EM_PROPERTY_MAXDEPTH
+22644     +  %end;
+22646     +  %if (("%EM_TARGET_LEVEL" eq "NOMINAL") OR ("%EM_TARGET_LEVEL" eq "BINARY")) %then %do;
+22647     +    %let Criterion = &EM_PROPERTY_NOMINALCRITERION;
+22648     +  %end;
+22649     +  %else %if "%EM_TARGET_LEVEL" eq "ORDINAL" %then %do;
+22650     +    %let Criterion = &EM_PROPERTY_ORDINALCRITERION;
+22651     +  %end;
+22652     +  %else %if "%EM_TARGET_LEVEL" eq "INTERVAL" %then %do;
+22653     +    %let Criterion = &EM_PROPERTY_INTERVALCRITERION;
+22654     +  %end;
+22656     +  %if (("&criterion" eq "PROBCHISQ") or ("&criterion" eq "PROBF")) %then %do;
+22657     +    %if "&EM_PROPERTY_SIGLEVEL" ne "" %then %do;
+22658     +      alpha = &EM_PROPERTY_SIGLEVEL
+22659     +    %end;
+22660     +  %end;
+22662     +  %if (("&EM_PROPERTY_KASS" eq "Y") OR ("&EM_PROPERTY_DEPTH" eq "Y") or ("&EM_PROPERTY_INPUTS" eq "Y")) %then %do;
+22663     +    %if (("&Criterion" eq "PROBCHISQ") OR ("&Criterion" eq "PROBF") OR ("&Criterion" eq "DEFAULT")) %then %do;
+22664     +      %if (("&EM_PROPERTY_KASS" eq "Y") or ("&EM_PROPERTY_DEPTH" eq "Y")) %then %do;
+22665     +        %if "&EM_PROPERTY_KASSAPPLY" eq "BEFORE" %then %let chaid = CHAIDBEFORE;
+22666     +        %else %if "&EM_PROPERTY_KASSAPPLY" eq "AFTER" %then %let chaid = CHAIDAFTER;
+22668     +        padjust =
+22669     +        %if "&EM_PROPERTY_KASS" eq "Y" %then %do;
+22670     +          &chaid
+22671     +        %end;
+22672     +        %if "&EM_PROPERTY_DEPTH" eq "Y" %then %do;
+22673     +          DEPTH
+22674     +        %end;
+22675     +      %end;
+22676     +      %if "&EM_PROPERTY_INPUTS" eq "Y" %then %do;
+22677     +         %let num_inputs = %sysfunc(min(&numinputs, &EM_PROPERTY_NUMINPUTS));
+22678     +         pvars = &num_inputs
+22679     +      %end;
+22680     +    %end;
+22681     +  %end;
+22682     +  %else %do;
+22683     +      %if (("&Criterion" eq "PROBCHISQ") OR ("&Criterion" eq "PROBF") OR ("&Criterion" eq "DEFAULT")) %then %do;
+22684     +         padjust = NONE
+22685     +      %end;
+22686     +  %end;
+22688     +  %if "&EM_PROPERTY_NRULES" ne "" %then %do;
+22689     +    %let num_nrules = %sysfunc(min(&numinputs, &EM_PROPERTY_NRULES));
+22690     +    Maxrules = &num_nrules
+22691     +  %end;
+22693     +  %if "&EM_PROPERTY_NSURRS" ne "" %then %do;
+22694     +    %let num_nsurrs = %sysfunc(min((&numinputs-1), &EM_PROPERTY_NSURRS));
+22695     +    Maxsurrs = &num_nsurrs
+22696     +  %end;
+22698     +  %if "&EM_PROPERTY_MISSINGVALUE" ne "" %then %do;
+22699     +     Missing=&EM_PROPERTY_MISSINGVALUE
+22700     +  %end;
+22702     +  %if "&EM_PROPERTY_USEVARONCE" eq "Y" %then %do;
+22703     +     USEVARONCE
+22704     +  %end;
+22706     +  %if "&EM_PROPERTY_EXHAUSTIVE" ne "" %then %do;
+22707     +    Exhaustive=&EM_PROPERTY_EXHAUSTIVE
+22708     +  %end;
+22711     +  %if (("&multipleTar" eq "N") AND ("%EM_TARGET_LEVEL" ne "INTERVAL")) %then %do;
+22712     +    event = "&targetEvent"
+22713     +  %end;
+22715     +  %if "&EM_PROPERTY_USEDECISION" eq "Y" %then %do;
+22716     +     DECSEARCH
+22717     +  %end;
+22719     +  %if "&EM_PROPERTY_USEPRIORS" eq "Y" %then %do;
+22720     +     PRIORSSEARCH
+22721     +  %end;
+22723     +  %if &arbor_1 ne %then %do;
+22724     +    &arbor_1
+22725     +  %end;
+22727     +  %if &em_arbor ne %then %do;
+22728     +     &em_arbor
+22729     +  %end;
+22730     +  ;
+22731     + %end;
+22732     + %else %if "&EM_PROPERTY_IMPORTMODEL" eq "Y"  %then %do;
+22733     +     proc arbor data=&INDATA inmodel=&EM_PROPERTY_ImportedTreeData refreshtrain;
+22734     +       interact;
+22735     + %end;
+22736     + %else %if "&EM_PROPERTY_FREEZE" eq "Y" %then %do;
+22737     +   %if %sysfunc(exist(&EM_USER_EMTREE)) ne 1 %then %do;
+22738     +    %let EMEXCEPTIONSTRING = exception.server.EMTOOL.NOTREEDATASET;
+22739     +    %put &em_codebar;
+22740     +    %let errormsg = %sysfunc(sasmsg(sashelp.dmine, emtool.notreedataset_err, NOQUOTE));
+22741     +    %put &errormsg;
+22742     +    %put &em_codebar;
+22743     +    %goto doendm;
+22744     +   %end;
+22745     +   %else %do;
+22746     +     proc arbor data=&INDATA inmodel=&EM_USER_EMTREE refreshtrain;
+22747     +       interact;
+22748     +   %end;
+22749     + %end;
+22751     + %else %do;
+22752     +   %if %sysfunc(exist(&EM_USER_BROWSETREE)) ne 1 %then %do;
+22753     +    %let EMEXCEPTIONSTRING = exception.server.EMTOOL.NOTREEDATASET;
+22754     +    %put &em_codebar;
+22755     +    %let errormsg = %sysfunc(sasmsg(sashelp.dmine, emtool.notreedataset_err, NOQUOTE));
+22756     +    %put &errormsg;
+22757     +    %put &em_codebar;
+22758     +    %goto doendm;
+22759     +   %end;
+22760     +   %else %do;
+22761     +      proc arbor data=&INDATA inmodel=&EM_USER_BROWSETREE refrestrain;
+22762     +        interact;
+22763     +   %end;
+22764     + %end;
+22766     + %if "&EM_PROPERTY_FREEZE" eq "N" and "&EM_PROPERTY_IMPORTMODEL" eq "N" %then %do;
+22767     +    %if %eval(&EM_NUM_INTERVAL_INPUT + &EM_NUM_INTERVAL_REJECTED) gt 0 %then %do;
+22768     +      input %EM_INTERVAL_INPUT %EM_INTERVAL_REJECTED/ level = interval;
+22769     +    %end;
+22771     +    %if  %eval(&EM_NUM_NOMINAL_INPUT + &EM_NUM_NOMINAL_REJECTED) gt 0 %then %do;
+22772     +      input %EM_NOMINAL_INPUT %EM_NOMINAL_REJECTED / level = nominal;
+22773     +    %end;
+22775     +    %if %eval(&EM_NUM_BINARY_INPUT + &EM_NUM_BINARY_REJECTED) gt 0 %then %do;
+22776     +      input %EM_BINARY_INPUT %EM_BINARY_REJECTED / level = nominal;
+22777     +    %end;
+22779     +    %if %eval(&EM_NUM_ORDINAL_INPUT + &EM_NUM_ORDINAL_REJECTED) gt 0 %then %do;
+22780     +      input %EM_ORDINAL_INPUT %EM_ORDINAL_REJECTED/ level = ordinal;
+22781     +    %end;
+22783     +    %if "%EM_FREQ" ne "" %then %do;
+22784     +       freq %EM_FREQ;
+22785     +    %end;
+22787     +    %if "&multipleTar" eq "Y" %then %do;
+22788     +       /* cycle through all target vars in variableset */
+22789     +       %let tdsid = %sysfunc(open(temptarget));
+22790     +       %if &tdsid %then %do;
+22791     +          %let n_var = %sysfunc(varnum(&tdsid, NAME));
+22792     +          %let n_lvl = %sysfunc(varnum(&tdsid, LEVEL));
+22793     +          %do %while(^ %sysfunc(fetch(&tdsid)));
+22794     +             %let var = %sysfunc(getvarc(&tdsid, &n_var));
+22795     +             %let lvl = %sysfunc(getvarc(&tdsid, &n_lvl));
+22796     +             target &var / level = &lvl
+22797     +             %if (("&lvl" eq "BINARY") or ("&lvl" eq "NOMINAL")) %then %do;
+22798     +               Criterion=&EM_PROPERTY_NOMINALCRITERION;
+22799     +             %end;
+22800     +             %else %if "&lvl" eq "INTERVAL" %then %do;
+22801     +               Criterion=&EM_PROPERTY_INTERVALCRITERION;
+22802     +             %end;
+22803     +             %else %if "&lvl" eq "ORDINAL" %then %do;
+22804     +               Criterion=&EM_PROPERTY_ORDINALCRITERION;
+22805     +             %end;
+22806     +          %end;
+22807     +          %if &tdsid %then %let tdsid=%sysfunc(close(&tdsid));
+22808     +       %end;
+22809     +       useTarget variable = %EM_TARGET;
+22810     +    %end;
+22811     +    %else %do;
+22812     +      target %EM_TARGET / level = %EM_TARGET_LEVEL
+22813     +      %if (("%EM_TARGET_LEVEL" eq "BINARY") or ("%EM_TARGET_LEVEL" eq "NOMINAL")) %then %do;
+22814     +        Criterion=&EM_PROPERTY_NOMINALCRITERION;
+22815     +      %end;
+22816     +      %else %if "%EM_TARGET_LEVEL" eq "INTERVAL" %then %do;
+22817     +        Criterion=&EM_PROPERTY_INTERVALCRITERION;
+22818     +      %end;
+22819     +      %else %if "%EM_TARGET_LEVEL" eq "ORDINAL" %then %do;
+22820     +        Criterion=&EM_PROPERTY_ORDINALCRITERION;
+22821     +      %end;
+22822     +    %end;
+22824     +    %if "&multipleTar" eq "N" %then %do;
+22825     +      &EM_DEC_STATEMENT;
+22826     +    %end;
+22828     +    Performance &EM_PROPERTY_PERFORMANCE
+22829     +    %if "&EM_PROPERTY_NODESAMPLE" ne "" %then %do;
+22830     +      nodesize=&EM_PROPERTY_NODESAMPLE
+22831     +    %end;
+22832     +    ;
+22834     +    %if "&intFlag" eq "Y" %then %do;
+22835     +       INTERACT Largest;
+22836     +       Train maxnewdepth=0;
+22837     +    %end;
+22839     +       %if "&EM_PROPERTY_ASSESSMEASURE" ne "" %then %do;
+22840     +         Assess
+22841     +         %if (("&EM_IMPORT_VALIDATE" ne "") AND (%sysfunc(exist(&EM_IMPORT_VALIDATE)) or %sysfunc(exist(&EM_IMPORT_VALIDATE,VIEW)) )) %then %do;
+22842     +            %if "&EM_PROPERTY_CV" eq "Y" %then %do;
+22843     +              %put &em_codebar;
+22844     +              %let errormsg = %sysfunc(sasmsg(sashelp.dmine, novalidationwithcv_note, NOQUOTE));
+22845     +              %put &errormsg;
+22846     +              %put &em_codebar;
+22847     +            %end;
+22848     +            %else %do;
+22849     +               Validata=&EM_IMPORT_VALIDATE
+22850     +            %end;
+22851     +         %end;
+22852     +         %else %do;
+22853     +           NoValidata
+22854     +         %end;
+22855     +         %if "&EM_PROPERTY_TRAINMODE" ne "INTERACTIVE" %then %do;
+22856     +            %if "&EM_PROPERTY_ASSESSMEASURE" eq "PROFIT/LOSS" %then %do;
+22857     +               %let dsid=%sysfunc(open(&EM_DEC_DECMETA(where=(_TYPE_='MATRIX'))));
+22858     +               %if &dsid %then %do;
+22859     +                 %let usenum = %sysfunc(varnum(&dsid, USE));
+22860     +                 %do %while(^ %sysfunc(fetch(&dsid)));
+22861     +                   %let use = %sysfunc(getvarc(&dsid, &usenum));
+22862     +                   %if "&use" eq "Y" %then %let measure=PROFIT;
+22863     +                   %else %do;
+22864     +                      %if "%EM_TARGET_LEVEL" eq "INTERVAL" %then %let measure = ASE;
+22865     +                      %else %let measure= MISC;
+22866     +                   %end;
+22867     +                 %end;
+22868     +               %end;
+22869     +               %if &dsid %then %let dsid = %sysfunc(close(&dsid));
+22870     +            %end;
+22871     +            %else %if "&EM_PROPERTY_ASSESSMEASURE" eq "MISC" %then %do;
+22872     +              %if "%EM_TARGET_LEVEL" eq "INTERVAL" %then  %do;
+22873     +                 %let measure=ASE;
+22874     +              %end;
+22875     +              %else %do;
+22876     +                 %let measure=MISC;
+22877     +              %end;
+22878     +            %end;
+22879     +            %else %if "&EM_PROPERTY_ASSESSMEASURE" eq "ASE" %then %do;
+22880     +              %let measure=ASE;
+22881     +            %end;
+22882     +            %else %if "&EM_PROPERTY_ASSESSMEASURE" eq "LIFT" %then %do;
+22883     +               %let measure = LIFT;
+22884     +               %let dsid=%sysfunc(open(&EM_DEC_DECMETA(where=(_TYPE_='MATRIX'))));
+22885     +               %if &dsid %then %do;
+22886     +                 %let usenum = %sysfunc(varnum(&dsid, USE));
+22887     +                 %do %while(^ %sysfunc(fetch(&dsid)));
+22888     +                   %let use = %sysfunc(getvarc(&dsid, &usenum));
+22889     +                   %if "&use" eq "Y" %then %let measure=LIFTPROFIT;
+22890     +                 %end;
+22891     +               %end;
+22892     +               %if &dsid %then %let dsid = %sysfunc(close(&dsid));
+22893     +            %end;
+22894     +            measure=&measure
+22895     +            %if (("&measure" eq "LIFT") AND ("%EM_TARGET_LEVEL" ne "INTERVAL")) %then %do;
+22896     +               event = "&targetEvent"
+22897     +            %end;
+22898     +            %if (("&measure" eq "LIFT") OR ("&measure" eq "LIFTPROFIT")) %then %do;
+22899     +              proportion=&EM_PROPERTY_ASSESSPERCENTAGE
+22900     +            %end;
+22901     +         %end;
+22902     +         %if "&multipleTar" eq "N" %then %do;
+22903     +            %if "&EM_PROPERTY_CV" eq "Y" %then %do;
+22904     +               CV
+22905     +               %if "&EM_PROPERTY_CVNIter" ne "" %then %do;
+22906     +                 CVNITer = &EM_PROPERTY_CVNITER
+22907     +               %end;
+22908     +               %if "&EM_PROPERTY_CVREPEAT" ne "" %then %do;
+22909     +                 CVRepeat = &EM_PROPERTY_CVREPEAT
+22910     +               %end;
+22911     +               %if "&EM_PROPERTY_CVSEED" ne "" %then %do;
+22912     +                 CVSeed = &EM_PROPERTY_CVSEED
+22913     +               %end;
+22914     +            %end;
+22915     +         %end;
+22916     +       %end;
+22917     +      ;
+22919     +      %if "&intFlag" ne "Y" %then %do;
+22920     +        %if "&EM_PROPERTY_SUBTREE" ne "" %then %do;
+22921     +          %if "&EM_PROPERTY_SUBTREE" eq "ASSESSMENT" %then %let subtree=BEST;
+22922     +          %else %if "&EM_PROPERTY_SUBTREE" eq "N" %then %let subtree=NLEAVES;
+22923     +          %else %if "&EM_PROPERTY_SUBTREE" eq "LARGEST" %then %let subtree=LARGEST;
+22925     +          SUBTREE &subtree
+22926     +          %if "&subtree" eq "NLEAVES" %then %do;
+22927     +            =&EM_PROPERTY_NSUBTREE
+22928     +          %end;
+22929     +          ;
+22930     +        %end;
+22932     +       %if (("&EM_PROPERTY_OBSIMPORTANCE" eq "Y") AND ("&multipleTar" eq "N")) %then %do;
+22933     +          %if "&EM_USER_OUTOBSIMP" ne "" %then %do;
+22934     +            importance data=&INDATA outfit=&EM_USER_OUTOBSIMP nvars=&EM_PROPERTY_NUMSINGLEIMP;
+22935     +          %end;
+22936     +       %end;
+22937     +      %end;
+22938     + %end;
+22941     + MakeMacro nleaves = nleaves;
+22942     + save
+22943     + %if "&EM_USER_EMTREE" ne "" %then %do;
+22944     +   MODEL=&EM_USER_EMTREE
+22945     + %end;
+22946     + %if "&EM_USER_OUTSEQ" ne "" %then %do;
+22947     +   SEQUENCE=&EM_USER_OUTSEQ
+22948     + %end;
+22949     + %if "&EM_USER_OUTIMPORT" ne "" %then %do;
+22950     +   IMPORTANCE=&EM_USER_OUTIMPORT
+22951     + %end;
+22952     + %if "&EM_USER_OUTNODES" ne "" %then %do;
+22953     +   NODESTAT=&EM_USER_OUTNODES
+22954     + %end;
+22955     + %if "&EM_USER_OUTSUMMARY" ne "" %then %do;
+22956     +   SUMMARY=&EM_USER_OUTSUMMARY
+22957     + %end;
+22958     + %if "&EM_USER_OUTSTATS" ne "" %then %do;
+22959     +   STATSBYNODE=&EM_USER_OUTSTATS
+22960     + %end;
+22961     + %if "&EM_USER_OUTTOPOLOGY" ne "" %then %do;
+22962     +   TOPOLOGY=&EM_USER_OUTTOPOLOGY
+22963     + %end;
+22964     + %if "&EM_USER_OUTPATH" ne "" %then %do;
+22965     +   Pathlistnonmissing=&EM_USER_OUTPATH
+22966     + %end;
+22967     + %if "&EM_USER_OUTRULES" ne "" %then %do;
+22968     +   RULES = &EM_USER_OUTRULES
+22969     + %end;
+22970     + ;
+22972     + %if "&intFlag" ne "Y" %then %do;
+22974     +   %let lookupString = ;
+22975     +   %if ^%symexist(EM_OPTION) %then
+22976     +      %let EM_OPTION=;
+22978     +   %if %sysfunc(index(%upcase(&EM_DEBUG), I18N)) or %sysfunc(index(%upcase(&EM_OPTION), I18N)) %then %do;
+22979     +      %let lookupString = LOOKUP=SELECT;
+22980     +   %end;
+22982     +   %let codetext=;
+22983     +   %let norescodetxt=;
+22985     +   %if "&EM_PROPERTY_DUMMY" eq "Y" %then %do;
+22986     +     %let codetext=&codetext DUMMY;
+22987     +     %let norescodetxt=&norescodetxt DUMMY;
+22988     +   %end;
+22989     +   %if "&EM_PROPERTY_LEAFID" ne "Y" %then %do;
+22990     +     %let codetext=&codetext NOLEAFID;
+22991     +     %let norescodetxt=&norescodetxt NOLEAFID;
+22992     +   %end;
+22993     +   %if "&EM_PROPERTY_PREDICT" ne "Y" %then %do;
+22994     +     %let norescodetxt=&norescodetxt NOPRED;
+22995     +   %end;
+22997     +   code file="&EM_USER_TREEFLOW" res &codetext group=&emloopid &lookupString;
+22998     +   code file="&EM_USER_TREEPUBLISH" nores &norescodetxt group=&emloopid &lookupString;
+23000     +   %if &nnpmml %then %do;
+23001     +     code pmml;
+23002     +   %end;
+23004     +   score data=&INDATA out=_NULL_ outfit=work.fit_train role=TRAIN;
+23005     +   %if "&EM_IMPORT_VALIDATE" ne "" %then %do;
+23006     +     score data=&EM_IMPORT_VALIDATE out=_NULL_ outfit=work.fit_valid role=VALID;
+23007     +   %end;
+23008     +   %if "&EM_IMPORT_TEST" ne "" %then %do;
+23009     +     score data=&EM_IMPORT_TEST out=_NULL_ outfit=work.fit_test role=TEST;
+23010     +   %end;
+23011     + %end;
+23013     + run;
+23014     + quit;
+23016     + /*%em_checkerror(); */
+23017     +  %if %sysfunc(cexist(work._treeDMDB)) %then %do;
+23018     +   /* Delete DMDB catalog */
+23019     +   proc datasets lib=work nolist;
+23020     +       delete _treeDMDB / mt=cat;
+23021     +  run;
+23022     +  %end;
+23024     + %if &nnpmml %then %do;
+23025     +    ods pmml close;
+23026     + %end;
+23028     +  %doendm:
+23030     +%mend em_tree_runTreeProcedure;
+23032     +%macro em_tree_createFitStats( multipleTar= );
+23035     +  /* create targetTable is multipleTar eq Y */
+23036     +  data temptarget;
+23037     +    set &EM_DATA_VARIABLESET;
+23038     +    where ROLE="TARGET";
+23039     +  run;
+23041     +  %EM_GETNAME(key=EMOUTFIT, type=DATA);
+23042     +   data &EM_USER_EMOUTFIT;
+23043     +     length target $32;
+23044     +     merge work.fit_train
+23045     +     %if "&EM_IMPORT_VALIDATE" ne "" %then %do;
+23046     +       work.fit_valid
+23047     +     %end;
+23048     +     %if "&EM_IMPORT_TEST" ne "" %then %do;
+23049     +       work.fit_test
+23050     +     %end;
+23051     +     ;
+23052     +     %if "&multipleTar" eq "N" %then %do;
+23053     +       target="%EM_TARGET";
+23054     +     %end;
+23055     +     %else %do;
+23056     +       target = _TARGET_;
+23057     +     %end;
+23058     +     drop _NW_ _SUMW_
+23059     +     %if "&EM_IMPORT_VALIDATE" ne "" %then %do;
+23060     +        _VSUMW_
+23061     +     %end;
+23062     +     ;
+23063     +   run;
+23065     +   %if "&EM_IMPORT_VALIDATE" ne "" %then %do;
+23066     +     proc datasets library=work nolist;
+23067     +       delete fit_valid;
+23068     +     run;
+23069     +   %end;
+23070     +   %if "&EM_IMPORT_TEST" ne "" %then %do;
+23071     +     proc datasets library=work nolist;
+23072     +       delete fit_test;
+23073     +     run;
+23074     +   %end;
+23076     +%mend em_tree_createFitStats;
+23079     +%macro em_tree_makeEnglishRules;
+23081     +  %EM_GETNAME(key=OUTNODES, type=DATA);
+23082     +  %EM_GETNAME(key=OUTPATH, type=DATA);
+23084     +  /* verify that necessary tables exist and if not, skip processing */
+23085     +  %if %sysfunc(exist(&EM_USER_OUTNODES)) ne 1 %then %do;
+23086     +    %let EMEXCEPTIONSTRING = exception.server.EMTOOL.GENERICRUNTIMEEXCEPTION;
+23087     +    %goto doendm;
+23088     +  %end;
+23089     +  %if %sysfunc(exist(&EM_USER_OUTPATH)) ne 1 %then %do;
+23090     +    %let EMEXCEPTIONSTRING = exception.server.EMTOOL.GENERICRUNTIMEEXCEPTION;
+23091     +    %goto doendm;
+23092     +  %end;
+23094     +  /* determine length of variable in outpath dataset */
+23095     +  %let vlength= ;
+23096     +  %let dsid = %sysfunc(open(&EM_USER_OUTPATH));
+23097     +  %if &dsid ne %then %do;
+23098     +    %let varnum = %sysfunc(varnum(&dsid, VARIABLE));
+23099     +    %let vlength = %sysfunc(VARLEN(&dsid, &varnum));
+23100     +  %end;
+23101     +  %if &dsid ne %then %let dsid = %sysfunc(close(&dsid));
+23103     +  data tempoutpath;
+23104     +    length varname $&vlength;
+23105     +    retain varname;
+23106     +    set &EM_USER_OUTPATH;
+23108     +    if ^missing(variable) then varname=variable;
+23109     +    else if ^missing(var_name) then varname=var_name;
+23110     +    output;
+23111     +  run;
+23113     +  /* create an array of generated predicted variable names */
+23114     +  %let tree_pred_vars = ;
+23115     +  %let tree_pred_label = ;
+23116     +  %let numpred= 0;
+23117     +  %if %sysfunc(exist(&EM_DEC_DECMETA)) %then %do;
+23119     +    data _null_;
+23120     +     set &EM_DEC_DECMETA(where=(_TYPE_="PREDICTED")) end=eof;
+23121     +     call symput('tree_pred_vars'!!strip(put(_N_, BEST.)), strip(VARIABLE));
+23122     +     call symput('tree_pred_label'!!strip(put(_N_, BEST.)), strip(tranwrd(LABEL,'"','""')));
+23123     +     if eof then
+23124     +       call symput('numpred', strip(put(_N_, BEST.)));
+23125     +    run;
+23126     +  %end;
+23128     +  /* determine if NPRIORS exists in outnodes  */
+23129     +  %local nprior_flag;
+23130     +  data _null_;
+23131     +    set &EM_USER_OUTNODES(obs=2) end=eof;
+23132     +    if eof then do;
+23133     +      call symput('nprior_flag', strip(put(npriors, best.)));
+23134     +    end;
+23135     +  run;
+23137     +  proc sort data=tempoutpath; by node; run;
+23138     +  proc sort data=&EM_USER_OUTNODES out=outnodes; by node; run;
+23140     +  data tempoutpath;
+23141     +    merge tempoutpath(in=_a) outnodes(keep= node
+23142     +    %if "&nprior_flag" ne "." %then %do;
+23143     +      NPRIORS
+23144     +    %end;
+23145     +    %else %do;
+23146     +      N
+23147     +    %end;
+23148     +    %if &numpred gt 0 %then %do;
+23149     +      %do i=1 %to &numpred;
+23150     +        &&tree_pred_vars&i
+23151     +      %end;
+23152     +    %end;
+23153     +    );
+23154     +    by node;
+23155     +    if _a;
+23156     +  run;
+23158     +  proc sort data=tempoutpath; by node descending varname descending numeric_value; run;
+23160     +  data _null_;
+23161     +    file x;
+23162     +    set tempoutpath;
+23163     +    by node descending varname;
+23164     +    retain origvar oldnode string;
+23165     +    length origvar $32 oldnode 8 string $200;
+23167     +    if _N_ = 1 then do;
+23168     +      origvar = varname;
+23169     +      oldnode = node;
+23170     +    end;
+23172     +    if first.node then do;
+23173     +       put "&EM_CODEBAR";
+23174     +       put " Node = " node;
+23175     +       put "&EM_CODEBAR";
+23176     +    end;
+23178     +      if first.varname then do;
+23179     +         if RELATION ^in ("=", "ISMISSING", "ISNOTMISSING") then do;
+23180     +            if MISSING(CHARACTER_VALUE) then do;
+23181     +             if NUMERIC_VALUE ne .  then do;
+23182     +              if ^first.node then do;
+23183     +                string= "AND "|| strip(varname)||" "||strip(relation)||" "||strip(numeric_value);
+23184     +              end;
+23185     +              else do;
+23186     +                string= "if "|| strip(varname)||" "||strip(relation)||" "||strip(numeric_value);
+23187     +              end;
+23188     +             end;
+23189     +            end;
+23190     +            else do;
+23191     +              if ^first.node then do;
+23192     +                string= "AND "|| strip(varname)||" "||strip(relation)||" "||strip(character_value);
+23193     +              end;
+23194     +              else do;
+23195     +                string= "if "|| strip(varname)||" "||strip(relation)||" "||strip(character_value);
+23196     +              end;
+23197     +             end;
+23198     +         end;
+23199     +         else if RELATION in ("=") then do;
+23200     +            if ^first.node then do;
+23201     +              string = "AND "||strip(varname) ||" IS ONE OF: "||character_value;
+23202     +            end;
+23203     +            else do;
+23204     +              string = "if "|| strip(varname) ||" IS ONE OF: "||character_value;
+23205     +            end;
+23206     +         end;
+23207     +         else if RELATION in ("ISMISSING") then do;
+23208     +            if ^first.node then do;
+23209     +              string = " AND "|| strip(varname) || " equals Missing";
+23210     +            end;
+23211     +            else do;
+23212     +              string = "if "|| strip(varname) ||" equals Missing";
+23213     +            end;
+23214     +         end;
+23215     +         else if RELATION in ("ISNOTMISSING") then do;
+23216     +            if ^first.node then do;
+23217     +              string = " AND "|| strip(varname) || " equals All Values";
+23218     +            end;
+23219     +            else do;
+23220     +              string = "if "|| strip(varname) ||" equals All Values";
+23221     +            end;
+23222     +         end;
+23223     +         if ^missing(varname) then origvar = varname;
+23224     +         oldnode=node;
+23226     +      end;
+23227     +      else do;
+23228     +         if RELATION ^in ("=", "ISMISSING", "ISNOTMISSING") then do;
+23229     +          if MISSING(CHARACTER_VALUE) then do;
+23230     +           if  NUMERIC_VALUE ne .  then do;
+23231     +            if ^MISSING(string) then
+23232     +              string= strip(string)||" AND "|| strip(varname)||" "||strip(relation)||" "||strip(numeric_value);
+23233     +            else
+23234     +              string= " if "|| strip(varname)||" "||strip(relation)||" "||strip(numeric_value);
+23235     +           end;
+23236     +          end;
+23237     +          else do;
+23238     +            if ^MISSING(string) then
+23239     +              string= strip(string)||" AND "|| strip(varname)||" "||strip(relation)||" "||strip(character_value);
+23240     +            else
+23241     +              string= " if "|| strip(varname)||" "||strip(relation)||" "||strip(character_value);
+23242     +          end;
+23244     +         end;
+23245     +         else if RELATION in ("=") then do;
+23246     +           string = strip(string)||", "||strip(character_value);
+23247     +         end;
+23248     +         else if RELATION in ("ISMISSING") then do;
+23250     +         end;
+23251     +         if ^missing(varname) then origvar = varname;
+23252     +         oldnode=node;
+23253     +      end;
+23254     +      if last.varname then do;
+23255     +         if RELATION in ("ISMISSING") then do;
+23256     +           if ^first.varname then do;
+23257     +             string = strip(string) || " or MISSING";
+23258     +           end;
+23259     +         end;
+23260     +         put string;
+23261     +         if ^missing(varname) then origvar = varname;
+23262     +         oldnode=node;
+23263     +      end;
+23265     +      if last.node then do;
+23266     +         put "then ";
+23267     +         put " Tree Node Identifier   = " node;
+23269     +         %if "&nprior_flag" ne "." %then %do;
+23270     +           put " Number of Observations = " NPRIORS;
+23271     +         %end;
+23272     +         %else %do;
+23273     +           put " Number of Observations = " N;
+23274     +         %end;
+23276     +         %if &numpred gt 0 %then %do;
+23277     +           %do i=1 %to &numpred;
+23278     +             put " &&tree_pred_label&i = " &&tree_pred_vars&i;
+23279     +           %end;
+23280     +         %end;
+23282     +         put " ";
+23283     +         if ^missing(varname) then origvar = varname;
+23284     +         oldnode=node;
+23285     +      end;
+23287     +  run;
+23289     +  proc datasets lib=work nolist;
+23290     +    delete tempoutpath outnodes;
+23291     +  run;
+23293     +  %doendm:
+23294     +%mend em_tree_makeEnglishRules;
+NOTE: %INCLUDE (level 1) ending.
+MPRINT(EM_TREE_TRAIN):   filename temp;
+NOTE: Fileref TEMP has been deassigned.
+MPRINT(EM_TREE_TRAIN):  ;
+MPRINT(EM_TREE_TRAIN):  ;
+MPRINT(EM_TREE_TRAIN):  ;
+MPRINT(EM_REGISTER):   data WORK.EM_USER_KEY;
+MPRINT(EM_REGISTER):   length KEY $32 TYPE $10 FILE $200 FOLDER $32 EXTENSION $8 AUTODELETE $1 property $1 action $8;
+MPRINT(EM_REGISTER):   key = upcase("ENGLISHRULES");
+MPRINT(EM_REGISTER):   type = upcase("FILE");
+MPRINT(EM_REGISTER):   file = "ENGLISHRULES";
+MPRINT(EM_REGISTER):   folder = "";
+MPRINT(EM_REGISTER):   extension = "txt";
+MPRINT(EM_REGISTER):   AUTODELETE = "Y";
+MPRINT(EM_REGISTER):   property = "N";
+MPRINT(EM_REGISTER):   action = "";
+MPRINT(EM_REGISTER):   run;
+
+NOTE: The data set WORK.EM_USER_KEY has 1 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_TRAIN):  ;
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   proc dmdb batch data=EMWS1.Part_TRAIN classout=_tmp_dmdbout;
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   class CLAIM_IND;
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   run;
+
+NOTE: Records processed = 4118   Memory used = 511K.
+NOTE: There were 4118 observations read from the data set EMWS1.PART_TRAIN.
+NOTE: The data set WORK._TMP_DMDBOUT has 2 observations and 9 variables.
+NOTE: PROCEDURE DMDB used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   data _tmp_dmdbout;
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   set _tmp_dmdbout;
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   if strip(TYPE) = 'N' and strip(LEVEL) = '.' then delete;
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   if strip(TYPE) = 'C' and strip(LEVEL) = '' then delete;
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   run;
+
+NOTE: There were 2 observations read from the data set WORK._TMP_DMDBOUT.
+NOTE: The data set WORK._TMP_DMDBOUT has 2 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   data _null_;
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   call symput("_nTargetLevel", put(2, Best12.));
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   run;
+
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   proc datasets lib=work nolist;
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   delete _tmp_dmdbout;
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   run;
+
+NOTE: Deleting WORK._TMP_DMDBOUT (memtype=DATA).
+MPRINT(EM_CHECKBINARYTARGETLEVEL):   quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_TRAIN):  ;
+MPRINT(EM_TREE_TRAIN):   data EMWS1.em_Tree3 / view=EMWS1.em_Tree3;
+MPRINT(EM_TREE_TRAIN):   set EMWS1.Part_TRAIN (keep
+MPRINT(EM_TREE_TRAIN):  =AGE AREA CAR_USE CHILDREN CHILD_DRIV CLM_FREQ DISTANCE EDU_LEVEL GENDER HOUSE_VAL INCOME JOB MVR_PTS REVOKED STATE_CODE STATUS VEHICLE_AGE VEHICLE_TYPE VEHICLE_VAL YOJ CLAIM_IND CLAIM_IND );
+MPRINT(EM_TREE_TRAIN):   run;
+
+NOTE: DATA STEP view saved on file EMWS1.EM_TREE3.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   proc sql;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   reset noprint;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   select count(*) into :em_nobs from EMWS1.em_Tree3;
+NOTE: View EMWS1.EM_TREE3.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+NOTE: There were 4118 observations read from the data set EMWS1.PART_TRAIN.
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   data _null_;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   set EMWS1.Ids_CLAIM_IND_DM(where=(_TYPE_="TARGET"));
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   call symput('targetEvent', strip(tranwrd(EVENT,'"','""')));
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   run;
+
+NOTE: There were 1 observations read from the data set EMWS1.IDS_CLAIM_IND_DM.
+      WHERE _TYPE_='TARGET';
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   data temptarget;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   set EMWS1.Tree3_VariableSet;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   where ROLE="TARGET" AND LEVEL^="ORDINAL";
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   run;
+
+NOTE: There were 1 observations read from the data set EMWS1.TREE3_VARIABLESET.
+      WHERE (ROLE='TARGET') and (LEVEL not = 'ORDINAL');
+NOTE: The data set WORK.TEMPTARGET has 1 observations and 21 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   data _null_;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   length orderString nameString $10000;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   retain orderString nameString;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   set EMWS1.Tree3_VariableSet end=eof;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   where ROLE="TARGET" and LEVEL in("BINARY", "NOMINAL", "ORDINAL") and USE ='Y';
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   select(order);
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   when('') order ='DESC';
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   when('FMTASC') order='ASCFMT';
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   when('FMTDESC') order='DESFMT';
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   otherwise;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   end;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   orderString = trim(orderString)!!' '!!trim(NAME)!!'('!!trim(order)!!')';
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   nameString = trim(nameString)!!' '!!trim(NAME);
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   if eof then do;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   call symput('targetOrderString', trim(orderString));
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   call symput('targetString', trim(nameString));
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   end;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   run;
+
+NOTE: There were 1 observations read from the data set EMWS1.TREE3_VARIABLESET.
+      WHERE (ROLE='TARGET') and LEVEL in ('BINARY', 'NOMINAL', 'ORDINAL') and (USE='Y');
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   proc dmdb batch data=EMWS1.em_Tree3 dmdbcat=_treeDMDB classout=classout varout=varout maxlevel=513;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   class CLAIM_IND(DESC);
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   target CLAIM_IND
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   run;
+
+NOTE: Records processed = 4118   Memory used = 511K.
+NOTE: View EMWS1.EM_TREE3.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+NOTE: There were 4118 observations read from the data set EMWS1.PART_TRAIN.
+NOTE: There were 4118 observations read from the data set EMWS1.EM_TREE3.
+NOTE: The data set WORK.CLASSOUT has 2 observations and 9 variables.
+NOTE: PROCEDURE DMDB used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.04 seconds
+      
+
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   quit;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   proc datasets lib=work nolist;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   delete classout varout;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   run;
+
+NOTE: Deleting WORK.CLASSOUT (memtype=DATA).
+NOTE: Deleting WORK.VAROUT (memtype=DATA).
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   proc arbor data=EMWS1.em_Tree3 Leafsize = 5 MinCatSize = 5 MaxBranch = 2 MaxDepth = 6
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   alpha = 0.2 padjust = CHAIDBEFORE DEPTH Maxrules = 5 Maxsurrs = 0 Missing=USEINSEARCH Exhaustive=5000
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   event = "1" ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   input
+MPRINT(EM_INTERVAL_INPUT):   AGE CHILDREN CHILD_DRIV CLM_FREQ DISTANCE HOUSE_VAL INCOME MVR_PTS VEHICLE_AGE VEHICLE_VAL YOJ
+MPRINT(EM_TREE_RUNTREEPROCEDURE):  / level = interval;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   input
+MPRINT(EM_NOMINAL_INPUT):   EDU_LEVEL JOB STATE_CODE STATUS VEHICLE_TYPE
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   / level = nominal;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   input
+MPRINT(EM_BINARY_INPUT):   AREA CAR_USE GENDER REVOKED
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   / level = nominal;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   target
+MPRINT(EM_TARGET):   CLAIM_IND
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   / level =
+MPRINT(EM_TARGET_LEVEL):   BINARY
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   Criterion=PROBCHISQ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   Performance DISK nodesize=20000 ;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   Assess Validata=EMWS1.Part_VALIDATE
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   measure=MISC
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   ;
+NOTE: 1590616 kilobytes of physical memory.
+NOTE: Will use 4118 out of 4118 training cases.
+NOTE: Using memory pool with 211018752 bytes.
+NOTE: Passed training data 12 times.
+NOTE: Training used 2158136 bytes of work memory.
+NOTE: The subtree sequence contains 23 subtrees. The largest has 45 nodes and 23 leaves.
+NOTE: Using subtree with 21 nodes and 11 leaves.
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   SUBTREE BEST ;
+NOTE: Using subtree with 21 nodes and 11 leaves.
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   MakeMacro nleaves = nleaves;
+NOTE: Created macro variable NLEAVES equal to 11.
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   save MODEL=EMWS1.Tree3_EMTREE SEQUENCE=EMWS1.Tree3_OUTSEQ IMPORTANCE=EMWS1.Tree3_OUTIMPORT NODESTAT=EMWS1.Tree3_OUTNODES SUMMARY=EMWS1.Tree3_OUTSUMMARY STATSBYNODE=EMWS1.Tree3_OUTSTATS TOPOLOGY=EMWS1.Tree3_OUTTOPOLOGY 
+Pathlistnonmissing=EMWS1.Tree3_OUTPATH RULES = EMWS1.Tree3_OUTRULES ;
+NOTE: The data set EMWS1.TREE3_OUTIMPORT has 20 observations and 6 variables.
+NOTE: The data set EMWS1.TREE3_EMTREE has 1524 observations and 4 variables.
+NOTE: The data set EMWS1.TREE3_OUTNODES has 21 observations and 24 variables.
+NOTE: The data set EMWS1.TREE3_OUTPATH has 113 observations and 7 variables.
+NOTE: The data set EMWS1.TREE3_OUTRULES has 403 observations and 6 variables.
+NOTE: The data set EMWS1.TREE3_OUTSEQ has 23 observations and 20 variables.
+NOTE: The data set EMWS1.TREE3_OUTSTATS has 147 observations and 5 variables.
+NOTE: The data set EMWS1.TREE3_OUTSUMMARY has 24 observations and 6 variables.
+NOTE: The data set EMWS1.TREE3_OUTTOPOLOGY has 21 observations and 5 variables.
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   code file="C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\TREEFLOW.sas" res group=Tree3 ;
+NOTE: External file C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\TREEFLOW.sas opened.
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   code file="C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\TREEPUBLISH.sas" nores group=Tree3 ;
+NOTE: External file C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\TREEPUBLISH.sas opened.
+NOTE: View EMWS1.EM_TREE3.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   score data=EMWS1.em_Tree3 out=_NULL_ outfit=work.fit_train role=TRAIN;
+NOTE: The data set WORK.FIT_TRAIN has 1 observations and 10 variables.
+NOTE: There were 4118 observations read from the data set EMWS1.PART_TRAIN.
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   score data=EMWS1.Part_VALIDATE out=_NULL_ outfit=work.fit_valid role=VALID;
+NOTE: The data set WORK.FIT_VALID has 1 observations and 8 variables.
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   run;
+
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   quit;
+
+NOTE: View EMWS1.EM_TREE3.VIEW used (Total process time):
+      real time           0.40 seconds
+      cpu time            0.32 seconds
+      
+NOTE: There were 4118 observations read from the data set EMWS1.PART_TRAIN.
+NOTE: There were 4118 observations read from the data set EMWS1.EM_TREE3.
+NOTE: The data set WORK._NAMEDAT has 2 observations and 5 variables.
+NOTE: PROCEDURE ARBOR used (Total process time):
+      real time           0.41 seconds
+      cpu time            0.34 seconds
+      
+
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   proc datasets lib=work nolist;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   delete _treeDMDB / mt=cat;
+MPRINT(EM_TREE_RUNTREEPROCEDURE):   run;
+
+NOTE: Deleting WORK._TREEDMDB (memtype=CATALOG).
+MPRINT(EM_TREE_TRAIN):  ;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_CREATEFITSTATS):   data temptarget;
+MPRINT(EM_TREE_CREATEFITSTATS):   set EMWS1.Tree3_VariableSet;
+MPRINT(EM_TREE_CREATEFITSTATS):   where ROLE="TARGET";
+MPRINT(EM_TREE_CREATEFITSTATS):   run;
+
+NOTE: There were 1 observations read from the data set EMWS1.TREE3_VARIABLESET.
+      WHERE ROLE='TARGET';
+NOTE: The data set WORK.TEMPTARGET has 1 observations and 21 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_CREATEFITSTATS):  ;
+MPRINT(EM_TREE_CREATEFITSTATS):   data EMWS1.Tree3_EMOUTFIT;
+MPRINT(EM_TREE_CREATEFITSTATS):   length target $32;
+MPRINT(EM_TREE_CREATEFITSTATS):   merge work.fit_train work.fit_valid ;
+MPRINT(EM_TREE_CREATEFITSTATS):   target=
+MPRINT(EM_TREE_CREATEFITSTATS):  "CLAIM_IND";
+MPRINT(EM_TREE_CREATEFITSTATS):   drop _NW_ _SUMW_ _VSUMW_ ;
+MPRINT(EM_TREE_CREATEFITSTATS):   run;
+
+NOTE: There were 1 observations read from the data set WORK.FIT_TRAIN.
+NOTE: There were 1 observations read from the data set WORK.FIT_VALID.
+NOTE: The data set EMWS1.TREE3_EMOUTFIT has 1 observations and 16 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+      
+
+MPRINT(EM_TREE_CREATEFITSTATS):   proc datasets library=work nolist;
+MPRINT(EM_TREE_CREATEFITSTATS):   delete fit_valid;
+MPRINT(EM_TREE_CREATEFITSTATS):   run;
+
+NOTE: Deleting WORK.FIT_VALID (memtype=DATA).
+MPRINT(EM_TREE_TRAIN):  ;
+MPRINT(EM_TREE_TRAIN):   filename X "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\ENGLISHRULES.txt" encoding='utf-8' NOBOM;
+MPRINT(EM_TREE_MAKEENGLISHRULES):  ;
+MPRINT(EM_TREE_MAKEENGLISHRULES):  ;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_MAKEENGLISHRULES):   data tempoutpath;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   length varname $23;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   retain varname;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   set EMWS1.Tree3_OUTPATH;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^missing(variable) then varname=variable;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else if ^missing(var_name) then varname=var_name;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   output;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   run;
+
+NOTE: There were 113 observations read from the data set EMWS1.TREE3_OUTPATH.
+NOTE: The data set WORK.TEMPOUTPATH has 113 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_MAKEENGLISHRULES):   data _null_;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   set EMWS1.Ids_CLAIM_IND_DM(where=(_TYPE_="PREDICTED")) end=eof;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   call symput('tree_pred_vars'!!strip(put(_N_, BEST.)), strip(VARIABLE));
+MPRINT(EM_TREE_MAKEENGLISHRULES):   call symput('tree_pred_label'!!strip(put(_N_, BEST.)), strip(tranwrd(LABEL,'"','""')));
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if eof then call symput('numpred', strip(put(_N_, BEST.)));
+MPRINT(EM_TREE_MAKEENGLISHRULES):   run;
+
+NOTE: There were 2 observations read from the data set EMWS1.IDS_CLAIM_IND_DM.
+      WHERE _TYPE_='PREDICTED';
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_MAKEENGLISHRULES):   data _null_;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   set EMWS1.Tree3_OUTNODES(obs=2) end=eof;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if eof then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   call symput('nprior_flag', strip(put(npriors, best.)));
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   run;
+
+NOTE: There were 2 observations read from the data set EMWS1.TREE3_OUTNODES.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_MAKEENGLISHRULES):   proc sort data=tempoutpath;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   by node;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   run;
+
+NOTE: There were 113 observations read from the data set WORK.TEMPOUTPATH.
+NOTE: The data set WORK.TEMPOUTPATH has 113 observations and 8 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_MAKEENGLISHRULES):   proc sort data=EMWS1.Tree3_OUTNODES out=outnodes;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   by node;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   run;
+
+NOTE: There were 21 observations read from the data set EMWS1.TREE3_OUTNODES.
+NOTE: The data set WORK.OUTNODES has 21 observations and 24 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_MAKEENGLISHRULES):   data tempoutpath;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   merge tempoutpath(in=_a) outnodes(keep= node NPRIORS P_CLAIM_IND1 P_CLAIM_IND0 );
+MPRINT(EM_TREE_MAKEENGLISHRULES):   by node;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if _a;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   run;
+
+NOTE: There were 113 observations read from the data set WORK.TEMPOUTPATH.
+NOTE: There were 21 observations read from the data set WORK.OUTNODES.
+NOTE: The data set WORK.TEMPOUTPATH has 113 observations and 11 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_TREE_MAKEENGLISHRULES):   proc sort data=tempoutpath;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   by node descending varname descending numeric_value;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   run;
+
+NOTE: There were 113 observations read from the data set WORK.TEMPOUTPATH.
+NOTE: The data set WORK.TEMPOUTPATH has 113 observations and 11 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_MAKEENGLISHRULES):   data _null_;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   file x;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   set tempoutpath;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   by node descending varname;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   retain origvar oldnode string;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   length origvar $32 oldnode 8 string $200;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if _N_ = 1 then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   origvar = varname;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   oldnode = node;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if first.node then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   put "*------------------------------------------------------------*";
+MPRINT(EM_TREE_MAKEENGLISHRULES):   put " Node = " node;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   put "*------------------------------------------------------------*";
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if first.varname then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if RELATION ^in ("=", "ISMISSING", "ISNOTMISSING") then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if MISSING(CHARACTER_VALUE) then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if NUMERIC_VALUE ne . then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^first.node then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   string= "AND "|| strip(varname)||" "||strip(relation)||" "||strip(numeric_value);
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   string= "if "|| strip(varname)||" "||strip(relation)||" "||strip(numeric_value);
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^first.node then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   string= "AND "|| strip(varname)||" "||strip(relation)||" "||strip(character_value);
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   string= "if "|| strip(varname)||" "||strip(relation)||" "||strip(character_value);
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else if RELATION in ("=") then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^first.node then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   string = "AND "||strip(varname) ||" IS ONE OF: "||character_value;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   string = "if "|| strip(varname) ||" IS ONE OF: "||character_value;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else if RELATION in ("ISMISSING") then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^first.node then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   string = " AND "|| strip(varname) || " equals Missing";
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   string = "if "|| strip(varname) ||" equals Missing";
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else if RELATION in ("ISNOTMISSING") then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^first.node then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   string = " AND "|| strip(varname) || " equals All Values";
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   string = "if "|| strip(varname) ||" equals All Values";
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^missing(varname) then origvar = varname;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   oldnode=node;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if RELATION ^in ("=", "ISMISSING", "ISNOTMISSING") then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if MISSING(CHARACTER_VALUE) then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if NUMERIC_VALUE ne . then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^MISSING(string) then string= strip(string)||" AND "|| strip(varname)||" "||strip(relation)||" "||strip(numeric_value);
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else string= " if "|| strip(varname)||" "||strip(relation)||" "||strip(numeric_value);
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^MISSING(string) then string= strip(string)||" AND "|| strip(varname)||" "||strip(relation)||" "||strip(character_value);
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else string= " if "|| strip(varname)||" "||strip(relation)||" "||strip(character_value);
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else if RELATION in ("=") then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   string = strip(string)||", "||strip(character_value);
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   else if RELATION in ("ISMISSING") then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^missing(varname) then origvar = varname;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   oldnode=node;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if last.varname then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if RELATION in ("ISMISSING") then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^first.varname then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   string = strip(string) || " or MISSING";
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   put string;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^missing(varname) then origvar = varname;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   oldnode=node;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if last.node then do;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   put "then ";
+MPRINT(EM_TREE_MAKEENGLISHRULES):   put " Tree Node Identifier   = " node;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   put " Number of Observations = " NPRIORS;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   put " Predicted: CLAIM_IND=1 = " P_CLAIM_IND1;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   put " Predicted: CLAIM_IND=0 = " P_CLAIM_IND0;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   put " ";
+MPRINT(EM_TREE_MAKEENGLISHRULES):   if ^missing(varname) then origvar = varname;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   oldnode=node;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   end;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   run;
+
+NOTE: Numeric values have been converted to character values at the places given by: (Line):(Column).
+      218:176   228:190   374:191   381:195   
+NOTE: The file X is:
+      Filename=C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 2\Automobile Insurance Claim\Workspaces\EMWS1\Tree3\ENGLISHRULES.txt,
+      RECFM=V,LRECL=131068,File Size (bytes)=0,
+      Last Modified=25Feb2017:15:23:39,
+      Create Time=25Feb2017:15:22:10
+
+NOTE: 145 records were written to the file X.
+      The minimum record length was 1.
+      The maximum record length was 82.
+NOTE: There were 113 observations read from the data set WORK.TEMPOUTPATH.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(EM_TREE_MAKEENGLISHRULES):   proc datasets lib=work nolist;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   delete tempoutpath outnodes;
+MPRINT(EM_TREE_MAKEENGLISHRULES):   run;
+
+NOTE: Deleting WORK.TEMPOUTPATH (memtype=DATA).
+NOTE: Deleting WORK.OUTNODES (memtype=DATA).
+MPRINT(EM_TREE_TRAIN):  ;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_REPORT):   data WORK.EM_USER_REPORT;
+MPRINT(EM_REPORT):   retain id 0;
+MPRINT(EM_REPORT):   id + 1;
+MPRINT(EM_REPORT):   length VIEW 8 NAME $32 VALUE $400;
+MPRINT(EM_REPORT):   NAME = "KEY";
+MPRINT(EM_REPORT):   VALUE = "ENGLISHRULES";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "VIEWTYPE";
+MPRINT(EM_REPORT):   VALUE = "SOURCE";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "AUTODISPLAY";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SPK";
+MPRINT(EM_REPORT):   VALUE = "Y";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "COMPARE";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LOCALIZE";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "EQUALIZEROWX";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "EQUALIZEROWY";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "EQUALIZECOLX";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "EQUALIZECOLY";
+MPRINT(EM_REPORT):   VALUE = "N";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NROWS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NCOLS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DISCRETEX";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DISCRETEY";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LATTICEX";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LATTICEY";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LATTICETYPE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "ABSOLUTEVALUE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SORTORDER";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SORTORDERY";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "ORIENTATION";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "METHOD";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DIRECTION";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "BYSET";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "RENDERMODE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DESCRIPTION";
+MPRINT(EM_REPORT):   VALUE = "ENGLISHRULES";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "X";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "EXCLUDEVARS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Z";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YVARS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "FREQVARS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "AXIS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "FREQ";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "GROUP";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SUBGROUP";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "BLOCK";
+MPRINT(EM_REPORT):   VALUE = "MODEL";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "COLOR";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "COLORINDEX";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "TIPTEXT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "TIP";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "TOOLTIP";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "REPORTID";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "IDVALUE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "ID";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SIZE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "FROM";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "TO";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "VALUE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "VIEWS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "PARENT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODETEXT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "ABOVETEXT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "BELOWTEXT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODESIZE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "STATS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "CLASSDIST";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "INTDIST";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "FOLDER";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YPLOTTYPE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "XREF";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "XREF2";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YREF";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y2REF";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YREF2";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y2REF2";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "GROUPINDEX";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "JOIN";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "XEXCLUDE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "FREQEXCLUDE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YEXCLUDE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NAME";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "HEIGHT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "WIDTH";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "XAXISLABEL";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y2AXISLABEL";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YAXISLABEL";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DISPLAYXLABEL";
+MPRINT(EM_REPORT):   VALUE = "Y";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DISPLAYYLABEL";
+MPRINT(EM_REPORT):   VALUE = "Y";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "CHOICETEXT";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SEGMENTVALUE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LOWERBAND";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "UPPERBAND";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YLINE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKKEY";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODEKEY";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODEID";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODEVALUE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODECOLOR";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODESHAPE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODESHAPEVAR";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODELABEL";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NODETIP";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKID";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKVALUE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKFROM";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKTO";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKCOLOR";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKWIDTH";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LINKTIP";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "XFROM";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "XTO";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YFROM";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "YTO";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "MATRIXVAR";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "RESPONSE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SERIES";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "DESCARG";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SLIDER";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "MarkerSize";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Marker";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y1";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y2";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y3";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y4";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y5";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y6";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y7";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y8";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y9";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y10";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y11";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y12";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y13";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y14";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y15";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "Y16";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "TITLE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LEGEND";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "LEGENDTITLE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "SHAPE";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "METHOD";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   NAME = "NOBINMISS";
+MPRINT(EM_REPORT):   VALUE = "";
+MPRINT(EM_REPORT):   VIEW = 0.44283206269276;
+MPRINT(EM_REPORT):   output;
+MPRINT(EM_REPORT):   run;
+
+NOTE: The data set WORK.EM_USER_REPORT has 132 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+MPRINT(EM_TREE_TRAIN):  ;
+MPRINT(EM_TREE_TRAIN):   filename x;
+NOTE: Fileref X has been deassigned.
+MPRINT(MAIN):  ;
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * End TRAIN: Tree3;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+23296      
+23297      *------------------------------------------------------------*;
+23298      * End TRAIN: Tree3;
+23299      *------------------------------------------------------------*;
+
+23300      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):    *------------------------------------------------------------*;
+23301      * Close any missing semi colons;
+MPRINT(EM_DIAGRAM):   * Close any missing semi colons;
+23302      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+23303      ;
+MPRINT(EM_DIAGRAM):   ;
+23304      ;
+MPRINT(EM_DIAGRAM):   ;
+23305      ;
+MPRINT(EM_DIAGRAM):   ;
+23306      ;
+MPRINT(EM_DIAGRAM):   ;
+23307      quit;
+MPRINT(EM_DIAGRAM):   quit;
+23308      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+23309      * Close any unbalanced quotes;
+MPRINT(EM_DIAGRAM):   * Close any unbalanced quotes;
+23310      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+23311      /*; *"; *'; */
+23312      ;
+MPRINT(EM_DIAGRAM):   ;
+23313      run;
+MPRINT(EM_DIAGRAM):   run;
+23314      quit;
+MPRINT(EM_DIAGRAM):   quit;
+23315      /* Reset EM Options */
+23316      options formchar="|----|+|---+=|-/\<>*";
+MPRINT(EM_DIAGRAM):   options formchar="|----|+|---+=|-/\<>*";
+23317      options nocenter ls=256 ps=10000;
+MPRINT(EM_DIAGRAM):   options nocenter ls=256 ps=10000;
+23318      goptions reset=all device=GIF NODISPLAY;
+MPRINT(EM_DIAGRAM):   goptions reset=all device=GIF NODISPLAY;
+23319      proc sort data=WORK.EM_USER_REPORT;
+MPRINT(EM_DIAGRAM):    proc sort data=WORK.EM_USER_REPORT;
+23320      by ID VIEW;
+MPRINT(EM_DIAGRAM):   by ID VIEW;
+23321      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: There were 132 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 132 observations and 4 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(EM_DIAGRAM):    proc printto;
+MPRINT(EM_DIAGRAM):   run;

@@ -1,0 +1,1230 @@
+*------------------------------------------------------------*
+User:                Gaurav
+Date:                April 28, 2017
+Time:                16:26:41
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+            Measurement    Frequency
+Role           Level         Count
+ 
+INPUT         BINARY           1
+INPUT         NOMINAL          3
+REJECTED      NOMINAL          1
+TARGET        BINARY           1
+ 
+ 
+ 
+ 
+Model Events
+ 
+                                     Number
+                      Measurement      of
+ Target      Event       Level       Levels      Order                Label
+ 
+SubroFlag      1        BINARY          2      Descending    Subrogation (1=Yes 0=No)
+ 
+ 
+ 
+ 
+Predicted and decision variables
+ 
+Type           Variable      Label
+ 
+TARGET       SubroFlag       Subrogation (1=Yes 0=No)
+PREDICTED    P_SubroFlag1    Predicted: SubroFlag=1
+RESIDUAL     R_SubroFlag1    Residual: SubroFlag=1
+PREDICTED    P_SubroFlag0    Predicted: SubroFlag=0
+RESIDUAL     R_SubroFlag0    Residual: SubroFlag=0
+FROM         F_SubroFlag     From: SubroFlag
+INTO         I_SubroFlag     Into: SubroFlag
+ 
+ 
+ 
+ 
+ 
+The DMREG Procedure
+ 
+                         Model Information
+ 
+Training Data Set              WORK.EM_DMREG.VIEW
+DMDB Catalog                   WORK.REG4_DMDB
+Target Variable                SubroFlag (Subrogation (1=Yes 0=No))
+Target Measurement Level       Ordinal
+Number of Target Categories    2
+Error                          MBernoulli
+Link Function                  Logit
+Number of Model Parameters     64
+Number of Observations         1518
+ 
+ 
+           Target Profile
+ 
+ Ordered                       Total
+   Value     SubroFlag     Frequency
+ 
+       1             1           567
+       2             0           951
+ 
+ 
+ 
+ 
+Stepwise Selection Procedure
+ 
+ 
+Step 0: Intercept entered.
+ 
+ 
+ 
+ 
+ 
+The DMREG Procedure
+ 
+Newton-Raphson Ridge Optimization
+ 
+Without Parameter Scaling
+ 
+Parameter Estimates               1
+ 
+                                             Optimization Start
+ 
+Active Constraints                                  0  Objective Function                       1003.0965195
+Max Abs Gradient Element                 5.365708E-13
+ 
+                                            Optimization Results
+ 
+Iterations                                          0  Function Calls                                      3
+Hessian Calls                                       1  Active Constraints                                  0
+Objective Function                       1003.0965195  Max Abs Gradient Element                 5.365708E-13
+Ridge                                               0  Actual Over Pred Change                             0
+ 
+Convergence criterion (ABSGCONV=0.00001) satisfied.
+ 
+ 
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+ 
+   2006.193        2006.193         0.0000        0          .
+ 
+ 
+ 
+ 
+                               Analysis of Maximum Likelihood Estimates
+ 
+                                                      Standard          Wald
+Parameter                           DF    Estimate       Error    Chi-Square    Pr > ChiSq    Exp(Est)
+ 
+Intercept                            1     -0.5172      0.0531         95.00        <.0001       0.596
+ 
+ 
+ 
+ 
+Step 1: Effect Cause entered.
+ 
+ 
+ 
+ 
+ 
+The DMREG Procedure
+ 
+Newton-Raphson Ridge Optimization
+ 
+Without Parameter Scaling
+ 
+Parameter Estimates              21
+ 
+                                             Optimization Start
+ 
+Active Constraints                                  0  Objective Function                       1003.0965195
+Max Abs Gradient Element                 97.865612648
+ 
+ 
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+ 
+   1            0           2              0        853.34176        149.8     10.0938         0        1.031
+   2            0           3              0        848.66541       4.6763      1.5734         0        1.132
+   3            0           4              0        848.15237       0.5130      0.2061         0        1.210
+   4            0           5              0        848.00272       0.1497      0.0854         0        1.262
+   5            0           6              0        847.94843       0.0543      0.0314         0        1.264
+   6            0           7              0        847.92856       0.0199      0.0115         0        1.264
+   7            0           8              0        847.92126      0.00730     0.00424         0        1.264
+   8            0           9              0        847.91857      0.00268     0.00156         0        1.264
+   9            0          10              0        847.91759     0.000987    0.000574         0        1.264
+ 
+                                            Optimization Results
+ 
+Iterations                                          9  Function Calls                                     12
+Hessian Calls                                      10  Active Constraints                                  0
+Objective Function                       847.91758546  Max Abs Gradient Element                 0.0005743518
+Ridge                                               0  Actual Over Pred Change                  1.2642292787
+ 
+Convergence criterion (GCONV=1E-6) satisfied.
+ 
+ 
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+ 
+   2006.193        1695.835       310.3579       20         <.0001
+ 
+ 
+         Type 3 Analysis of Effects
+ 
+                          Wald
+Effect        DF    Chi-Square    Pr > ChiSq
+ 
+Cause         20      166.4024        <.0001
+ 
+ 
+                               Analysis of Maximum Likelihood Estimates
+ 
+                                                      Standard          Wald
+Parameter                           DF    Estimate       Error    Chi-Square    Pr > ChiSq    Exp(Est)
+ 
+Intercept                            1     -1.5940      6.1685          0.07        0.7961       0.203
+Cause     Animal Attack              1     -8.7015     42.7015          0.04        0.8385       0.000
+Cause     Biting/Stinging Insect     1      1.1885      6.2293          0.04        0.8487       3.282
+Cause     Caught in Machine          1     -0.1552      6.1792          0.00        0.9800       0.856
+Cause     Contact with Object        1      0.2722      6.1917          0.00        0.9649       1.313
+Cause     Electrocution              1      1.5940      6.3135          0.06        0.8007       4.923
+Cause     Environmental              1     -8.7015       115.9          0.01        0.9401       0.000
+Cause     Equipment/Machinery        1      0.2394      6.1800          0.00        0.9691       1.271
+Cause     Exposure                   1      0.2077      6.2142          0.00        0.9733       1.231
+Cause     Fire                       1      1.4269      6.1808          0.05        0.8174       4.166
+Cause     Foreign Body/Object        1     -0.3801      6.1852          0.00        0.9510       0.684
+Cause     Human Conflict             1      1.3063      6.2111          0.04        0.8334       3.692
+Cause     Lifting                    1      0.6326      6.1701          0.01        0.9183       1.882
+Cause     MVA                        1      3.9673      6.1738          0.41        0.5205      52.843
+Cause     Occupational Illness       1      1.8817      6.2111          0.09        0.7619       6.564
+Cause     Pushing/Pulling            1      0.1803      6.1786          0.00        0.9767       1.198
+Cause     Repetitive Motion          1      0.6672      6.1739          0.01        0.9139       1.949
+Cause     Slip/Fall                  1      1.1665      6.1695          0.04        0.8500       3.211
+Cause     Stress                     1      0.9008      6.2233          0.02        0.8849       2.462
+Cause     Struck Object              1      0.7631      6.1695          0.02        0.9016       2.145
+Cause     Unknown                    1      0.5824      6.1934          0.01        0.9251       1.790
+ 
+ 
+                        Odds Ratio Estimates
+ 
+                                                               Point
+Effect                                                      Estimate
+ 
+Cause   Animal Attack vs Unusual Body Movement                <0.001
+Cause   Biting/Stinging Insect vs Unusual Body Movement        1.255
+Cause   Caught in Machine vs Unusual Body Movement             0.327
+Cause   Contact with Object vs Unusual Body Movement           0.502
+Cause   Electrocution vs Unusual Body Movement                 1.882
+Cause   Environmental vs Unusual Body Movement                <0.001
+Cause   Equipment/Machinery vs Unusual Body Movement           0.486
+Cause   Exposure vs Unusual Body Movement                      0.471
+Cause   Fire vs Unusual Body Movement                          1.593
+Cause   Foreign Body/Object vs Unusual Body Movement           0.261
+Cause   Human Conflict vs Unusual Body Movement                1.412
+Cause   Lifting vs Unusual Body Movement                       0.720
+Cause   MVA vs Unusual Body Movement                          20.204
+Cause   Occupational Illness vs Unusual Body Movement          2.510
+Cause   Pushing/Pulling vs Unusual Body Movement               0.458
+Cause   Repetitive Motion vs Unusual Body Movement             0.745
+Cause   Slip/Fall vs Unusual Body Movement                     1.228
+Cause   Stress vs Unusual Body Movement                        0.941
+Cause   Struck Object vs Unusual Body Movement                 0.820
+Cause   Unknown vs Unusual Body Movement                       0.684
+ 
+ 
+Step 2: Effect Body entered.
+ 
+ 
+ 
+ 
+ 
+The DMREG Procedure
+ 
+Dual Quasi-Newton Optimization
+ 
+Dual Broyden - Fletcher - Goldfarb - Shanno Update (DBFGS)
+ 
+Parameter Estimates              47
+ 
+                                             Optimization Start
+ 
+Active Constraints                                  0  Objective Function                       1003.0965195
+Max Abs Gradient Element                 97.865612648
+ 
+ 
+                                                                 Objective     Max Abs                Slope of
+                     Function         Active        Objective     Function    Gradient       Step       Search
+Iter     Restarts       Calls    Constraints         Function       Change     Element       Size    Direction
+ 
+   1            0           5              0        811.04915        192.0     13.4942      0.978       -368.4
+   2            0           9              0        801.39349       9.6557      8.8039      2.000      -10.497
+   3            0          13              0        800.56059       0.8329      3.7676      2.366       -0.703
+   4            0          17              0        800.32482       0.2358      1.0038      2.547       -0.184
+   5            0          21              0        800.15362       0.1712      3.0513      4.034      -0.0814
+   6            0          23              0        800.03021       0.1234      2.9124      4.358      -0.0982
+   7            0          26              0        799.96451       0.0657      0.1052      1.421      -0.0931
+   8            0          29              0        799.93939       0.0251      0.1547      4.455      -0.0146
+   9            0          32              0        799.93013      0.00926      0.0421      2.077      -0.0090
+  10            0          35              0        799.92479      0.00535      0.2046      3.790      -0.0033
+  11            0          38              0        799.92260      0.00219      0.0767      1.969      -0.0023
+  12            0          41              0        799.92167     0.000934      0.0904      3.586      -0.0006
+ 
+                                            Optimization Results
+ 
+Iterations                                         12  Function Calls                                     43
+Gradient Calls                                     19  Active Constraints                                  0
+Objective Function                       799.92166744  Max Abs Gradient Element                 0.0904336553
+Slope of Search Direction                -0.000640383
+ 
+Convergence criterion (GCONV=1E-6) satisfied.
+ 
+NOTE: At least one element of the gradient is greater than 1e-3.
+ 
+ 
+ 
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+ 
+   2006.193        1599.843       406.3497       46         <.0001
+ 
+ 
+         Type 3 Analysis of Effects
+ 
+                          Wald
+Effect        DF    Chi-Square    Pr > ChiSq
+ 
+Body          26       76.8900        <.0001
+Cause         20      121.4996        <.0001
+ 
+ 
+                               Analysis of Maximum Likelihood Estimates
+ 
+                                                      Standard          Wald
+Parameter                           DF    Estimate       Error    Chi-Square    Pr > ChiSq    Exp(Est)
+ 
+Intercept                            1     -1.2664     15.5272          0.01        0.9350       0.282
+Body      Abdomen                    1      8.3476       202.1          0.00        0.9671     999.000
+Body      Ankle                      1     -1.0913     13.5939          0.01        0.9360       0.336
+Body      Arm                        1     -0.6128     13.5915          0.00        0.9640       0.542
+Body      Back                       1     -0.4153     13.5906          0.00        0.9756       0.660
+Body      Ear                        1    -11.2296       200.8          0.00        0.9554       0.000
+Body      Elbow                      1     -0.7631     13.6014          0.00        0.9553       0.466
+Body      Eye                        1     -1.3278     13.6034          0.01        0.9222       0.265
+Body      Face                       1     -1.0370     13.6093          0.01        0.9393       0.355
+Body      Finger                     1     -1.1870     13.5925          0.01        0.9304       0.305
+Body      Foot                       1     -0.3331     13.5926          0.00        0.9805       0.717
+Body      Groin                      1      0.2453     13.5980          0.00        0.9856       1.278
+Body      Hand                       1     -0.6006     13.5923          0.00        0.9648       0.548
+Body      Head                       1     -0.4177     13.5913          0.00        0.9755       0.659
+Body      Hip                        1     -0.2070     13.6337          0.00        0.9879       0.813
+Body      Jaw                        1     -1.2780     13.6315          0.01        0.9253       0.279
+Body      Knee                       1     -0.7201     13.5925          0.00        0.9578       0.487
+Body      Leg                        1     -0.1865     13.5926          0.00        0.9891       0.830
+Body      Multiple                   1      0.4033     13.5940          0.00        0.9763       1.497
+Body      Neck                       1      1.3364     13.5992          0.01        0.9217       3.805
+Body      Ribs                       1     -0.1257     13.6144          0.00        0.9926       0.882
+Body      Shoulder                   1      1.3825     13.5937          0.01        0.9190       3.985
+Body      Spine                      1      0.5062     13.5999          0.00        0.9703       1.659
+Body      Toes                       1     -0.7056     13.6059          0.00        0.9586       0.494
+Body      Tooth                      1     -1.5822     13.6300          0.01        0.9076       0.206
+Body      Torso                      1     -0.0879     13.5996          0.00        0.9948       0.916
+Body      Unknown                    1     13.0271       209.8          0.00        0.9505     999.000
+Cause     Animal Attack              1     -8.9019     54.2197          0.03        0.8696       0.000
+Cause     Biting/Stinging Insect     1      1.8186      7.5727          0.06        0.8102       6.163
+Cause     Caught in Machine          1      0.1720      7.5208          0.00        0.9818       1.188
+Cause     Contact with Object        1      0.4078      7.5308          0.00        0.9568       1.504
+Cause     Electrocution              1      1.8598      7.6318          0.06        0.8075       6.422
+Cause     Environmental              1     -9.8143       140.3          0.00        0.9442       0.000
+Cause     Equipment/Machinery        1      0.5295      7.5214          0.00        0.9439       1.698
+Cause     Exposure                   1     -0.4289      7.5538          0.00        0.9547       0.651
+Cause     Fire                       1      1.7962      7.5229          0.06        0.8113       6.026
+Cause     Foreign Body/Object        1      0.6213      7.5473          0.01        0.9344       1.861
+Cause     Human Conflict             1      1.5853      7.5489          0.04        0.8337       4.881
+Cause     Lifting                    1      0.5248      7.5131          0.00        0.9443       1.690
+Cause     MVA                        1      3.6091      7.5157          0.23        0.6311      36.931
+Cause     Occupational Illness       1      1.4818      7.5484          0.04        0.8444       4.401
+Cause     Pushing/Pulling            1      0.2131      7.5205          0.00        0.9774       1.237
+Cause     Repetitive Motion          1      1.2072      7.5189          0.03        0.8724       3.344
+Cause     Slip/Fall                  1      1.2498      7.5122          0.03        0.8679       3.490
+Cause     Stress                     1      0.2891      7.5605          0.00        0.9695       1.335
+Cause     Struck Object              1      0.9936      7.5121          0.02        0.8948       2.701
+Cause     Unknown                    1     -0.2925      7.5501          0.00        0.9691       0.746
+ 
+ 
+                        Odds Ratio Estimates
+ 
+                                                               Point
+Effect                                                      Estimate
+ 
+Body    Abdomen vs Wrist                                     999.000
+Body    Ankle vs Wrist                                         1.283
+Body    Arm vs Wrist                                           2.070
+Body    Back vs Wrist                                          2.522
+Body    Ear vs Wrist                                          <0.001
+Body    Elbow vs Wrist                                         1.781
+Body    Eye vs Wrist                                           1.013
+Body    Face vs Wrist                                          1.354
+Body    Finger vs Wrist                                        1.166
+Body    Foot vs Wrist                                          2.738
+Body    Groin vs Wrist                                         4.882
+Body    Hand vs Wrist                                          2.095
+Body    Head vs Wrist                                          2.516
+Body    Hip vs Wrist                                           3.106
+Body    Jaw vs Wrist                                           1.064
+Body    Knee vs Wrist                                          1.859
+Body    Leg vs Wrist                                           3.170
+Body    Multiple vs Wrist                                      5.718
+Body    Neck vs Wrist                                         14.538
+Body    Ribs vs Wrist                                          3.369
+Body    Shoulder vs Wrist                                     15.224
+Body    Spine vs Wrist                                         6.338
+Body    Toes vs Wrist                                          1.887
+Body    Tooth vs Wrist                                         0.785
+Body    Torso vs Wrist                                         3.499
+Body    Unknown vs Wrist                                     999.000
+Cause   Animal Attack vs Unusual Body Movement                <0.001
+Cause   Biting/Stinging Insect vs Unusual Body Movement        2.096
+Cause   Caught in Machine vs Unusual Body Movement             0.404
+Cause   Contact with Object vs Unusual Body Movement           0.511
+Cause   Electrocution vs Unusual Body Movement                 2.184
+Cause   Environmental vs Unusual Body Movement                <0.001
+Cause   Equipment/Machinery vs Unusual Body Movement           0.577
+Cause   Exposure vs Unusual Body Movement                      0.221
+Cause   Fire vs Unusual Body Movement                          2.049
+Cause   Foreign Body/Object vs Unusual Body Movement           0.633
+Cause   Human Conflict vs Unusual Body Movement                1.660
+Cause   Lifting vs Unusual Body Movement                       0.575
+Cause   MVA vs Unusual Body Movement                          12.559
+Cause   Occupational Illness vs Unusual Body Movement          1.497
+Cause   Pushing/Pulling vs Unusual Body Movement               0.421
+Cause   Repetitive Motion vs Unusual Body Movement             1.137
+Cause   Slip/Fall vs Unusual Body Movement                     1.187
+Cause   Stress vs Unusual Body Movement                        0.454
+Cause   Struck Object vs Unusual Body Movement                 0.918
+Cause   Unknown vs Unusual Body Movement                       0.254
+ 
+ 
+Step 3: Effect Nature entered.
+ 
+ 
+ 
+ 
+ 
+The DMREG Procedure
+ 
+Dual Quasi-Newton Optimization
+ 
+Dual Broyden - Fletcher - Goldfarb - Shanno Update (DBFGS)
+ 
+Parameter Estimates              62
+ 
+                                             Optimization Start
+ 
+Active Constraints                                  0  Objective Function                       1003.0965195
+Max Abs Gradient Element                 97.865612648
+ 
+ 
+                                                                 Objective     Max Abs                Slope of
+                     Function         Active        Objective     Function    Gradient       Step       Search
+Iter     Restarts       Calls    Constraints         Function       Change     Element       Size    Direction
+ 
+   1            0           5              0        802.42144        200.7     13.5380      0.979       -383.0
+   2            0           9              0        791.09301      11.3284      8.1021      2.000      -11.975
+   3            0          13              0        789.98752       1.1055      3.8321      2.608       -0.842
+   4            0          17              0        789.66791       0.3196      1.0700      2.646       -0.239
+   5            0          21              0        789.45240       0.2155      3.3959      3.855       -0.108
+   6            0          23              0        789.27052       0.1819      1.7092      4.021       -0.134
+   7            0          26              0        789.19739       0.0731      0.1757      1.553      -0.0951
+   8            0          28              0        789.16038       0.0370      0.6564      7.806      -0.0234
+   9            0          30              0        789.13616       0.0242      0.1339      2.111      -0.0438
+  10            0          33              0        789.12549       0.0107      0.0959      1.177      -0.0184
+  11            0          36              0        789.12145      0.00404      0.0862      4.582      -0.0020
+  12            0          39              0        789.11974      0.00172      0.0578      3.104      -0.0011
+  13            0          41              0        789.11772      0.00202      0.0378      3.655      -0.0012
+  14            0          44              0        789.11724     0.000474      0.0258      2.414      -0.0005
+ 
+                                            Optimization Results
+ 
+Iterations                                         14  Function Calls                                     46
+Gradient Calls                                     21  Active Constraints                                  0
+Objective Function                       789.11724226  Max Abs Gradient Element                 0.0257922108
+Slope of Search Direction                -0.000461813
+ 
+Convergence criterion (GCONV=1E-6) satisfied.
+ 
+NOTE: At least one element of the gradient is greater than 1e-3.
+ 
+ 
+ 
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+ 
+   2006.193        1578.234       427.9586       61         <.0001
+ 
+ 
+         Type 3 Analysis of Effects
+ 
+                          Wald
+Effect        DF    Chi-Square    Pr > ChiSq
+ 
+Body          23       65.6191        <.0001
+Cause         17      117.1084        <.0001
+Nature        15      269.1149        <.0001
+ 
+ 
+                               Analysis of Maximum Likelihood Estimates
+ 
+                                                      Standard          Wald
+Parameter                           DF    Estimate       Error    Chi-Square    Pr > ChiSq    Exp(Est)
+ 
+Intercept                            1     -0.9960     22.4818          0.00        0.9647       0.369
+Body      Abdomen                    1      9.4403           .           .           .         999.000
+Body      Ankle                      1     -0.7845      0.3518          4.97        0.0257       0.456
+Body      Arm                        1     -0.1263      0.2452          0.27        0.6067       0.881
+Body      Back                       1     -0.1340      0.1981          0.46        0.4987       0.875
+Body      Ear                        1    -11.6782           .           .           .           0.000
+Body      Elbow                      1     -0.3525      0.5701          0.38        0.5363       0.703
+Body      Eye                        1     -0.9577      0.6104          2.46        0.1167       0.384
+Body      Face                       1     -0.5344      0.7475          0.51        0.4746       0.586
+Body      Finger                     1     -0.6352      0.3047          4.34        0.0371       0.530
+Body      Foot                       1      0.1176      0.2943          0.16        0.6895       1.125
+Body      Groin                      1      0.5675      0.4800          1.40        0.2370       1.764
+Body      Hand                       1     -0.0289      0.2801          0.01        0.9179       0.972
+Body      Head                       1     -0.0414      0.2318          0.03        0.8581       0.959
+Body      Hip                        1      0.2055      1.0992          0.03        0.8517       1.228
+Body      Jaw                        1     -0.9323      1.0666          0.76        0.3820       0.394
+Body      Knee                       1     -0.3636      0.2833          1.65        0.1994       0.695
+Body      Leg                        1      0.3880      0.2976          1.70        0.1923       1.474
+Body      Multiple                   1      0.6477      0.3748          2.99        0.0839       1.911
+Body      Neck                       1      1.6564      0.5184         10.21        0.0014       5.240
+Body      Ribs                       1      0.2981      0.8154          0.13        0.7147       1.347
+Body      Shoulder                   1      1.7142      0.3387         25.61        <.0001       5.552
+Body      Spine                      1      0.7652      0.5380          2.02        0.1550       2.149
+Body      Toes                       1     -0.2692      0.6711          0.16        0.6883       0.764
+Body      Tooth                      1     -1.1675      1.0484          1.24        0.2655       0.311
+Body      Torso                      1      0.2373      0.5211          0.21        0.6488       1.268
+Body      Unknown                    1      2.9070           .           .           .          18.301
+Cause     Animal Attack              1      1.5171     90.9585          0.00        0.9867       4.559
+Cause     Biting/Stinging Insect     1     13.2879           .           .           .         999.000
+Cause     Caught in Machine          1     -0.3981     22.4853          0.00        0.9859       0.672
+Cause     Contact with Object        1     -8.7645     95.9632          0.01        0.9272       0.000
+Cause     Electrocution              1     -7.5947     95.9735          0.01        0.9369       0.001
+Cause     Environmental              1     -3.5296           .           .           .           0.029
+Cause     Equipment/Machinery        1      0.0906     22.4856          0.00        0.9968       1.095
+Cause     Exposure                   1      7.3571     90.2667          0.01        0.9350     999.000
+Cause     Fire                       1     -7.5941     95.9652          0.01        0.9369       0.001
+Cause     Foreign Body/Object        1      0.6324     22.5050          0.00        0.9776       1.882
+Cause     Human Conflict             1      1.5174     22.4962          0.00        0.9462       4.561
+Cause     Lifting                    1     -0.0505     22.4821          0.00        0.9982       0.951
+Cause     MVA                        1      3.1483     22.4835          0.02        0.8886      23.295
+Cause     Occupational Illness       1      9.5725     90.2666          0.01        0.9155     999.000
+Cause     Pushing/Pulling            1     -0.3798     22.4845          0.00        0.9865       0.684
+Cause     Repetitive Motion          1      0.2763     22.4905          0.00        0.9902       1.318
+Cause     Slip/Fall                  1      0.7635     22.4820          0.00        0.9729       2.146
+Cause     Stress                     1    -10.5422           .           .           .           0.000
+Cause     Struck Object              1      0.7164     22.4823          0.00        0.9746       2.047
+Cause     Unknown                    1     -0.4841     22.4943          0.00        0.9828       0.616
+Nature    Abrasion                   1     -0.6544      0.7698          0.72        0.3953       0.520
+Nature    Amputation                 1      1.1914      1.0133          1.38        0.2397       3.292
+Nature    Animal/Insect Bite         1    -12.1933     22.5054          0.29        0.5880       0.000
+Nature    Bite                       1    -12.0719       201.9          0.00        0.9523       0.000
+Nature    Burn                       1      8.6618       113.9          0.01        0.9394     999.000
+Nature    Contusion                  1     -0.2419      0.2323          1.08        0.2978       0.785
+Nature    Death                      1     11.9135       277.0          0.00        0.9657     999.000
+Nature    Fracture                   1     -0.4147      0.3398          1.49        0.2223       0.661
+Nature    Infection/Disease          1     -8.6854     97.1737          0.01        0.9288       0.000
+Nature    Laceration                 1     -1.0970      0.3715          8.72        0.0031       0.334
+Nature    Mental Health              1     10.4851     22.5022          0.22        0.6412     999.000
+Nature    Multiple                   1      0.9216      1.2105          0.58        0.4464       2.513
+Nature    Poisoning                  1     -7.7018     97.1812          0.01        0.9368       0.000
+Nature    Puncture                   1     -1.3927      1.1208          1.54        0.2140       0.248
+Nature    Repetitive Motion          1      0.2751      0.7525          0.13        0.7146       1.317
+Nature    Sprain/Strain              0           0           .           .           .            .
+ 
+ 
+                        Odds Ratio Estimates
+ 
+                                                               Point
+Effect                                                      Estimate
+ 
+Body    Abdomen vs Wrist                                     999.000
+Body    Ankle vs Wrist                                         1.167
+Body    Arm vs Wrist                                           2.254
+Body    Back vs Wrist                                          2.236
+Body    Ear vs Wrist                                          <0.001
+Body    Elbow vs Wrist                                         1.797
+Body    Eye vs Wrist                                           0.981
+Body    Face vs Wrist                                          1.498
+Body    Finger vs Wrist                                        1.355
+Body    Foot vs Wrist                                          2.876
+Body    Groin vs Wrist                                         4.510
+Body    Hand vs Wrist                                          2.484
+Body    Head vs Wrist                                          2.453
+Body    Hip vs Wrist                                           3.140
+Body    Jaw vs Wrist                                           1.007
+Body    Knee vs Wrist                                          1.778
+Body    Leg vs Wrist                                           3.769
+Body    Multiple vs Wrist                                      4.887
+Body    Neck vs Wrist                                         13.400
+Body    Ribs vs Wrist                                          3.445
+Body    Shoulder vs Wrist                                     14.198
+Body    Spine vs Wrist                                         5.496
+Body    Toes vs Wrist                                          1.953
+Body    Tooth vs Wrist                                         0.796
+Body    Torso vs Wrist                                         3.242
+Body    Unknown vs Wrist                                      46.796
+Cause   Animal Attack vs Unusual Body Movement                 2.883
+Cause   Biting/Stinging Insect vs Unusual Body Movement      999.000
+Cause   Caught in Machine vs Unusual Body Movement             0.425
+Cause   Contact with Object vs Unusual Body Movement          <0.001
+Cause   Electrocution vs Unusual Body Movement                <0.001
+Cause   Environmental vs Unusual Body Movement                 0.019
+Cause   Equipment/Machinery vs Unusual Body Movement           0.692
+Cause   Exposure vs Unusual Body Movement                    991.153
+Cause   Fire vs Unusual Body Movement                         <0.001
+Cause   Foreign Body/Object vs Unusual Body Movement           1.190
+Cause   Human Conflict vs Unusual Body Movement                2.884
+Cause   Lifting vs Unusual Body Movement                       0.601
+Cause   MVA vs Unusual Body Movement                          14.732
+Cause   Occupational Illness vs Unusual Body Movement        999.000
+Cause   Pushing/Pulling vs Unusual Body Movement               0.433
+Cause   Repetitive Motion vs Unusual Body Movement             0.834
+Cause   Slip/Fall vs Unusual Body Movement                     1.357
+Cause   Stress vs Unusual Body Movement                       <0.001
+Cause   Struck Object vs Unusual Body Movement                 1.295
+Cause   Unknown vs Unusual Body Movement                       0.390
+Nature  Abrasion vs Unknown                                   <0.001
+Nature  Amputation vs Unknown                                 <0.001
+Nature  Animal/Insect Bite vs Unknown                         <0.001
+Nature  Bite vs Unknown                                       <0.001
+Nature  Burn vs Unknown                                        0.096
+Nature  Contusion vs Unknown                                  <0.001
+Nature  Death vs Unknown                                       2.482
+Nature  Fracture vs Unknown                                   <0.001
+Nature  Infection/Disease vs Unknown                          <0.001
+Nature  Laceration vs Unknown                                 <0.001
+Nature  Mental Health vs Unknown                               0.595
+Nature  Multiple vs Unknown                                   <0.001
+Nature  Poisoning vs Unknown                                  <0.001
+Nature  Puncture vs Unknown                                   <0.001
+Nature  Repetitive Motion vs Unknown                          <0.001
+Nature  Sprain/Strain vs Unknown                                .
+ 
+ 
+Step 4: Effect VEHflag entered.
+ 
+ 
+ 
+ 
+ 
+The DMREG Procedure
+ 
+Dual Quasi-Newton Optimization
+ 
+Dual Broyden - Fletcher - Goldfarb - Shanno Update (DBFGS)
+ 
+Parameter Estimates              63
+ 
+                                             Optimization Start
+ 
+Active Constraints                                  0  Objective Function                       1003.0965195
+Max Abs Gradient Element                 187.55335968
+ 
+ 
+                                                                 Objective     Max Abs                Slope of
+                     Function         Active        Objective     Function    Gradient       Step       Search
+Iter     Restarts       Calls    Constraints         Function       Change     Element       Size    Direction
+ 
+   1            0           5              0        801.85435        201.2     33.1708      0.979       -384.1
+   2            0           9              0        790.52619      11.3282      8.1117      2.000      -11.998
+   3            0          13              0        789.42160       1.1046      3.8446      2.615       -0.839
+   4            0          17              0        789.10085       0.3207      2.0685      2.645       -0.240
+   5            0          21              0        788.88565       0.2152      3.4289      3.843       -0.109
+   6            0          23              0        788.70461       0.1810      1.7172      4.013       -0.134
+   7            0          26              0        788.63122       0.0734      0.1783      1.553      -0.0954
+   8            0          28              0        788.59432       0.0369      0.6625      7.785      -0.0236
+   9            0          30              0        788.56897       0.0253      0.1602      2.076      -0.0444
+  10            0          33              0        788.55884       0.0101      0.0982      1.201      -0.0172
+  11            0          36              0        788.55475      0.00409      0.0866      4.462      -0.0021
+  12            0          39              0        788.55302      0.00173      0.0561      3.052      -0.0012
+  13            0          41              0        788.55093      0.00209      0.0580      3.623      -0.0012
+  14            0          44              0        788.55044     0.000488      0.0422      2.560      -0.0005
+ 
+                                            Optimization Results
+ 
+Iterations                                         14  Function Calls                                     46
+Gradient Calls                                     21  Active Constraints                                  0
+Objective Function                       788.55044439  Max Abs Gradient Element                  0.042227672
+Slope of Search Direction                -0.000463567
+ 
+Convergence criterion (GCONV=1E-6) satisfied.
+ 
+NOTE: At least one element of the gradient is greater than 1e-3.
+ 
+ 
+ 
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+ 
+   2006.193        1577.101       429.0922       62         <.0001
+ 
+ 
+         Type 3 Analysis of Effects
+ 
+                          Wald
+Effect        DF    Chi-Square    Pr > ChiSq
+ 
+Body          23       64.9370        <.0001
+Cause         17       81.4860        <.0001
+Nature        15      271.4767        <.0001
+VEHflag        1        1.1534        0.2828
+ 
+ 
+                               Analysis of Maximum Likelihood Estimates
+ 
+                                                      Standard          Wald
+Parameter                           DF    Estimate       Error    Chi-Square    Pr > ChiSq    Exp(Est)
+ 
+Intercept                            1     -0.8967     22.9643          0.00        0.9689       0.408
+Body      Abdomen                    1      9.4949           .           .           .         999.000
+Body      Ankle                      1     -0.7773      0.3519          4.88        0.0272       0.460
+Body      Arm                        1     -0.1194      0.2457          0.24        0.6268       0.887
+Body      Back                       1     -0.1278      0.1986          0.41        0.5200       0.880
+Body      Ear                        1    -11.7239           .           .           .           0.000
+Body      Elbow                      1     -0.3956      0.5728          0.48        0.4899       0.673
+Body      Eye                        1     -0.9797      0.6094          2.58        0.1079       0.375
+Body      Face                       1     -0.5530      0.7478          0.55        0.4596       0.575
+Body      Finger                     1     -0.6142      0.3060          4.03        0.0447       0.541
+Body      Foot                       1      0.1000      0.2946          0.12        0.7344       1.105
+Body      Groin                      1      0.5979      0.4816          1.54        0.2145       1.818
+Body      Hand                       1     -0.0239      0.2802          0.01        0.9321       0.976
+Body      Head                       1     -0.0441      0.2319          0.04        0.8492       0.957
+Body      Hip                        1      0.2197      1.1010          0.04        0.8419       1.246
+Body      Jaw                        1     -0.9625      1.0685          0.81        0.3677       0.382
+Body      Knee                       1     -0.3698      0.2836          1.70        0.1922       0.691
+Body      Leg                        1      0.3902      0.2978          1.72        0.1901       1.477
+Body      Multiple                   1      0.6336      0.3749          2.86        0.0910       1.884
+Body      Neck                       1      1.6464      0.5177         10.11        0.0015       5.188
+Body      Ribs                       1      0.2219      0.8163          0.07        0.7857       1.248
+Body      Shoulder                   1      1.7209      0.3391         25.75        <.0001       5.589
+Body      Spine                      1      0.7730      0.5384          2.06        0.1511       2.166
+Body      Toes                       1     -0.2465      0.6718          0.13        0.7137       0.782
+Body      Tooth                      1     -1.1943      1.0501          1.29        0.2554       0.303
+Body      Torso                      1      0.1953      0.5216          0.14        0.7080       1.216
+Body      Unknown                    1      3.0668           .           .           .          21.474
+Cause     Animal Attack              1      1.5439     93.2383          0.00        0.9868       4.683
+Cause     Biting/Stinging Insect     1     13.3645           .           .           .         999.000
+Cause     Caught in Machine          1     -0.4103     22.9676          0.00        0.9857       0.663
+Cause     Contact with Object        1     -8.7830     97.9258          0.01        0.9285       0.000
+Cause     Electrocution              1     -7.6212     97.9358          0.01        0.9380       0.000
+Cause     Environmental              1     -3.5235           .           .           .           0.029
+Cause     Equipment/Machinery        1      0.1043     22.9679          0.00        0.9964       1.110
+Cause     Exposure                   1      7.4139     91.9884          0.01        0.9358     999.000
+Cause     Fire                       1     -7.6119     97.9277          0.01        0.9380       0.000
+Cause     Foreign Body/Object        1      0.6590     22.9870          0.00        0.9771       1.933
+Cause     Human Conflict             1      1.5393     22.9783          0.00        0.9466       4.661
+Cause     Lifting                    1     -0.0513     22.9645          0.00        0.9982       0.950
+Cause     MVA                        1      2.9158     22.9668          0.02        0.8990      18.463
+Cause     Occupational Illness       1      9.6217     91.9882          0.01        0.9167     999.000
+Cause     Pushing/Pulling            1     -0.3875     22.9669          0.00        0.9865       0.679
+Cause     Repetitive Motion          1      0.3035     22.9727          0.00        0.9895       1.355
+Cause     Slip/Fall                  1      0.7716     22.9644          0.00        0.9732       2.163
+Cause     Stress                     1    -10.5605           .           .           .           0.000
+Cause     Struck Object              1      0.7143     22.9646          0.00        0.9752       2.043
+Cause     Unknown                    1     -0.4595     22.9764          0.00        0.9840       0.632
+Nature    Abrasion                   1     -0.6567      0.7727          0.72        0.3954       0.519
+Nature    Amputation                 1      1.1507      1.0109          1.30        0.2550       3.160
+Nature    Animal/Insect Bite         1    -12.2451     22.9873          0.28        0.5942       0.000
+Nature    Bite                       1    -12.1246       207.3          0.00        0.9534       0.000
+Nature    Burn                       1      8.7117       116.3          0.01        0.9403     999.000
+Nature    Contusion                  1     -0.2311      0.2326          0.99        0.3205       0.794
+Nature    Death                      1     11.9986       284.1          0.00        0.9663     999.000
+Nature    Fracture                   1     -0.4120      0.3398          1.47        0.2253       0.662
+Nature    Infection/Disease          1     -8.6980     99.0520          0.01        0.9300       0.000
+Nature    Laceration                 1     -1.0883      0.3717          8.57        0.0034       0.337
+Nature    Mental Health              1     10.5472     22.9842          0.21        0.6463     999.000
+Nature    Multiple                   1      0.9444      1.2115          0.61        0.4357       2.571
+Nature    Poisoning                  1     -7.7147     99.0594          0.01        0.9379       0.000
+Nature    Puncture                   1     -1.3577      1.1207          1.47        0.2257       0.257
+Nature    Repetitive Motion          1      0.2642      0.7525          0.12        0.7255       1.302
+Nature    Sprain/Strain              0           0           .           .           .            .
+VEHflag   0                          1     -0.1291      0.1202          1.15        0.2828       0.879
+ 
+ 
+                        Odds Ratio Estimates
+ 
+                                                               Point
+Effect                                                      Estimate
+ 
+Body    Abdomen vs Wrist                                     999.000
+Body    Ankle vs Wrist                                         1.163
+Body    Arm vs Wrist                                           2.246
+Body    Back vs Wrist                                          2.227
+Body    Ear vs Wrist                                          <0.001
+Body    Elbow vs Wrist                                         1.704
+Body    Eye vs Wrist                                           0.950
+Body    Face vs Wrist                                          1.456
+Body    Finger vs Wrist                                        1.369
+Body    Foot vs Wrist                                          2.797
+Body    Groin vs Wrist                                         4.602
+Body    Hand vs Wrist                                          2.471
+Body    Head vs Wrist                                          2.422
+Body    Hip vs Wrist                                           3.153
+Body    Jaw vs Wrist                                           0.967
+Body    Knee vs Wrist                                          1.749
+Body    Leg vs Wrist                                           3.739
+Body    Multiple vs Wrist                                      4.770
+Body    Neck vs Wrist                                         13.131
+Body    Ribs vs Wrist                                          3.160
+Body    Shoulder vs Wrist                                     14.147
+Body    Spine vs Wrist                                         5.483
+Body    Toes vs Wrist                                          1.978
+Body    Tooth vs Wrist                                         0.767
+Body    Torso vs Wrist                                         3.077
+Body    Unknown vs Wrist                                      54.349
+Cause   Animal Attack vs Unusual Body Movement                 2.965
+Cause   Biting/Stinging Insect vs Unusual Body Movement      999.000
+Cause   Caught in Machine vs Unusual Body Movement             0.420
+Cause   Contact with Object vs Unusual Body Movement          <0.001
+Cause   Electrocution vs Unusual Body Movement                <0.001
+Cause   Environmental vs Unusual Body Movement                 0.019
+Cause   Equipment/Machinery vs Unusual Body Movement           0.703
+Cause   Exposure vs Unusual Body Movement                    999.000
+Cause   Fire vs Unusual Body Movement                         <0.001
+Cause   Foreign Body/Object vs Unusual Body Movement           1.224
+Cause   Human Conflict vs Unusual Body Movement                2.951
+Cause   Lifting vs Unusual Body Movement                       0.601
+Cause   MVA vs Unusual Body Movement                          11.689
+Cause   Occupational Illness vs Unusual Body Movement        999.000
+Cause   Pushing/Pulling vs Unusual Body Movement               0.430
+Cause   Repetitive Motion vs Unusual Body Movement             0.858
+Cause   Slip/Fall vs Unusual Body Movement                     1.370
+Cause   Stress vs Unusual Body Movement                       <0.001
+Cause   Struck Object vs Unusual Body Movement                 1.293
+Cause   Unknown vs Unusual Body Movement                       0.400
+Nature  Abrasion vs Unknown                                   <0.001
+Nature  Amputation vs Unknown                                 <0.001
+Nature  Animal/Insect Bite vs Unknown                         <0.001
+Nature  Bite vs Unknown                                       <0.001
+Nature  Burn vs Unknown                                        0.111
+Nature  Contusion vs Unknown                                  <0.001
+Nature  Death vs Unknown                                       2.966
+Nature  Fracture vs Unknown                                   <0.001
+Nature  Infection/Disease vs Unknown                          <0.001
+Nature  Laceration vs Unknown                                 <0.001
+Nature  Mental Health vs Unknown                               0.695
+Nature  Multiple vs Unknown                                   <0.001
+Nature  Poisoning vs Unknown                                  <0.001
+Nature  Puncture vs Unknown                                   <0.001
+Nature  Repetitive Motion vs Unknown                          <0.001
+Nature  Sprain/Strain vs Unknown                                .
+VEHflag 0 vs 1                                                 0.772
+ 
+ 
+NOTE: All effects have been entered into the model.
+ 
+ 
+                                    Summary of Stepwise Selection
+ 
+                                                                                          Validation
+            Effect             Number         Score          Wald                  Misclassification
+    Step    Entered      DF        In    Chi-Square    Chi-Square    Pr > ChiSq                 Rate
+ 
+       1    Cause        20         1      290.4864                      <.0001               0.2627
+       2    Body         26         2       96.6777                      <.0001               0.2456
+       3    Nature       15         3       20.0097                      0.1716               0.2436
+       4    VEHflag       1         4        1.1580                      0.2819               0.2442
+ 
+ 
+The selected model, based on the misclassification rate for the validation data, is the model trained in Step 3. It consists of the following effects:
+ 
+Intercept  Body  Cause  Nature
+ 
+ 
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+ 
+   2006.193        1578.234       427.9586       61         <.0001
+ 
+ 
+         Type 3 Analysis of Effects
+ 
+                          Wald
+Effect        DF    Chi-Square    Pr > ChiSq
+ 
+Body          23       65.6191        <.0001
+Cause         17      117.1084        <.0001
+Nature        15      269.1149        <.0001
+ 
+ 
+                               Analysis of Maximum Likelihood Estimates
+ 
+                                                      Standard          Wald
+Parameter                           DF    Estimate       Error    Chi-Square    Pr > ChiSq    Exp(Est)
+ 
+Intercept                            1     -0.9960     22.4818          0.00        0.9647       0.369
+Body      Abdomen                    1      9.4403           .           .           .         999.000
+Body      Ankle                      1     -0.7845      0.3518          4.97        0.0257       0.456
+Body      Arm                        1     -0.1263      0.2452          0.27        0.6067       0.881
+Body      Back                       1     -0.1340      0.1981          0.46        0.4987       0.875
+Body      Ear                        1    -11.6782           .           .           .           0.000
+Body      Elbow                      1     -0.3525      0.5701          0.38        0.5363       0.703
+Body      Eye                        1     -0.9577      0.6104          2.46        0.1167       0.384
+Body      Face                       1     -0.5344      0.7475          0.51        0.4746       0.586
+Body      Finger                     1     -0.6352      0.3047          4.34        0.0371       0.530
+Body      Foot                       1      0.1176      0.2943          0.16        0.6895       1.125
+Body      Groin                      1      0.5675      0.4800          1.40        0.2370       1.764
+Body      Hand                       1     -0.0289      0.2801          0.01        0.9179       0.972
+Body      Head                       1     -0.0414      0.2318          0.03        0.8581       0.959
+Body      Hip                        1      0.2055      1.0992          0.03        0.8517       1.228
+Body      Jaw                        1     -0.9323      1.0666          0.76        0.3820       0.394
+Body      Knee                       1     -0.3636      0.2833          1.65        0.1994       0.695
+Body      Leg                        1      0.3880      0.2976          1.70        0.1923       1.474
+Body      Multiple                   1      0.6477      0.3748          2.99        0.0839       1.911
+Body      Neck                       1      1.6564      0.5184         10.21        0.0014       5.240
+Body      Ribs                       1      0.2981      0.8154          0.13        0.7147       1.347
+Body      Shoulder                   1      1.7142      0.3387         25.61        <.0001       5.552
+Body      Spine                      1      0.7652      0.5380          2.02        0.1550       2.149
+Body      Toes                       1     -0.2692      0.6711          0.16        0.6883       0.764
+Body      Tooth                      1     -1.1675      1.0484          1.24        0.2655       0.311
+Body      Torso                      1      0.2373      0.5211          0.21        0.6488       1.268
+Body      Unknown                    1      2.9070           .           .           .          18.301
+Cause     Animal Attack              1      1.5171     90.9585          0.00        0.9867       4.559
+Cause     Biting/Stinging Insect     1     13.2879           .           .           .         999.000
+Cause     Caught in Machine          1     -0.3981     22.4853          0.00        0.9859       0.672
+Cause     Contact with Object        1     -8.7645     95.9632          0.01        0.9272       0.000
+Cause     Electrocution              1     -7.5947     95.9735          0.01        0.9369       0.001
+Cause     Environmental              1     -3.5296           .           .           .           0.029
+Cause     Equipment/Machinery        1      0.0906     22.4856          0.00        0.9968       1.095
+Cause     Exposure                   1      7.3571     90.2667          0.01        0.9350     999.000
+Cause     Fire                       1     -7.5941     95.9652          0.01        0.9369       0.001
+Cause     Foreign Body/Object        1      0.6324     22.5050          0.00        0.9776       1.882
+Cause     Human Conflict             1      1.5174     22.4962          0.00        0.9462       4.561
+Cause     Lifting                    1     -0.0505     22.4821          0.00        0.9982       0.951
+Cause     MVA                        1      3.1483     22.4835          0.02        0.8886      23.295
+Cause     Occupational Illness       1      9.5725     90.2666          0.01        0.9155     999.000
+Cause     Pushing/Pulling            1     -0.3798     22.4845          0.00        0.9865       0.684
+Cause     Repetitive Motion          1      0.2763     22.4905          0.00        0.9902       1.318
+Cause     Slip/Fall                  1      0.7635     22.4820          0.00        0.9729       2.146
+Cause     Stress                     1    -10.5422           .           .           .           0.000
+Cause     Struck Object              1      0.7164     22.4823          0.00        0.9746       2.047
+Cause     Unknown                    1     -0.4841     22.4943          0.00        0.9828       0.616
+Nature    Abrasion                   1     -0.6544      0.7698          0.72        0.3953       0.520
+Nature    Amputation                 1      1.1914      1.0133          1.38        0.2397       3.292
+Nature    Animal/Insect Bite         1    -12.1933     22.5054          0.29        0.5880       0.000
+Nature    Bite                       1    -12.0719       201.9          0.00        0.9523       0.000
+Nature    Burn                       1      8.6618       113.9          0.01        0.9394     999.000
+Nature    Contusion                  1     -0.2419      0.2323          1.08        0.2978       0.785
+Nature    Death                      1     11.9135       277.0          0.00        0.9657     999.000
+Nature    Fracture                   1     -0.4147      0.3398          1.49        0.2223       0.661
+Nature    Infection/Disease          1     -8.6854     97.1737          0.01        0.9288       0.000
+Nature    Laceration                 1     -1.0970      0.3715          8.72        0.0031       0.334
+Nature    Mental Health              1     10.4851     22.5022          0.22        0.6412     999.000
+Nature    Multiple                   1      0.9216      1.2105          0.58        0.4464       2.513
+Nature    Poisoning                  1     -7.7018     97.1812          0.01        0.9368       0.000
+Nature    Puncture                   1     -1.3927      1.1208          1.54        0.2140       0.248
+Nature    Repetitive Motion          1      0.2751      0.7525          0.13        0.7146       1.317
+Nature    Sprain/Strain              0           0           .           .           .            .
+ 
+ 
+                        Odds Ratio Estimates
+ 
+                                                               Point
+Effect                                                      Estimate
+ 
+Body    Abdomen vs Wrist                                     999.000
+Body    Ankle vs Wrist                                         1.167
+Body    Arm vs Wrist                                           2.254
+Body    Back vs Wrist                                          2.236
+Body    Ear vs Wrist                                          <0.001
+Body    Elbow vs Wrist                                         1.797
+Body    Eye vs Wrist                                           0.981
+Body    Face vs Wrist                                          1.498
+Body    Finger vs Wrist                                        1.355
+Body    Foot vs Wrist                                          2.876
+Body    Groin vs Wrist                                         4.510
+Body    Hand vs Wrist                                          2.484
+Body    Head vs Wrist                                          2.453
+Body    Hip vs Wrist                                           3.140
+Body    Jaw vs Wrist                                           1.007
+Body    Knee vs Wrist                                          1.778
+Body    Leg vs Wrist                                           3.769
+Body    Multiple vs Wrist                                      4.887
+Body    Neck vs Wrist                                         13.400
+Body    Ribs vs Wrist                                          3.445
+Body    Shoulder vs Wrist                                     14.198
+Body    Spine vs Wrist                                         5.496
+Body    Toes vs Wrist                                          1.953
+Body    Tooth vs Wrist                                         0.796
+Body    Torso vs Wrist                                         3.242
+Body    Unknown vs Wrist                                      46.796
+Cause   Animal Attack vs Unusual Body Movement                 2.883
+Cause   Biting/Stinging Insect vs Unusual Body Movement      999.000
+Cause   Caught in Machine vs Unusual Body Movement             0.425
+Cause   Contact with Object vs Unusual Body Movement          <0.001
+Cause   Electrocution vs Unusual Body Movement                <0.001
+Cause   Environmental vs Unusual Body Movement                 0.019
+Cause   Equipment/Machinery vs Unusual Body Movement           0.692
+Cause   Exposure vs Unusual Body Movement                    991.153
+Cause   Fire vs Unusual Body Movement                         <0.001
+Cause   Foreign Body/Object vs Unusual Body Movement           1.190
+Cause   Human Conflict vs Unusual Body Movement                2.884
+Cause   Lifting vs Unusual Body Movement                       0.601
+Cause   MVA vs Unusual Body Movement                          14.732
+Cause   Occupational Illness vs Unusual Body Movement        999.000
+Cause   Pushing/Pulling vs Unusual Body Movement               0.433
+Cause   Repetitive Motion vs Unusual Body Movement             0.834
+Cause   Slip/Fall vs Unusual Body Movement                     1.357
+Cause   Stress vs Unusual Body Movement                       <0.001
+Cause   Struck Object vs Unusual Body Movement                 1.295
+Cause   Unknown vs Unusual Body Movement                       0.390
+Nature  Abrasion vs Unknown                                   <0.001
+Nature  Amputation vs Unknown                                 <0.001
+Nature  Animal/Insect Bite vs Unknown                         <0.001
+Nature  Bite vs Unknown                                       <0.001
+Nature  Burn vs Unknown                                        0.096
+Nature  Contusion vs Unknown                                  <0.001
+Nature  Death vs Unknown                                       2.482
+Nature  Fracture vs Unknown                                   <0.001
+Nature  Infection/Disease vs Unknown                          <0.001
+Nature  Laceration vs Unknown                                 <0.001
+Nature  Mental Health vs Unknown                               0.595
+Nature  Multiple vs Unknown                                   <0.001
+Nature  Poisoning vs Unknown                                  <0.001
+Nature  Puncture vs Unknown                                   <0.001
+Nature  Repetitive Motion vs Unknown                          <0.001
+Nature  Sprain/Strain vs Unknown                                .
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Fit Statistics
+ 
+Target=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+   Fit
+Statistics    Statistics Label                    Train    Validation
+ 
+ _AIC_        Akaike's Information Criterion    1702.23          .
+ _ASE_        Average Squared Error                0.17         0.17
+ _AVERR_      Average Error Function               0.52         0.55
+ _DFE_        Degrees of Freedom for Error      1456.00          .
+ _DFM_        Model Degrees of Freedom            62.00          .
+ _DFT_        Total Degrees of Freedom          1518.00          .
+ _DIV_        Divisor for ASE                   3036.00      3038.00
+ _ERR_        Error Function                    1578.23      1669.53
+ _FPE_        Final Prediction Error               0.19          .
+ _MAX_        Maximum Absolute Error               0.98         1.00
+ _MSE_        Mean Square Error                    0.18         0.17
+ _NOBS_       Sum of Frequencies                1518.00      1519.00
+ _NW_         Number of Estimate Weights          62.00          .
+ _RASE_       Root Average Sum of Squares          0.41         0.42
+ _RFPE_       Root Final Prediction Error          0.43          .
+ _RMSE_       Root Mean Squared Error              0.42         0.42
+ _SBC_        Schwarz's Bayesian Criterion      2032.39          .
+ _SSE_        Sum of Squared Errors              522.53       527.29
+ _SUMW_       Sum of Case Weights Times Freq    3036.00      3038.00
+ _MISC_       Misclassification Rate               0.24         0.24
+ 
+ 
+ 
+ 
+Classification Table
+ 
+Data Role=TRAIN Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+                       Target        Outcome     Frequency       Total
+Target    Outcome    Percentage    Percentage      Count      Percentage
+ 
+  0          0         73.5604       95.3733        907         59.7497
+  1          0         26.4396       57.4956        326         21.4756
+  0          1         15.4386        4.6267         44          2.8986
+  1          1         84.5614       42.5044        241         15.8762
+ 
+ 
+Data Role=VALIDATE Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+                       Target        Outcome     Frequency       Total
+Target    Outcome    Percentage    Percentage      Count      Percentage
+ 
+  0          0         74.3913       93.1651        886         58.3278
+  1          0         25.6087       53.6972        305         20.0790
+  0          1         19.8171        6.8349         65          4.2791
+  1          1         80.1829       46.3028        263         17.3140
+ 
+ 
+ 
+ 
+Event Classification Table
+ 
+Data Role=TRAIN Target=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+  False       True        False       True
+Negative    Negative    Positive    Positive
+ 
+   326         907         44          241
+ 
+ 
+Data Role=VALIDATE Target=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+  False       True        False       True
+Negative    Negative    Positive    Positive
+ 
+   305         886         65          263
+ 
+ 
+ 
+ 
+Assessment Score Rankings
+ 
+Data Role=TRAIN Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+                                                                                    Mean
+                            Cumulative       %      Cumulative     Number of     Posterior
+Depth      Gain     Lift       Lift      Response   % Response   Observations   Probability
+ 
+   5    148.644   2.48644     2.48644     92.8728     92.8728         76          0.96993
+  10    149.231   2.49818     2.49231     93.3114     93.0921         76          0.89192
+  15    137.312   2.13475     2.37312     79.7368     88.6404         76          0.78777
+  20    119.288   1.65214     2.19288     61.7105     81.9079         76          0.55551
+  25    101.570   1.30696     2.01570     48.8175     75.2898         76          0.43848
+  30     84.354   0.98279     1.84354     36.7089     68.8596         76          0.40937
+  35     73.493   1.08323     1.73493     40.4605     64.8026         76          0.38987
+  40     61.989   0.81462     1.61989     30.4276     60.5058         76          0.36751
+  45     52.285   0.74652     1.52285     27.8838     56.8811         76          0.35374
+  50     48.148   1.10422     1.48148     41.2444     55.3360         75          0.33308
+  55     42.359   0.84545     1.42359     31.5789     53.1737         76          0.29562
+  60     35.890   0.64818     1.35890     24.2105     50.7574         76          0.26491
+  65     29.811   0.56936     1.29811     21.2664     48.4866         76          0.23721
+  70     24.119   0.50198     1.24119     18.7500     46.3605         76          0.23495
+  75     19.333   0.52400     1.19333     19.5724     44.5731         76          0.22592
+  80     14.974   0.49636     1.14974     18.5398     42.9447         76          0.20065
+  85     11.901   0.62782     1.11901     23.4503     41.7971         76          0.18562
+  90      8.223   0.45743     1.08223     17.0860     40.4232         76          0.14928
+  95      4.455   0.36688     1.04455     13.7035     39.0159         76          0.11915
+ 100      0.000   0.14279     1.00000      5.3333     37.3518         75          0.05497
+ 
+ 
+Data Role=VALIDATE Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+                                                                                    Mean
+                            Cumulative       %      Cumulative     Number of     Posterior
+Depth      Gain     Lift       Lift      Response   % Response   Observations   Probability
+ 
+   5    125.790   2.25790     2.25790     84.4298     84.4298         76          0.98039
+  10    139.572   2.53354     2.39572     94.7368     89.5833         76          0.91346
+  15    137.268   2.32660     2.37268     86.9987     88.7218         76          0.83164
+  20    119.926   1.67898     2.19926     62.7820     82.2368         76          0.67385
+  25     97.053   1.05564     1.97053     39.4737     73.6842         76          0.48669
+  30     84.175   1.19784     1.84175     44.7909     68.8687         76          0.41856
+  35     73.930   1.12457     1.73930     42.0512     65.0376         76          0.40504
+  40     67.056   1.18936     1.67056     44.4737     62.4671         76          0.37658
+  45     54.828   0.57005     1.54828     21.3158     57.8947         76          0.35928
+  50     47.614   0.82692     1.47614     30.9211     55.1974         76          0.33650
+  55     42.177   0.87810     1.42177     32.8349     53.1644         76          0.29746
+  60     37.625   0.87544     1.37625     32.7352     51.4620         76          0.26757
+  65     30.076   0.39489     1.30076     14.7661     48.6392         76          0.23833
+  70     22.907   0.29714     1.22907     11.1111     45.9586         76          0.23495
+  75     18.675   0.59429     1.18675     22.2222     44.3762         76          0.21727
+  80     15.846   0.73406     1.15846     27.4488     43.3183         76          0.19511
+  85     11.981   0.50143     1.11981     18.7500     41.8731         76          0.17213
+  90      7.894   0.38414     1.07894     14.3640     40.3448         76          0.12948
+  95      4.483   0.43082     1.04483     16.1096     39.0693         76          0.11507
+ 100      0.000   0.13692     1.00000      5.1200     37.3930         75          0.05780
+ 
+ 
+ 
+ 
+Assessment Score Distribution
+ 
+Data Role=TRAIN Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+ 
+ 0.95-1.00       57           5         0.97805         4.0843
+ 0.90-0.95       33           1         0.92763         2.2398
+ 0.85-0.90       72           7         0.87409         5.2042
+ 0.80-0.85        7           1         0.81192         0.5270
+ 0.75-0.80       26           5         0.77213         2.0422
+ 0.70-0.75        2           4         0.72210         0.3953
+ 0.65-0.70       11           6         0.66578         1.1199
+ 0.60-0.65       11           5         0.63069         1.0540
+ 0.55-0.60        6           2         0.56413         0.5270
+ 0.50-0.55       16           8         0.51943         1.5810
+ 0.45-0.50       21          23         0.47500         2.8986
+ 0.40-0.45       59          86         0.41347         9.5520
+ 0.35-0.40       62         135         0.36938        12.9776
+ 0.30-0.35       46          71         0.32668         7.7075
+ 0.25-0.30       33          88         0.27548         7.9710
+ 0.20-0.25       56         225         0.22731        18.5112
+ 0.15-0.20       29         114         0.18066         9.4203
+ 0.10-0.15       16         100         0.12270         7.6416
+ 0.05-0.10        4          39         0.08106         2.8327
+ 0.00-0.05        0          26         0.00001         1.7128
+ 
+ 
+Data Role=VALIDATE Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+ 
+ 0.95-1.00       68          12         0.98000         5.2666
+ 0.90-0.95       39           1         0.93034         2.6333
+ 0.85-0.90       64           6         0.87338         4.6083
+ 0.80-0.85       13           4         0.81991         1.1192
+ 0.75-0.80       36           6         0.77461         2.7650
+ 0.70-0.75        4           2         0.72418         0.3950
+ 0.65-0.70       10          13         0.66428         1.5142
+ 0.60-0.65        6           5         0.62814         0.7242
+ 0.55-0.60       10           6         0.57159         1.0533
+ 0.50-0.55       13          10         0.52419         1.5142
+ 0.45-0.50       15          27         0.47659         2.7650
+ 0.40-0.45       59          86         0.41525         9.5458
+ 0.35-0.40       59         107         0.37133        10.9282
+ 0.30-0.35       35          76         0.32747         7.3074
+ 0.25-0.30       39          83         0.27627         8.0316
+ 0.20-0.25       39         201         0.22827        15.7999
+ 0.15-0.20       32         106         0.18191         9.0849
+ 0.10-0.15       23         127         0.12266         9.8749
+ 0.05-0.10        3          50         0.08416         3.4891
+ 0.00-0.05        1          23         0.00257         1.5800

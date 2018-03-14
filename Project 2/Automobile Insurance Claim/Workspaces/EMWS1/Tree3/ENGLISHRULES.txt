@@ -1,0 +1,145 @@
+*------------------------------------------------------------*
+ Node = 3
+*------------------------------------------------------------*
+if Home/Work Area IS ONE OF: Z_HIGHLY RURAL/ RURAL
+then 
+ Tree Node Identifier   = 3
+ Number of Observations = 836
+ Predicted: CLAIM_IND=1 = 0.06
+ Predicted: CLAIM_IND=0 = 0.94
+ 
+*------------------------------------------------------------*
+ Node = 10
+*------------------------------------------------------------*
+if Occupation of driver IS ONE OF: NURSE, MANAGER, PROFESSIONAL, DOCTOR or MISSING
+AND No of driving children < 0.5 or MISSING
+AND Home/Work Area IS ONE OF: HIGHLY URBAN/ URBAN or MISSING
+then 
+ Tree Node Identifier   = 10
+ Number of Observations = 1538
+ Predicted: CLAIM_IND=1 = 0.17
+ Predicted: CLAIM_IND=0 = 0.83
+ 
+*------------------------------------------------------------*
+ Node = 15
+*------------------------------------------------------------*
+if Occupation of driver IS ONE OF: TEACHER, HOME MAKER, CLERICAL, STUDENT
+AND Marital Status IS ONE OF: YES or MISSING
+AND License revoked (10yrs) IS ONE OF: NO or MISSING
+AND Home/Work Area IS ONE OF: HIGHLY URBAN/ URBAN or MISSING
+then 
+ Tree Node Identifier   = 15
+ Number of Observations = 830
+ Predicted: CLAIM_IND=1 = 0.35
+ Predicted: CLAIM_IND=0 = 0.65
+ 
+*------------------------------------------------------------*
+ Node = 16
+*------------------------------------------------------------*
+if Type of Car IS ONE OF: SPORTS CAR, PANEL TRUCK, VAN, PICKUP
+AND Occupation of driver IS ONE OF: TEACHER, HOME MAKER, CLERICAL, STUDENT
+AND Marital Status IS ONE OF: Z_NO
+AND Home/Work Area IS ONE OF: HIGHLY URBAN/ URBAN or MISSING
+then 
+ Tree Node Identifier   = 16
+ Number of Observations = 242
+ Predicted: CLAIM_IND=1 = 0.70
+ Predicted: CLAIM_IND=0 = 0.30
+ 
+*------------------------------------------------------------*
+ Node = 21
+*------------------------------------------------------------*
+if Occupation of driver IS ONE OF: NURSE, MANAGER, PROFESSIONAL, DOCTOR or MISSING
+AND No of driving children >= 0.5
+AND Marital Status IS ONE OF: Z_NO
+AND Home/Work Area IS ONE OF: HIGHLY URBAN/ URBAN or MISSING
+then 
+ Tree Node Identifier   = 21
+ Number of Observations = 69
+ Predicted: CLAIM_IND=1 = 0.65
+ Predicted: CLAIM_IND=0 = 0.35
+ 
+*------------------------------------------------------------*
+ Node = 22
+*------------------------------------------------------------*
+if Occupation of driver IS ONE OF: TEACHER, HOME MAKER, CLERICAL, STUDENT
+AND Marital Status IS ONE OF: YES or MISSING
+AND License revoked (10yrs) IS ONE OF: YES
+AND Home/Work Area IS ONE OF: HIGHLY URBAN/ URBAN or MISSING
+AND Car use (y/n) IS ONE OF: PRIVATE
+then 
+ Tree Node Identifier   = 22
+ Number of Observations = 67
+ Predicted: CLAIM_IND=1 = 0.43
+ Predicted: CLAIM_IND=0 = 0.57
+ 
+*------------------------------------------------------------*
+ Node = 23
+*------------------------------------------------------------*
+if Occupation of driver IS ONE OF: TEACHER, HOME MAKER, CLERICAL, STUDENT
+AND Marital Status IS ONE OF: YES or MISSING
+AND License revoked (10yrs) IS ONE OF: YES
+AND Home/Work Area IS ONE OF: HIGHLY URBAN/ URBAN or MISSING
+AND Car use (y/n) IS ONE OF: COMMERCIAL or MISSING
+then 
+ Tree Node Identifier   = 23
+ Number of Observations = 71
+ Predicted: CLAIM_IND=1 = 0.65
+ Predicted: CLAIM_IND=0 = 0.35
+ 
+*------------------------------------------------------------*
+ Node = 28
+*------------------------------------------------------------*
+if Work distance < 85.9929 or MISSING
+AND Type of Car IS ONE OF: UNKNOWN, MINIVAN or MISSING
+AND Occupation of driver IS ONE OF: TEACHER, HOME MAKER, CLERICAL, STUDENT
+AND Marital Status IS ONE OF: Z_NO
+AND Home/Work Area IS ONE OF: HIGHLY URBAN/ URBAN or MISSING
+then 
+ Tree Node Identifier   = 28
+ Number of Observations = 265
+ Predicted: CLAIM_IND=1 = 0.43
+ Predicted: CLAIM_IND=0 = 0.57
+ 
+*------------------------------------------------------------*
+ Node = 29
+*------------------------------------------------------------*
+if Work distance >= 85.9929
+AND Type of Car IS ONE OF: UNKNOWN, MINIVAN or MISSING
+AND Occupation of driver IS ONE OF: TEACHER, HOME MAKER, CLERICAL, STUDENT
+AND Marital Status IS ONE OF: Z_NO
+AND Home/Work Area IS ONE OF: HIGHLY URBAN/ URBAN or MISSING
+then 
+ Tree Node Identifier   = 29
+ Number of Observations = 106
+ Predicted: CLAIM_IND=1 = 0.64
+ Predicted: CLAIM_IND=0 = 0.36
+ 
+*------------------------------------------------------------*
+ Node = 34
+*------------------------------------------------------------*
+if Occupation of driver IS ONE OF: NURSE, MANAGER, PROFESSIONAL, DOCTOR or MISSING
+AND No of driving children >= 0.5
+AND Marital Status IS ONE OF: YES or MISSING
+AND License revoked (10yrs) IS ONE OF: YES
+AND Home/Work Area IS ONE OF: HIGHLY URBAN/ URBAN or MISSING
+then 
+ Tree Node Identifier   = 34
+ Number of Observations = 14
+ Predicted: CLAIM_IND=1 = 0.79
+ Predicted: CLAIM_IND=0 = 0.21
+ 
+*------------------------------------------------------------*
+ Node = 35
+*------------------------------------------------------------*
+if Occupation of driver IS ONE OF: NURSE, MANAGER, PROFESSIONAL, DOCTOR or MISSING
+AND No of driving children >= 0.5
+AND Marital Status IS ONE OF: YES or MISSING
+AND License revoked (10yrs) IS ONE OF: NO or MISSING
+AND Home/Work Area IS ONE OF: HIGHLY URBAN/ URBAN or MISSING
+then 
+ Tree Node Identifier   = 35
+ Number of Observations = 80
+ Predicted: CLAIM_IND=1 = 0.35
+ Predicted: CLAIM_IND=0 = 0.65
+ 

@@ -1,0 +1,2692 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+            Measurement    Frequency
+Role           Level         Count
+
+INPUT        BINARY             1   
+INPUT        INTERVAL          32   
+INPUT        NOMINAL            3   
+REJECTED     INTERVAL           9   
+TARGET       BINARY             1   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Model Events
+
+                                     Number
+                      Measurement      of
+ Target      Event       Level       Levels      Order                Label
+
+SubroFlag      1        BINARY          2      Descending    Subrogation (1=Yes 0=No)
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Predicted and decision variables
+
+Type           Variable      Label
+
+TARGET       SubroFlag       Subrogation (1=Yes 0=No)
+PREDICTED    P_SubroFlag1    Predicted: SubroFlag=1  
+RESIDUAL     R_SubroFlag1    Residual: SubroFlag=1   
+PREDICTED    P_SubroFlag0    Predicted: SubroFlag=0  
+RESIDUAL     R_SubroFlag0    Residual: SubroFlag=0   
+FROM         F_SubroFlag     From: SubroFlag         
+INTO         I_SubroFlag     Into: SubroFlag         
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+                         Model Information
+
+Training Data Set              WORK.EM_DMREG.VIEW                  
+DMDB Catalog                   WORK.REG3_DMDB                      
+Target Variable                SubroFlag (Subrogation (1=Yes 0=No))
+Target Measurement Level       Ordinal                             
+Number of Target Categories    2                                   
+Error                          MBernoulli                          
+Link Function                  Logit                               
+Number of Model Parameters     85                                  
+Number of Observations         302                                 
+
+
+           Target Profile
+ 
+ Ordered                       Total
+   Value     SubroFlag     Frequency
+
+       1             1           113
+       2             0           189
+
+
+
+
+Stepwise Selection Procedure
+
+
+Step 0: Intercept entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates               1
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 7.105427E-15                                                       
+
+                                            Optimization Results
+
+Iterations                                          0  Function Calls                                      3
+Hessian Calls                                       1  Active Constraints                                  0
+Objective Function                       199.66394989  Max Abs Gradient Element                 7.105427E-15
+Ridge                                               0  Actual Over Pred Change                             0
+
+Convergence criterion (ABSGCONV=0.00001) satisfied.                                               
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         399.328         0.0000        0          .    
+
+
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -0.5144      0.1189         18.71        <.0001                       0.598
+
+
+
+
+Step 1: Effect TextCluster4_SVD1 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates               2
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        171.81505      27.8489      3.1621         0        1.044
+   2            0           3              0        170.63833       1.1767      0.4229         0        1.122
+   3            0           4              0        170.58548       0.0528      0.0245         0        1.036
+   4            0           5              0        170.58532     0.000161    0.000079         0        1.002
+
+                                            Optimization Results
+
+Iterations                                          4  Function Calls                                      7
+Hessian Calls                                       5  Active Constraints                                  0
+Objective Function                       170.58531623  Max Abs Gradient Element                 0.0000788085
+Ridge                                               0  Actual Over Pred Change                  1.0021319452
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         341.171        58.1573        1         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+TextCluster4_SVD1        1       29.9318        <.0001
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -1.4092      0.1900         55.02        <.0001                       0.244
+TextCluster4_SVD1                            1      6.4387      1.1769         29.93        <.0001          0.6502     625.589
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+TextCluster4_SVD1                                                     625.589
+
+
+Step 2: Effect TextCluster4_SVD10 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates               3
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        157.92644      41.7375      5.0268         0        1.057
+   2            0           3              0        155.72231       2.2041      0.6067         0        1.148
+   3            0           4              0        155.54142       0.1809      0.0837         0        1.073
+   4            0           5              0        155.53895      0.00247     0.00125         0        1.010
+   5            0           6              0        155.53895     5.501E-7    2.816E-7         0        1.000
+
+                                            Optimization Results
+
+Iterations                                          5  Function Calls                                      8
+Hessian Calls                                       6  Active Constraints                                  0
+Objective Function                       155.53895042  Max Abs Gradient Element                 2.8155621E-7
+Ridge                                               0  Actual Over Pred Change                  1.0001504249
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         311.078        88.2500        2         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+TextCluster4_SVD1        1       22.9421        <.0001
+TextCluster4_SVD10       1       26.2533        <.0001
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -0.8167      0.2250         13.18        0.0003                       0.442
+TextCluster4_SVD1                            1      6.6798      1.3946         22.94        <.0001          0.6746     796.187
+TextCluster4_SVD10                           1      3.7379      0.7295         26.25        <.0001          0.4054      42.009
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+TextCluster4_SVD1                                                     796.187
+TextCluster4_SVD10                                                     42.009
+
+
+Step 3: Effect TextCluster4_SVD11 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates               4
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        149.95096      49.7130      6.0622         0        1.064
+   2            0           3              0        147.05527       2.8957      0.8195         0        1.150
+   3            0           4              0        146.78516       0.2701      0.1175         0        1.091
+   4            0           5              0        146.77910      0.00606     0.00298         0        1.017
+   5            0           6              0        146.77909     3.885E-6    1.942E-6         0        1.000
+
+                                            Optimization Results
+
+Iterations                                          5  Function Calls                                      8
+Hessian Calls                                       6  Active Constraints                                  0
+Objective Function                       146.77909411  Max Abs Gradient Element                 1.9422452E-6
+Ridge                                               0  Actual Over Pred Change                   1.000435957
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         293.558       105.7697        3         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+TextCluster4_SVD1        1       18.4432        <.0001
+TextCluster4_SVD10       1       30.1430        <.0001
+TextCluster4_SVD11       1       15.7181        <.0001
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -0.4262      0.2513          2.88        0.0899                       0.653
+TextCluster4_SVD1                            1      6.3766      1.4848         18.44        <.0001          0.6439     587.896
+TextCluster4_SVD10                           1      4.2193      0.7685         30.14        <.0001          0.4576      67.987
+TextCluster4_SVD11                           1     -3.1068      0.7836         15.72        <.0001         -0.3204       0.045
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+TextCluster4_SVD1                                                     587.896
+TextCluster4_SVD10                                                     67.987
+TextCluster4_SVD11                                                      0.045
+
+
+Step 4: Effect TextCluster4_SVD15 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates               5
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        144.70594      54.9580      7.7363         0        1.084
+   2            0           3              0        140.04349       4.6624      1.5414         0        1.161
+   3            0           4              0        139.56665       0.4768      0.1660         0        1.102
+   4            0           5              0        139.55168       0.0150     0.00611         0        1.026
+   5            0           6              0        139.55165     0.000024    0.000011         0        1.001
+
+                                            Optimization Results
+
+Iterations                                          5  Function Calls                                      8
+Hessian Calls                                       6  Active Constraints                                  0
+Objective Function                         139.551655  Max Abs Gradient Element                 0.0000111121
+Ridge                                               0  Actual Over Pred Change                  1.0011223036
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         279.103       120.2246        4         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+TextCluster4_SVD1        1       18.5384        <.0001
+TextCluster4_SVD10       1       27.3458        <.0001
+TextCluster4_SVD11       1       15.0723        0.0001
+TextCluster4_SVD15       1       13.2086        0.0003
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -0.6270      0.2650          5.60        0.0180                       0.534
+TextCluster4_SVD1                            1      6.9059      1.6039         18.54        <.0001          0.6974     998.130
+TextCluster4_SVD10                           1      4.0077      0.7664         27.35        <.0001          0.4347      55.019
+TextCluster4_SVD11                           1     -3.1784      0.8187         15.07        0.0001         -0.3278       0.042
+TextCluster4_SVD15                           1     -2.8342      0.7798         13.21        0.0003         -0.3372       0.059
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+TextCluster4_SVD1                                                     998.130
+TextCluster4_SVD10                                                     55.019
+TextCluster4_SVD11                                                      0.042
+TextCluster4_SVD15                                                      0.059
+
+
+Step 5: Effect TextCluster4_SVD21 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates               6
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        141.47748      58.1865      8.3016         0        1.089
+   2            0           3              0        136.08799       5.3895      1.8087         0        1.162
+   3            0           4              0        135.57181       0.5162      0.1959         0        1.088
+   4            0           5              0        135.55957       0.0122     0.00458         0        1.022
+   5            0           6              0        135.55955     0.000015    7.425E-6         0        1.001
+
+                                            Optimization Results
+
+Iterations                                          5  Function Calls                                      8
+Hessian Calls                                       6  Active Constraints                                  0
+Objective Function                       135.55955263  Max Abs Gradient Element                 7.4248144E-6
+Ridge                                               0  Actual Over Pred Change                  1.0008841923
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         271.119       128.2088        5         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+TextCluster4_SVD1        1       17.5639        <.0001
+TextCluster4_SVD10       1       30.5823        <.0001
+TextCluster4_SVD11       1       11.8186        0.0006
+TextCluster4_SVD15       1       17.5379        <.0001
+TextCluster4_SVD21       1        7.3761        0.0066
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -0.4947      0.2723          3.30        0.0692                       0.610
+TextCluster4_SVD1                            1      6.4279      1.5338         17.56        <.0001          0.6491     618.870
+TextCluster4_SVD10                           1      4.3177      0.7808         30.58        <.0001          0.4683      75.017
+TextCluster4_SVD11                           1     -2.8813      0.8381         11.82        0.0006         -0.2972       0.056
+TextCluster4_SVD15                           1     -3.7097      0.8858         17.54        <.0001         -0.4413       0.024
+TextCluster4_SVD21                           1      2.0003      0.7365          7.38        0.0066          0.2424       7.391
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+TextCluster4_SVD1                                                     618.870
+TextCluster4_SVD10                                                     75.017
+TextCluster4_SVD11                                                      0.056
+TextCluster4_SVD15                                                      0.024
+TextCluster4_SVD21                                                      7.391
+
+
+Step 6: Effect TextTopic3_raw1 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates               7
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        140.45879      59.2052      8.4140         0        1.094
+   2            0           3              0        134.03949       6.4193      2.0393         0        1.189
+   3            0           4              0        133.16082       0.8787      0.2966         0        1.106
+   4            0           5              0        133.13365       0.0272     0.00933         0        1.022
+   5            0           6              0        133.13362     0.000030    9.937E-6         0        1.001
+
+                                            Optimization Results
+
+Iterations                                          5  Function Calls                                      8
+Hessian Calls                                       6  Active Constraints                                  0
+Objective Function                        133.1336223  Max Abs Gradient Element                 9.9365245E-6
+Ridge                                               0  Actual Over Pred Change                  1.0007469218
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         266.267       133.0607        6         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+TextCluster4_SVD1        1       16.3740        <.0001
+TextCluster4_SVD10       1       31.8139        <.0001
+TextCluster4_SVD11       1       11.1434        0.0008
+TextCluster4_SVD15       1       18.4979        <.0001
+TextCluster4_SVD21       1        7.3494        0.0067
+TextTopic3_raw1          1        4.8801        0.0272
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -0.7363      0.3030          5.90        0.0151                       0.479
+TextCluster4_SVD1                            1     10.4953      2.5937         16.37        <.0001          1.0599     999.000
+TextCluster4_SVD10                           1      5.0079      0.8879         31.81        <.0001          0.5432     149.584
+TextCluster4_SVD11                           1     -2.8176      0.8441         11.14        0.0008         -0.2906       0.060
+TextCluster4_SVD15                           1     -4.0142      0.9333         18.50        <.0001         -0.4776       0.018
+TextCluster4_SVD21                           1      2.0325      0.7497          7.35        0.0067          0.2463       7.633
+TextTopic3_raw1                              1     -4.1940      1.8985          4.88        0.0272         -0.4542       0.015
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+TextCluster4_SVD1                                                     999.000
+TextCluster4_SVD10                                                    149.584
+TextCluster4_SVD11                                                      0.060
+TextCluster4_SVD15                                                      0.018
+TextCluster4_SVD21                                                      7.633
+TextTopic3_raw1                                                         0.015
+
+
+Step 7: Effect TextCluster4_SVD18 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates               8
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        138.19336      61.4706      8.8474         0        1.093
+   2            0           3              0        131.52150       6.6719      2.0990         0        1.199
+   3            0           4              0        130.44451       1.0770      0.3399         0        1.121
+   4            0           5              0        130.40133       0.0432      0.0143         0        1.027
+   5            0           6              0        130.40126     0.000072    0.000025         0        1.001
+
+                                            Optimization Results
+
+Iterations                                          5  Function Calls                                      8
+Hessian Calls                                       6  Active Constraints                                  0
+Objective Function                       130.40125723  Max Abs Gradient Element                 0.0000246094
+Ridge                                               0  Actual Over Pred Change                  1.0011222497
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         260.803       138.5254        7         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+TextCluster4_SVD1        1       18.0205        <.0001
+TextCluster4_SVD10       1       29.1229        <.0001
+TextCluster4_SVD11       1       12.6032        0.0004
+TextCluster4_SVD15       1       14.8077        0.0001
+TextCluster4_SVD18       1        5.2796        0.0216
+TextCluster4_SVD21       1        6.6814        0.0097
+TextTopic3_raw1          1        6.2863        0.0122
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -0.9694      0.3285          8.71        0.0032                       0.379
+TextCluster4_SVD1                            1     12.0495      2.8385         18.02        <.0001          1.2168     999.000
+TextCluster4_SVD10                           1      4.8143      0.8921         29.12        <.0001          0.5222     123.257
+TextCluster4_SVD11                           1     -3.0027      0.8458         12.60        0.0004         -0.3097       0.050
+TextCluster4_SVD15                           1     -3.7020      0.9620         14.81        0.0001         -0.4404       0.025
+TextCluster4_SVD18                           1      2.0393      0.8875          5.28        0.0216          0.2307       7.685
+TextCluster4_SVD21                           1      2.0036      0.7751          6.68        0.0097          0.2428       7.415
+TextTopic3_raw1                              1     -5.0224      2.0032          6.29        0.0122         -0.5439       0.007
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+TextCluster4_SVD1                                                     999.000
+TextCluster4_SVD10                                                    123.257
+TextCluster4_SVD11                                                      0.050
+TextCluster4_SVD15                                                      0.025
+TextCluster4_SVD18                                                      7.685
+TextCluster4_SVD21                                                      7.415
+TextTopic3_raw1                                                         0.007
+
+
+Step 8: Effect TextTopic3_raw11 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates               9
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        135.75871      63.9052      9.3148         0        1.095
+   2            0           3              0        128.54772       7.2110      2.3275         0        1.201
+   3            0           4              0        127.35482       1.1929      0.3927         0        1.126
+   4            0           5              0        127.30129       0.0535      0.0185         0        1.031
+   5            0           6              0        127.30117     0.000118    0.000042         0        1.001
+
+                                            Optimization Results
+
+Iterations                                          5  Function Calls                                      8
+Hessian Calls                                       6  Active Constraints                                  0
+Objective Function                       127.30116931  Max Abs Gradient Element                 0.0000420207
+Ridge                                               0  Actual Over Pred Change                  1.0014857283
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         254.602       144.7256        8         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+TextCluster4_SVD1        1       19.4892        <.0001
+TextCluster4_SVD10       1       13.3585        0.0003
+TextCluster4_SVD11       1       16.4634        <.0001
+TextCluster4_SVD15       1       11.8296        0.0006
+TextCluster4_SVD18       1        8.8391        0.0029
+TextCluster4_SVD21       1        5.4734        0.0193
+TextTopic3_raw1          1        7.3417        0.0067
+TextTopic3_raw11         1        5.9045        0.0151
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -1.4852      0.4038         13.53        0.0002                       0.226
+TextCluster4_SVD1                            1     12.8464      2.9100         19.49        <.0001          1.2973     999.000
+TextCluster4_SVD10                           1      3.5991      0.9847         13.36        0.0003          0.3904      36.566
+TextCluster4_SVD11                           1     -3.7740      0.9301         16.46        <.0001         -0.3893       0.023
+TextCluster4_SVD15                           1     -3.3784      0.9823         11.83        0.0006         -0.4019       0.034
+TextCluster4_SVD18                           1      2.9069      0.9777          8.84        0.0029          0.3288      18.299
+TextCluster4_SVD21                           1      1.8432      0.7878          5.47        0.0193          0.2233       6.316
+TextTopic3_raw1                              1     -5.5003      2.0300          7.34        0.0067         -0.5956       0.004
+TextTopic3_raw11                             1      3.1017      1.2765          5.90        0.0151          0.2430      22.236
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+TextCluster4_SVD1                                                     999.000
+TextCluster4_SVD10                                                     36.566
+TextCluster4_SVD11                                                      0.023
+TextCluster4_SVD15                                                      0.034
+TextCluster4_SVD18                                                     18.299
+TextCluster4_SVD21                                                      6.316
+TextTopic3_raw1                                                         0.004
+TextTopic3_raw11                                                       22.236
+
+
+Step 9: Effect TextTopic3_raw8 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              10
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        134.22103      65.4429      9.6721         0        1.101
+   2            0           3              0        125.60541       8.6156      2.7674         0        1.219
+   3            0           4              0        123.88083       1.7246      0.6002         0        1.144
+   4            0           5              0        123.77456       0.1063      0.0420         0        1.042
+   5            0           6              0        123.77410     0.000457    0.000196         0        1.003
+   6            0           7              0        123.77410     8.955E-9    3.927E-9         0        1.000
+
+                                            Optimization Results
+
+Iterations                                          6  Function Calls                                      9
+Hessian Calls                                       7  Active Constraints                                  0
+Objective Function                       123.77409836  Max Abs Gradient Element                  3.927108E-9
+Ridge                                               0  Actual Over Pred Change                  1.0000099529
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         247.548       151.7797        9         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+TextCluster4_SVD1        1       21.7929        <.0001
+TextCluster4_SVD10       1        7.9836        0.0047
+TextCluster4_SVD11       1       20.4504        <.0001
+TextCluster4_SVD15       1       15.0632        0.0001
+TextCluster4_SVD18       1        8.1266        0.0044
+TextCluster4_SVD21       1        2.0885        0.1484
+TextTopic3_raw1          1        9.6027        0.0019
+TextTopic3_raw11         1        9.0143        0.0027
+TextTopic3_raw8          1        6.5884        0.0103
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -2.0874      0.4946         17.81        <.0001                       0.124
+TextCluster4_SVD1                            1     14.5641      3.1198         21.79        <.0001          1.4707     999.000
+TextCluster4_SVD10                           1      2.9295      1.0368          7.98        0.0047          0.3177      18.718
+TextCluster4_SVD11                           1     -4.7647      1.0536         20.45        <.0001         -0.4915       0.009
+TextCluster4_SVD15                           1     -4.1856      1.0784         15.06        0.0001         -0.4979       0.015
+TextCluster4_SVD18                           1      2.8474      0.9989          8.13        0.0044          0.3221      17.244
+TextCluster4_SVD21                           1      1.1860      0.8207          2.09        0.1484          0.1437       3.274
+TextTopic3_raw1                              1     -6.5537      2.1149          9.60        0.0019         -0.7097       0.001
+TextTopic3_raw11                             1      4.1758      1.3908          9.01        0.0027          0.3271      65.089
+TextTopic3_raw8                              1      3.8317      1.4928          6.59        0.0103          0.2519      46.139
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+TextCluster4_SVD1                                                     999.000
+TextCluster4_SVD10                                                     18.718
+TextCluster4_SVD11                                                      0.009
+TextCluster4_SVD15                                                      0.015
+TextCluster4_SVD18                                                     17.244
+TextCluster4_SVD21                                                      3.274
+TextTopic3_raw1                                                         0.001
+TextTopic3_raw11                                                       65.089
+TextTopic3_raw8                                                        46.139
+
+
+Step 10: Effect Cause entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              27
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        123.25363      76.4103     10.3551         0        1.113
+   2            0           3              0        110.72311      12.5305      3.4669         0        1.247
+   3            0           4              0        107.09840       3.6247      1.0251         0        1.196
+   4            0           5              0        106.55034       0.5481      0.1881         0        1.139
+   5            0           6              0        106.47507       0.0753      0.0333         0        1.237
+   6            0           7              0        106.45038       0.0247      0.0115         0        1.262
+   7            0           8              0        106.44143      0.00895     0.00421         0        1.263
+   8            0           9              0        106.43816      0.00327     0.00155         0        1.264
+   9            0          10              0        106.43695      0.00120    0.000569         0        1.264
+  10            0          11              0        106.43651     0.000442    0.000209         0        1.264
+  11            0          12              0        106.43635     0.000162    0.000077         0        1.264
+  12            0          13              0        106.43629     0.000060    0.000028         0        1.264
+
+                                            Optimization Results
+
+Iterations                                         12  Function Calls                                     15
+Hessian Calls                                      13  Active Constraints                                  0
+Objective Function                       106.43628949  Max Abs Gradient Element                 0.0000283005
+Ridge                                               0  Actual Over Pred Change                  1.2642361133
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         212.873       186.4553       26         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+Cause                   14      952.4229        <.0001
+TextCluster4_SVD1        1       13.7515        0.0002
+TextCluster4_SVD10       1        3.8965        0.0484
+TextCluster4_SVD11       1       19.9872        <.0001
+TextCluster4_SVD15       1       18.8350        <.0001
+TextCluster4_SVD18       1       11.7199        0.0006
+TextCluster4_SVD21       1        4.1935        0.0406
+TextTopic3_raw1          1        8.9263        0.0028
+TextTopic3_raw11         1       12.4535        0.0004
+TextTopic3_raw8          1        6.8250        0.0090
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -2.0820     31.7739          0.00        0.9478                       0.125
+Cause              Animal Attack             1    -11.4228       403.5          0.00        0.9774                       0.000
+Cause              Caught in Machine         1    -12.3600       190.6          0.00        0.9483                       0.000
+Cause              Contact with Object       1      1.2261     31.8025          0.00        0.9692                       3.408
+Cause              Environmental             1     -8.9446           .           .           .                   .       0.000
+Cause              Equipment/Machinery       1      0.0313     31.7876          0.00        0.9992                       1.032
+Cause              Exposure                  1      2.0220     31.8006          0.00        0.9493                       7.554
+Cause              Fire                      1      0.9234     31.7982          0.00        0.9768                       2.518
+Cause              Foreign Body/Object       1      0.0460     31.7813          0.00        0.9988                       1.047
+Cause              Human Conflict            1     12.3986           .           .           .                   .     999.000
+Cause              Lifting                   1     -1.7556     31.7738          0.00        0.9559                       0.173
+Cause              MVA                       1      1.2480     31.7812          0.00        0.9687                       3.483
+Cause              Occupational Illness      1      1.3605     31.8020          0.00        0.9659                       3.898
+Cause              Pushing/Pulling           1     -2.1020     31.7937          0.00        0.9473                       0.122
+Cause              Repetitive Motion         1      1.6839     31.7928          0.00        0.9578                       5.386
+Cause              Slip/Fall                 1     -0.3604     31.7728          0.00        0.9909                       0.697
+Cause              Stress                    1     15.4147           .           .           .                   .     999.000
+Cause              Struck Object             1     -0.0557     31.7715          0.00        0.9986                       0.946
+TextCluster4_SVD1                            1     14.2998      3.8562         13.75        0.0002          1.4441     999.000
+TextCluster4_SVD10                           1      2.3787      1.2050          3.90        0.0484          0.2580      10.790
+TextCluster4_SVD11                           1     -5.6185      1.2567         19.99        <.0001         -0.5795       0.004
+TextCluster4_SVD15                           1     -5.7977      1.3359         18.83        <.0001         -0.6897       0.003
+TextCluster4_SVD18                           1      3.9743      1.1609         11.72        0.0006          0.4496      53.213
+TextCluster4_SVD21                           1      2.1956      1.0722          4.19        0.0406          0.2661       8.986
+TextTopic3_raw1                              1     -7.5481      2.5264          8.93        0.0028         -0.8174       0.001
+TextTopic3_raw11                             1      5.6749      1.6081         12.45        0.0004          0.4445     291.451
+TextTopic3_raw8                              1      4.5736      1.7507          6.83        0.0090          0.3007      96.891
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+Cause              Animal Attack vs Unusual Body Movement              <0.001
+Cause              Caught in Machine vs Unusual Body Movement          <0.001
+Cause              Contact with Object vs Unusual Body Movement         1.785
+Cause              Environmental vs Unusual Body Movement              <0.001
+Cause              Equipment/Machinery vs Unusual Body Movement         0.540
+Cause              Exposure vs Unusual Body Movement                    3.956
+Cause              Fire vs Unusual Body Movement                        1.319
+Cause              Foreign Body/Object vs Unusual Body Movement         0.548
+Cause              Human Conflict vs Unusual Body Movement            999.000
+Cause              Lifting vs Unusual Body Movement                     0.091
+Cause              MVA vs Unusual Body Movement                         1.824
+Cause              Occupational Illness vs Unusual Body Movement        2.042
+Cause              Pushing/Pulling vs Unusual Body Movement             0.064
+Cause              Repetitive Motion vs Unusual Body Movement           2.821
+Cause              Slip/Fall vs Unusual Body Movement                   0.365
+Cause              Stress vs Unusual Body Movement                    999.000
+Cause              Struck Object vs Unusual Body Movement               0.495
+TextCluster4_SVD1                                                     999.000
+TextCluster4_SVD10                                                     10.790
+TextCluster4_SVD11                                                      0.004
+TextCluster4_SVD15                                                      0.003
+TextCluster4_SVD18                                                     53.213
+TextCluster4_SVD21                                                      8.986
+TextTopic3_raw1                                                        <0.001
+TextTopic3_raw11                                                      291.451
+TextTopic3_raw8                                                        96.891
+
+
+Step 11: Effect TextCluster4_SVD20 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              28
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        119.65381      80.0101     10.0653         0        1.106
+   2            0           3              0        107.79143      11.8624      3.2728         0        1.238
+   3            0           4              0        104.55333       3.2381      0.9582         0        1.196
+   4            0           5              0        104.06292       0.4904      0.1755         0        1.140
+   5            0           6              0        103.99249       0.0704      0.0312         0        1.241
+   6            0           7              0        103.96906       0.0234      0.0108         0        1.262
+   7            0           8              0        103.96057      0.00849     0.00395         0        1.264
+   8            0           9              0        103.95746      0.00311     0.00145         0        1.264
+   9            0          10              0        103.95632      0.00114    0.000533         0        1.264
+  10            0          11              0        103.95590     0.000420    0.000196         0        1.264
+  11            0          12              0        103.95575     0.000154    0.000072         0        1.264
+  12            0          13              0        103.95569     0.000057    0.000027         0        1.264
+
+                                            Optimization Results
+
+Iterations                                         12  Function Calls                                     15
+Hessian Calls                                      13  Active Constraints                                  0
+Objective Function                        103.9556896  Max Abs Gradient Element                 0.0000265544
+Ridge                                               0  Actual Over Pred Change                  1.2642363799
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         207.911       191.4165       27         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+Cause                   14      943.2803        <.0001
+TextCluster4_SVD1        1       13.5684        0.0002
+TextCluster4_SVD10       1        2.2442        0.1341
+TextCluster4_SVD11       1       19.3774        <.0001
+TextCluster4_SVD15       1       14.9753        0.0001
+TextCluster4_SVD18       1       14.5554        0.0001
+TextCluster4_SVD20       1        4.9687        0.0258
+TextCluster4_SVD21       1        1.6285        0.2019
+TextTopic3_raw1          1       10.3417        0.0013
+TextTopic3_raw11         1       13.4720        0.0002
+TextTopic3_raw8          1        9.0666        0.0026
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -1.9970     31.6780          0.00        0.9497                       0.136
+Cause              Animal Attack             1    -10.6786       398.4          0.00        0.9786                       0.000
+Cause              Caught in Machine         1    -12.4096       198.2          0.00        0.9501                       0.000
+Cause              Contact with Object       1      0.8955     31.6956          0.00        0.9775                       2.449
+Cause              Environmental             1     -8.4993           .           .           .                   .       0.000
+Cause              Equipment/Machinery       1      0.1973     31.6899          0.00        0.9950                       1.218
+Cause              Exposure                  1      1.6074     31.7046          0.00        0.9596                       4.990
+Cause              Fire                      1      0.9583     31.7032          0.00        0.9759                       2.607
+Cause              Foreign Body/Object       1      0.2298     31.6856          0.00        0.9942                       1.258
+Cause              Human Conflict            1     12.1218           .           .           .                   .     999.000
+Cause              Lifting                   1     -2.0288     31.6780          0.00        0.9489                       0.131
+Cause              MVA                       1      1.5315     31.6860          0.00        0.9615                       4.625
+Cause              Occupational Illness      1      1.2698     31.7058          0.00        0.9681                       3.560
+Cause              Pushing/Pulling           1     -2.5976     31.7020          0.01        0.9347                       0.074
+Cause              Repetitive Motion         1      1.8056     31.6953          0.00        0.9546                       6.084
+Cause              Slip/Fall                 1     -0.3458     31.6766          0.00        0.9913                       0.708
+Cause              Stress                    1     15.3297           .           .           .                   .     999.000
+Cause              Struck Object             1     -0.0483     31.6753          0.00        0.9988                       0.953
+TextCluster4_SVD1                            1     14.4000      3.9093         13.57        0.0002          1.4542     999.000
+TextCluster4_SVD10                           1      1.8842      1.2577          2.24        0.1341          0.2044       6.581
+TextCluster4_SVD11                           1     -5.6488      1.2832         19.38        <.0001         -0.5826       0.004
+TextCluster4_SVD15                           1     -4.9896      1.2894         14.98        0.0001         -0.5936       0.007
+TextCluster4_SVD18                           1      4.9955      1.3094         14.56        0.0001          0.5651     147.747
+TextCluster4_SVD20                           1      2.4436      1.0962          4.97        0.0258          0.3032      11.514
+TextCluster4_SVD21                           1      1.4837      1.1627          1.63        0.2019          0.1798       4.409
+TextTopic3_raw1                              1     -8.4168      2.6173         10.34        0.0013         -0.9115       0.000
+TextTopic3_raw11                             1      6.4186      1.7487         13.47        0.0002          0.5028     613.145
+TextTopic3_raw8                              1      5.5110      1.8302          9.07        0.0026          0.3623     247.400
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+Cause              Animal Attack vs Unusual Body Movement              <0.001
+Cause              Caught in Machine vs Unusual Body Movement          <0.001
+Cause              Contact with Object vs Unusual Body Movement         1.264
+Cause              Environmental vs Unusual Body Movement              <0.001
+Cause              Equipment/Machinery vs Unusual Body Movement         0.629
+Cause              Exposure vs Unusual Body Movement                    2.576
+Cause              Fire vs Unusual Body Movement                        1.346
+Cause              Foreign Body/Object vs Unusual Body Movement         0.650
+Cause              Human Conflict vs Unusual Body Movement            999.000
+Cause              Lifting vs Unusual Body Movement                     0.068
+Cause              MVA vs Unusual Body Movement                         2.388
+Cause              Occupational Illness vs Unusual Body Movement        1.838
+Cause              Pushing/Pulling vs Unusual Body Movement             0.038
+Cause              Repetitive Motion vs Unusual Body Movement           3.141
+Cause              Slip/Fall vs Unusual Body Movement                   0.365
+Cause              Stress vs Unusual Body Movement                    999.000
+Cause              Struck Object vs Unusual Body Movement               0.492
+TextCluster4_SVD1                                                     999.000
+TextCluster4_SVD10                                                      6.581
+TextCluster4_SVD11                                                      0.004
+TextCluster4_SVD15                                                      0.007
+TextCluster4_SVD18                                                    147.747
+TextCluster4_SVD20                                                     11.514
+TextCluster4_SVD21                                                      4.409
+TextTopic3_raw1                                                        <0.001
+TextTopic3_raw11                                                      613.145
+TextTopic3_raw8                                                       247.400
+
+
+Step 12: Effect TextTopic3_raw6 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              29
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        119.60246      80.0615     10.1311         0        1.106
+   2            0           3              0        107.83398      11.7685      3.2576         0        1.237
+   3            0           4              0        104.34449       3.4895      0.9090         0        1.236
+   4            0           5              0        103.18379       1.1607      0.1914         0        1.242
+   5            0           6              0        102.91552       0.2683      0.0334         0        1.134
+   6            0           7              0        102.88709       0.0284     0.00987         0        1.211
+   7            0           8              0        102.87856      0.00852     0.00396         0        1.263
+   8            0           9              0        102.87545      0.00312     0.00146         0        1.264
+   9            0          10              0        102.87430      0.00114    0.000535         0        1.264
+  10            0          11              0        102.87388     0.000421    0.000197         0        1.264
+  11            0          12              0        102.87373     0.000155    0.000072         0        1.264
+  12            0          13              0        102.87367     0.000057    0.000027         0        1.264
+
+                                            Optimization Results
+
+Iterations                                         12  Function Calls                                     15
+Hessian Calls                                      13  Active Constraints                                  0
+Objective Function                       102.87366966  Max Abs Gradient Element                 0.0000266451
+Ridge                                               0  Actual Over Pred Change                  1.2642362877
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         205.747       193.5806       28         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+Cause                   14      928.4892        <.0001
+TextCluster4_SVD1        1        9.2485        0.0024
+TextCluster4_SVD10       1        1.7965        0.1801
+TextCluster4_SVD11       1       18.3476        <.0001
+TextCluster4_SVD15       1       14.2454        0.0002
+TextCluster4_SVD18       1       14.0058        0.0002
+TextCluster4_SVD20       1        4.4338        0.0352
+TextCluster4_SVD21       1        2.0284        0.1544
+TextTopic3_raw1          1        6.6118        0.0101
+TextTopic3_raw11         1       13.7919        0.0002
+TextTopic3_raw6          1        1.7502        0.1858
+TextTopic3_raw8          1        9.8989        0.0017
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -1.9325     31.7182          0.00        0.9514                       0.145
+Cause              Animal Attack             1    -10.6912       399.2          0.00        0.9786                       0.000
+Cause              Caught in Machine         1    -12.5174       197.7          0.00        0.9495                       0.000
+Cause              Contact with Object       1      0.8960     31.7356          0.00        0.9775                       2.450
+Cause              Environmental             1     -8.5243           .           .           .                   .       0.000
+Cause              Equipment/Machinery       1      0.1315     31.7296          0.00        0.9967                       1.141
+Cause              Exposure                  1      1.7368     31.7451          0.00        0.9564                       5.679
+Cause              Fire                      1      1.0708     31.7433          0.00        0.9731                       2.918
+Cause              Foreign Body/Object       1      0.2276     31.7259          0.00        0.9943                       1.256
+Cause              Human Conflict            1     12.1296           .           .           .                   .     999.000
+Cause              Lifting                   1     -2.0475     31.7183          0.00        0.9485                       0.129
+Cause              MVA                       1      1.5050     31.7264          0.00        0.9622                       4.504
+Cause              Occupational Illness      1      1.3058     31.7450          0.00        0.9672                       3.691
+Cause              Pushing/Pulling           1     -2.5820     31.7428          0.01        0.9352                       0.076
+Cause              Repetitive Motion         1      1.7333     31.7357          0.00        0.9564                       5.659
+Cause              Slip/Fall                 1     -0.3185     31.7169          0.00        0.9920                       0.727
+Cause              Stress                    1     15.2652           .           .           .                   .     999.000
+Cause              Struck Object             1      0.0261     31.7156          0.00        0.9993                       1.026
+TextCluster4_SVD1                            1     12.6536      4.1608          9.25        0.0024          1.2778     999.000
+TextCluster4_SVD10                           1      1.6894      1.2604          1.80        0.1801          0.1832       5.416
+TextCluster4_SVD11                           1     -5.5022      1.2845         18.35        <.0001         -0.5675       0.004
+TextCluster4_SVD15                           1     -4.9026      1.2989         14.25        0.0002         -0.5832       0.007
+TextCluster4_SVD18                           1      4.8654      1.3001         14.01        0.0002          0.5504     129.721
+TextCluster4_SVD20                           1      2.3127      1.0983          4.43        0.0352          0.2869      10.101
+TextCluster4_SVD21                           1      1.6733      1.1749          2.03        0.1544          0.2028       5.330
+TextTopic3_raw1                              1     -7.1256      2.7712          6.61        0.0101         -0.7716       0.001
+TextTopic3_raw11                             1      6.5067      1.7521         13.79        0.0002          0.5097     669.630
+TextTopic3_raw6                              1      7.5787      5.7285          1.75        0.1858          0.7439     999.000
+TextTopic3_raw8                              1      5.8315      1.8535          9.90        0.0017          0.3834     340.872
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+Cause              Animal Attack vs Unusual Body Movement              <0.001
+Cause              Caught in Machine vs Unusual Body Movement          <0.001
+Cause              Contact with Object vs Unusual Body Movement         1.275
+Cause              Environmental vs Unusual Body Movement              <0.001
+Cause              Equipment/Machinery vs Unusual Body Movement         0.594
+Cause              Exposure vs Unusual Body Movement                    2.955
+Cause              Fire vs Unusual Body Movement                        1.518
+Cause              Foreign Body/Object vs Unusual Body Movement         0.653
+Cause              Human Conflict vs Unusual Body Movement            999.000
+Cause              Lifting vs Unusual Body Movement                     0.067
+Cause              MVA vs Unusual Body Movement                         2.344
+Cause              Occupational Illness vs Unusual Body Movement        1.921
+Cause              Pushing/Pulling vs Unusual Body Movement             0.039
+Cause              Repetitive Motion vs Unusual Body Movement           2.945
+Cause              Slip/Fall vs Unusual Body Movement                   0.378
+Cause              Stress vs Unusual Body Movement                    999.000
+Cause              Struck Object vs Unusual Body Movement               0.534
+TextCluster4_SVD1                                                     999.000
+TextCluster4_SVD10                                                      5.416
+TextCluster4_SVD11                                                      0.004
+TextCluster4_SVD15                                                      0.007
+TextCluster4_SVD18                                                    129.721
+TextCluster4_SVD20                                                     10.101
+TextCluster4_SVD21                                                      5.330
+TextTopic3_raw1                                                        <0.001
+TextTopic3_raw11                                                      669.630
+TextTopic3_raw6                                                       999.000
+TextTopic3_raw8                                                       340.872
+
+
+Step 13: Effect TextTopic3_raw2 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              30
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        119.40493      80.2590     10.1827         0        1.108
+   2            0           3              0        107.15516      12.2498      3.3684         0        1.242
+   3            0           4              0        103.43189       3.7233      0.9700         0        1.235
+   4            0           5              0        102.23269       1.1992      0.2047         0        1.240
+   5            0           6              0        101.95775       0.2749      0.0321         0        1.133
+   6            0           7              0        101.92916       0.0286     0.00994         0        1.211
+   7            0           8              0        101.92060      0.00856     0.00398         0        1.263
+   8            0           9              0        101.91747      0.00313     0.00146         0        1.264
+   9            0          10              0        101.91632      0.00115    0.000538         0        1.264
+  10            0          11              0        101.91590     0.000423    0.000198         0        1.264
+  11            0          12              0        101.91574     0.000155    0.000073         0        1.264
+  12            0          13              0        101.91569     0.000057    0.000027         0        1.264
+
+                                            Optimization Results
+
+Iterations                                         12  Function Calls                                     15
+Hessian Calls                                      13  Active Constraints                                  0
+Objective Function                       101.91568525  Max Abs Gradient Element                 0.0000267829
+Ridge                                               0  Actual Over Pred Change                  1.2642360999
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         203.831       195.4965       29         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+Cause                   14      958.2885        <.0001
+TextCluster4_SVD1        1        3.4043        0.0650
+TextCluster4_SVD10       1        3.2405        0.0718
+TextCluster4_SVD11       1       15.7588        <.0001
+TextCluster4_SVD15       1       12.6697        0.0004
+TextCluster4_SVD18       1       15.1767        <.0001
+TextCluster4_SVD20       1        2.6965        0.1006
+TextCluster4_SVD21       1        1.7906        0.1809
+TextTopic3_raw1          1        2.2389        0.1346
+TextTopic3_raw11         1       11.5634        0.0007
+TextTopic3_raw2          1        1.8762        0.1708
+TextTopic3_raw6          1        2.5194        0.1125
+TextTopic3_raw8          1        8.2750        0.0040
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -1.6831     32.0023          0.00        0.9581                       0.186
+Cause              Animal Attack             1    -11.1258       404.2          0.00        0.9780                       0.000
+Cause              Caught in Machine         1    -12.5759       196.6          0.00        0.9490                       0.000
+Cause              Contact with Object       1      0.7417     32.0171          0.00        0.9815                       2.100
+Cause              Environmental             1     -7.7169           .           .           .                   .       0.000
+Cause              Equipment/Machinery       1     -0.1050     32.0131          0.00        0.9974                       0.900
+Cause              Exposure                  1      2.2856     32.0320          0.01        0.9431                       9.832
+Cause              Fire                      1      0.8820     32.0277          0.00        0.9780                       2.416
+Cause              Foreign Body/Object       1      0.0820     32.0099          0.00        0.9980                       1.086
+Cause              Human Conflict            1     12.3679           .           .           .                   .     999.000
+Cause              Lifting                   1     -2.0855     32.0020          0.00        0.9480                       0.124
+Cause              MVA                       1      1.5529     32.0103          0.00        0.9613                       4.725
+Cause              Occupational Illness      1      1.1964     32.0273          0.00        0.9702                       3.308
+Cause              Pushing/Pulling           1     -2.5492     32.0281          0.01        0.9366                       0.078
+Cause              Repetitive Motion         1      1.7028     32.0203          0.00        0.9576                       5.489
+Cause              Slip/Fall                 1     -0.5050     32.0007          0.00        0.9874                       0.603
+Cause              Stress                    1     15.0158           .           .           .                   .     999.000
+Cause              Struck Object             1      0.0461     31.9992          0.00        0.9989                       1.047
+TextCluster4_SVD1                            1      9.1259      4.9461          3.40        0.0650          0.9216     999.000
+TextCluster4_SVD10                           1      2.7167      1.5092          3.24        0.0718          0.2947      15.131
+TextCluster4_SVD11                           1     -5.1598      1.2998         15.76        <.0001         -0.5322       0.006
+TextCluster4_SVD15                           1     -4.6656      1.3108         12.67        0.0004         -0.5551       0.009
+TextCluster4_SVD18                           1      5.5504      1.4247         15.18        <.0001          0.6279     257.346
+TextCluster4_SVD20                           1      1.8872      1.1492          2.70        0.1006          0.2341       6.601
+TextCluster4_SVD21                           1      1.5949      1.1919          1.79        0.1809          0.1933       4.928
+TextTopic3_raw1                              1     -4.8776      3.2598          2.24        0.1346         -0.5282       0.008
+TextTopic3_raw11                             1      6.0778      1.7873         11.56        0.0007          0.4761     436.060
+TextTopic3_raw2                              1      2.6134      1.9079          1.88        0.1708          0.2425      13.645
+TextTopic3_raw6                              1      9.1741      5.7798          2.52        0.1125          0.9006     999.000
+TextTopic3_raw8                              1      5.4753      1.9034          8.27        0.0040          0.3600     238.716
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+Cause              Animal Attack vs Unusual Body Movement              <0.001
+Cause              Caught in Machine vs Unusual Body Movement          <0.001
+Cause              Contact with Object vs Unusual Body Movement         0.953
+Cause              Environmental vs Unusual Body Movement              <0.001
+Cause              Equipment/Machinery vs Unusual Body Movement         0.409
+Cause              Exposure vs Unusual Body Movement                    4.461
+Cause              Fire vs Unusual Body Movement                        1.096
+Cause              Foreign Body/Object vs Unusual Body Movement         0.493
+Cause              Human Conflict vs Unusual Body Movement            999.000
+Cause              Lifting vs Unusual Body Movement                     0.056
+Cause              MVA vs Unusual Body Movement                         2.144
+Cause              Occupational Illness vs Unusual Body Movement        1.501
+Cause              Pushing/Pulling vs Unusual Body Movement             0.035
+Cause              Repetitive Motion vs Unusual Body Movement           2.491
+Cause              Slip/Fall vs Unusual Body Movement                   0.274
+Cause              Stress vs Unusual Body Movement                    999.000
+Cause              Struck Object vs Unusual Body Movement               0.475
+TextCluster4_SVD1                                                     999.000
+TextCluster4_SVD10                                                     15.131
+TextCluster4_SVD11                                                      0.006
+TextCluster4_SVD15                                                      0.009
+TextCluster4_SVD18                                                    257.346
+TextCluster4_SVD20                                                      6.601
+TextCluster4_SVD21                                                      4.928
+TextTopic3_raw1                                                         0.008
+TextTopic3_raw11                                                      436.060
+TextTopic3_raw2                                                        13.645
+TextTopic3_raw6                                                       999.000
+TextTopic3_raw8                                                       238.716
+
+
+Step 14: Effect TextCluster4_SVD13 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              31
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        118.62163      81.0423     10.1422         0        1.108
+   2            0           3              0        106.17433      12.4473      3.2944         0        1.241
+   3            0           4              0        102.50557       3.6688      0.9192         0        1.226
+   4            0           5              0        101.43622       1.0693      0.2010         0        1.239
+   5            0           6              0        101.17197       0.2643      0.0310         0        1.146
+   6            0           7              0        101.14207       0.0299     0.00960         0        1.201
+   7            0           8              0        101.13354      0.00854     0.00397         0        1.263
+   8            0           9              0        101.13041      0.00312     0.00146         0        1.264
+   9            0          10              0        101.12927      0.00115    0.000536         0        1.264
+  10            0          11              0        101.12885     0.000421    0.000197         0        1.264
+  11            0          12              0        101.12869     0.000155    0.000073         0        1.264
+  12            0          13              0        101.12863     0.000057    0.000027         0        1.264
+
+                                            Optimization Results
+
+Iterations                                         12  Function Calls                                     15
+Hessian Calls                                      13  Active Constraints                                  0
+Objective Function                        101.1286347  Max Abs Gradient Element                  0.000026691
+Ridge                                               0  Actual Over Pred Change                  1.2642360919
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         202.257       197.0706       30         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+Cause                   14     1007.1241        <.0001
+TextCluster4_SVD1        1        1.8745        0.1710
+TextCluster4_SVD10       1        2.7557        0.0969
+TextCluster4_SVD11       1       16.9067        <.0001
+TextCluster4_SVD13       1        1.4910        0.2221
+TextCluster4_SVD15       1       10.8076        0.0010
+TextCluster4_SVD18       1       16.1976        <.0001
+TextCluster4_SVD20       1        2.6696        0.1023
+TextCluster4_SVD21       1        1.3666        0.2424
+TextTopic3_raw1          1        1.1397        0.2857
+TextTopic3_raw11         1       12.3477        0.0004
+TextTopic3_raw2          1        2.5771        0.1084
+TextTopic3_raw6          1        2.6881        0.1011
+TextTopic3_raw8          1        8.6002        0.0034
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -1.6672     32.0067          0.00        0.9585                       0.189
+Cause              Animal Attack             1    -11.2398       404.1          0.00        0.9778                       0.000
+Cause              Caught in Machine         1    -12.5045       197.0          0.00        0.9494                       0.000
+Cause              Contact with Object       1      0.4192     32.0259          0.00        0.9896                       1.521
+Cause              Environmental             1     -7.2957           .           .           .                   .       0.001
+Cause              Equipment/Machinery       1     -0.1397     32.0170          0.00        0.9965                       0.870
+Cause              Exposure                  1      2.3226     32.0371          0.01        0.9422                      10.203
+Cause              Fire                      1      0.8656     32.0320          0.00        0.9784                       2.376
+Cause              Foreign Body/Object       1      0.0758     32.0142          0.00        0.9981                       1.079
+Cause              Human Conflict            1     12.6013           .           .           .                   .     999.000
+Cause              Lifting                   1     -2.2288     32.0064          0.00        0.9445                       0.108
+Cause              MVA                       1      1.6929     32.0152          0.00        0.9578                       5.435
+Cause              Occupational Illness      1      1.1035     32.0321          0.00        0.9725                       3.015
+Cause              Pushing/Pulling           1     -2.6173     32.0305          0.01        0.9349                       0.073
+Cause              Repetitive Motion         1      1.5865     32.0240          0.00        0.9605                       4.887
+Cause              Slip/Fall                 1     -0.4577     32.0049          0.00        0.9886                       0.633
+Cause              Stress                    1     14.9999           .           .           .                   .     999.000
+Cause              Struck Object             1      0.0599     32.0034          0.00        0.9985                       1.062
+TextCluster4_SVD1                            1      7.1880      5.2501          1.87        0.1710          0.7259     999.000
+TextCluster4_SVD10                           1      2.5421      1.5314          2.76        0.0969          0.2757      12.707
+TextCluster4_SVD11                           1     -5.6268      1.3684         16.91        <.0001         -0.5804       0.004
+TextCluster4_SVD13                           1      1.6102      1.3186          1.49        0.2221          0.1538       5.004
+TextCluster4_SVD15                           1     -4.3523      1.3239         10.81        0.0010         -0.5178       0.013
+TextCluster4_SVD18                           1      5.8548      1.4548         16.20        <.0001          0.6623     348.916
+TextCluster4_SVD20                           1      1.8814      1.1515          2.67        0.1023          0.2334       6.563
+TextCluster4_SVD21                           1      1.3972      1.1952          1.37        0.2424          0.1693       4.044
+TextTopic3_raw1                              1     -3.6799      3.4470          1.14        0.2857         -0.3985       0.025
+TextTopic3_raw11                             1      7.1077      2.0227         12.35        0.0004          0.5568     999.000
+TextTopic3_raw2                              1      3.1977      1.9919          2.58        0.1084          0.2968      24.477
+TextTopic3_raw6                              1      9.5365      5.8165          2.69        0.1011          0.9361     999.000
+TextTopic3_raw8                              1      5.6819      1.9375          8.60        0.0034          0.3736     293.498
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+Cause              Animal Attack vs Unusual Body Movement              <0.001
+Cause              Caught in Machine vs Unusual Body Movement          <0.001
+Cause              Contact with Object vs Unusual Body Movement         0.714
+Cause              Environmental vs Unusual Body Movement              <0.001
+Cause              Equipment/Machinery vs Unusual Body Movement         0.408
+Cause              Exposure vs Unusual Body Movement                    4.789
+Cause              Fire vs Unusual Body Movement                        1.115
+Cause              Foreign Body/Object vs Unusual Body Movement         0.506
+Cause              Human Conflict vs Unusual Body Movement            999.000
+Cause              Lifting vs Unusual Body Movement                     0.051
+Cause              MVA vs Unusual Body Movement                         2.551
+Cause              Occupational Illness vs Unusual Body Movement        1.415
+Cause              Pushing/Pulling vs Unusual Body Movement             0.034
+Cause              Repetitive Motion vs Unusual Body Movement           2.294
+Cause              Slip/Fall vs Unusual Body Movement                   0.297
+Cause              Stress vs Unusual Body Movement                    999.000
+Cause              Struck Object vs Unusual Body Movement               0.498
+TextCluster4_SVD1                                                     999.000
+TextCluster4_SVD10                                                     12.707
+TextCluster4_SVD11                                                      0.004
+TextCluster4_SVD13                                                      5.004
+TextCluster4_SVD15                                                      0.013
+TextCluster4_SVD18                                                    348.916
+TextCluster4_SVD20                                                      6.563
+TextCluster4_SVD21                                                      4.044
+TextTopic3_raw1                                                         0.025
+TextTopic3_raw11                                                      999.000
+TextTopic3_raw2                                                        24.477
+TextTopic3_raw6                                                       999.000
+TextTopic3_raw8                                                       293.498
+
+
+Step 15: Effect TextTopic3_raw4 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              32
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        117.93735      81.7266     10.0791         0        1.108
+   2            0           3              0        105.34199      12.5954      3.2701         0        1.242
+   3            0           4              0        101.60626       3.7357      0.9274         0        1.225
+   4            0           5              0        100.55317       1.0531      0.2066         0        1.233
+   5            0           6              0        100.30029       0.2529      0.0319         0        1.150
+   6            0           7              0        100.27037       0.0299     0.00956         0        1.203
+   7            0           8              0        100.26179      0.00859     0.00399         0        1.263
+   8            0           9              0        100.25865      0.00314     0.00147         0        1.264
+   9            0          10              0        100.25750      0.00115    0.000540         0        1.264
+  10            0          11              0        100.25707     0.000424    0.000199         0        1.264
+  11            0          12              0        100.25692     0.000156    0.000073         0        1.264
+  12            0          13              0        100.25686     0.000057    0.000027         0        1.264
+
+                                            Optimization Results
+
+Iterations                                         12  Function Calls                                     15
+Hessian Calls                                      13  Active Constraints                                  0
+Objective Function                       100.25686026  Max Abs Gradient Element                 0.0000268638
+Ridge                                               0  Actual Over Pred Change                  1.2642359313
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         200.514       198.8142       31         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+Cause                   14     1039.7591        <.0001
+TextCluster4_SVD1        1        0.2698        0.6035
+TextCluster4_SVD10       1        2.6445        0.1039
+TextCluster4_SVD11       1       15.9183        <.0001
+TextCluster4_SVD13       1        1.9439        0.1632
+TextCluster4_SVD15       1       10.2939        0.0013
+TextCluster4_SVD18       1       15.8836        <.0001
+TextCluster4_SVD20       1        1.3727        0.2414
+TextCluster4_SVD21       1        1.2811        0.2577
+TextTopic3_raw1          1        0.0977        0.7546
+TextTopic3_raw11         1       12.2168        0.0005
+TextTopic3_raw2          1        3.8482        0.0498
+TextTopic3_raw4          1        1.6733        0.1958
+TextTopic3_raw6          1        3.5854        0.0583
+TextTopic3_raw8          1        9.0732        0.0026
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -1.5573     32.1970          0.00        0.9614                       0.211
+Cause              Animal Attack             1    -11.5153       407.6          0.00        0.9775                       0.000
+Cause              Caught in Machine         1    -12.5921       195.9          0.00        0.9488                       0.000
+Cause              Contact with Object       1      0.3543     32.2160          0.00        0.9912                       1.425
+Cause              Environmental             1     -7.0367           .           .           .                   .       0.001
+Cause              Equipment/Machinery       1     -0.3765     32.2080          0.00        0.9907                       0.686
+Cause              Exposure                  1      2.7235     32.2306          0.01        0.9327                      15.234
+Cause              Fire                      1      0.8224     32.2216          0.00        0.9796                       2.276
+Cause              Foreign Body/Object       1      0.0216     32.2048          0.00        0.9995                       1.022
+Cause              Human Conflict            1     12.8063           .           .           .                   .     999.000
+Cause              Lifting                   1     -2.1640     32.1966          0.00        0.9464                       0.115
+Cause              MVA                       1      1.7756     32.2066          0.00        0.9560                       5.904
+Cause              Occupational Illness      1      1.1467     32.2211          0.00        0.9716                       3.148
+Cause              Pushing/Pulling           1     -2.5899     32.2184          0.01        0.9359                       0.075
+Cause              Repetitive Motion         1      1.4913     32.2144          0.00        0.9631                       4.443
+Cause              Slip/Fall                 1     -0.5016     32.1952          0.00        0.9876                       0.606
+Cause              Stress                    1     14.8900           .           .           .                   .     999.000
+Cause              Struck Object             1     -0.0422     32.1936          0.00        0.9990                       0.959
+TextCluster4_SVD1                            1      3.2165      6.1925          0.27        0.6035          0.3248      24.940
+TextCluster4_SVD10                           1      2.5144      1.5462          2.64        0.1039          0.2727      12.360
+TextCluster4_SVD11                           1     -5.4539      1.3670         15.92        <.0001         -0.5625       0.004
+TextCluster4_SVD13                           1      1.8741      1.3441          1.94        0.1632          0.1791       6.515
+TextCluster4_SVD15                           1     -4.3030      1.3412         10.29        0.0013         -0.5119       0.014
+TextCluster4_SVD18                           1      5.8597      1.4703         15.88        <.0001          0.6628     350.601
+TextCluster4_SVD20                           1      1.4182      1.2105          1.37        0.2414          0.1759       4.130
+TextCluster4_SVD21                           1      1.3669      1.2077          1.28        0.2577          0.1656       3.923
+TextTopic3_raw1                              1     -1.2464      3.9866          0.10        0.7546         -0.1350       0.288
+TextTopic3_raw11                             1      7.0729      2.0236         12.22        0.0005          0.5540     999.000
+TextTopic3_raw2                              1      4.3985      2.2422          3.85        0.0498          0.4082      81.332
+TextTopic3_raw4                              1      1.5819      1.2229          1.67        0.1958          0.1395       4.864
+TextTopic3_raw6                              1     11.2053      5.9177          3.59        0.0583          1.0999     999.000
+TextTopic3_raw8                              1      6.0159      1.9972          9.07        0.0026          0.3955     409.883
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+Cause              Animal Attack vs Unusual Body Movement              <0.001
+Cause              Caught in Machine vs Unusual Body Movement          <0.001
+Cause              Contact with Object vs Unusual Body Movement         0.649
+Cause              Environmental vs Unusual Body Movement              <0.001
+Cause              Equipment/Machinery vs Unusual Body Movement         0.312
+Cause              Exposure vs Unusual Body Movement                    6.937
+Cause              Fire vs Unusual Body Movement                        1.036
+Cause              Foreign Body/Object vs Unusual Body Movement         0.465
+Cause              Human Conflict vs Unusual Body Movement            999.000
+Cause              Lifting vs Unusual Body Movement                     0.052
+Cause              MVA vs Unusual Body Movement                         2.688
+Cause              Occupational Illness vs Unusual Body Movement        1.433
+Cause              Pushing/Pulling vs Unusual Body Movement             0.034
+Cause              Repetitive Motion vs Unusual Body Movement           2.023
+Cause              Slip/Fall vs Unusual Body Movement                   0.276
+Cause              Stress vs Unusual Body Movement                    999.000
+Cause              Struck Object vs Unusual Body Movement               0.437
+TextCluster4_SVD1                                                      24.940
+TextCluster4_SVD10                                                     12.360
+TextCluster4_SVD11                                                      0.004
+TextCluster4_SVD13                                                      6.515
+TextCluster4_SVD15                                                      0.014
+TextCluster4_SVD18                                                    350.601
+TextCluster4_SVD20                                                      4.130
+TextCluster4_SVD21                                                      3.923
+TextTopic3_raw1                                                         0.288
+TextTopic3_raw11                                                      999.000
+TextTopic3_raw2                                                        81.332
+TextTopic3_raw4                                                         4.864
+TextTopic3_raw6                                                       999.000
+TextTopic3_raw8                                                       409.883
+
+
+Step 16: Effect TextTopic3_raw1 removed.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              31
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                 26.106636362                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        117.94806      81.7159     10.0617         0        1.108
+   2            0           3              0        105.35980      12.5883      3.2523         0        1.242
+   3            0           4              0        101.63262       3.7272      0.9163         0        1.224
+   4            0           5              0        100.59590       1.0367      0.1989         0        1.232
+   5            0           6              0        100.34871       0.2472      0.0317         0        1.152
+   6            0           7              0        100.31882       0.0299     0.00944         0        1.203
+   7            0           8              0        100.31024      0.00858     0.00399         0        1.263
+   8            0           9              0        100.30710      0.00314     0.00147         0        1.264
+   9            0          10              0        100.30595      0.00115    0.000539         0        1.264
+  10            0          11              0        100.30552     0.000423    0.000198         0        1.264
+  11            0          12              0        100.30537     0.000156    0.000073         0        1.264
+  12            0          13              0        100.30531     0.000057    0.000027         0        1.264
+
+                                            Optimization Results
+
+Iterations                                         12  Function Calls                                     15
+Hessian Calls                                      13  Active Constraints                                  0
+Objective Function                       100.30530959  Max Abs Gradient Element                 0.0000268543
+Ridge                                               0  Actual Over Pred Change                  1.2642359105
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         200.611       198.7173       30         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+Cause                   14     1083.2413        <.0001
+TextCluster4_SVD1        1        0.3456        0.5566
+TextCluster4_SVD10       1        2.7024        0.1002
+TextCluster4_SVD11       1       15.8943        <.0001
+TextCluster4_SVD13       1        2.4955        0.1142
+TextCluster4_SVD15       1       10.5776        0.0011
+TextCluster4_SVD18       1       15.8876        <.0001
+TextCluster4_SVD20       1        1.2946        0.2552
+TextCluster4_SVD21       1        1.3124        0.2520
+TextTopic3_raw11         1       12.1605        0.0005
+TextTopic3_raw2          1        7.8961        0.0050
+TextTopic3_raw4          1        2.6190        0.1056
+TextTopic3_raw6          1        4.8580        0.0275
+TextTopic3_raw8          1        8.9215        0.0028
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -1.4608     32.2465          0.00        0.9639                       0.232
+Cause              Animal Attack             1    -11.6180       408.4          0.00        0.9773                       0.000
+Cause              Caught in Machine         1    -12.6243       195.9          0.00        0.9486                       0.000
+Cause              Contact with Object       1      0.3254     32.2668          0.00        0.9920                       1.385
+Cause              Environmental             1     -6.9336           .           .           .                   .       0.001
+Cause              Equipment/Machinery       1     -0.4447     32.2584          0.00        0.9890                       0.641
+Cause              Exposure                  1      2.8657     32.2789          0.01        0.9293                      17.561
+Cause              Fire                      1      0.8319     32.2725          0.00        0.9794                       2.298
+Cause              Foreign Body/Object       1     0.00976     32.2558          0.00        0.9998                       1.010
+Cause              Human Conflict            1     12.8373           .           .           .                   .     999.000
+Cause              Lifting                   1     -2.1506     32.2476          0.00        0.9468                       0.116
+Cause              MVA                       1      1.7895     32.2575          0.00        0.9558                       5.987
+Cause              Occupational Illness      1      1.1468     32.2716          0.00        0.9717                       3.148
+Cause              Pushing/Pulling           1     -2.5616     32.2688          0.01        0.9367                       0.077
+Cause              Repetitive Motion         1      1.4243     32.2646          0.00        0.9648                       4.155
+Cause              Slip/Fall                 1     -0.4970     32.2462          0.00        0.9877                       0.608
+Cause              Stress                    1     14.7935           .           .           .                   .     999.000
+Cause              Struck Object             1     -0.0283     32.2446          0.00        0.9993                       0.972
+TextCluster4_SVD1                            1      1.4375      2.4453          0.35        0.5566          0.1452       4.210
+TextCluster4_SVD10                           1      2.5378      1.5438          2.70        0.1002          0.2753      12.651
+TextCluster4_SVD11                           1     -5.4032      1.3553         15.89        <.0001         -0.5573       0.005
+TextCluster4_SVD13                           1      2.0121      1.2737          2.50        0.1142          0.1922       7.479
+TextCluster4_SVD15                           1     -4.1949      1.2898         10.58        0.0011         -0.4990       0.015
+TextCluster4_SVD18                           1      5.8563      1.4692         15.89        <.0001          0.6625     349.415
+TextCluster4_SVD20                           1      1.2853      1.1296          1.29        0.2552          0.1595       3.616
+TextCluster4_SVD21                           1      1.3815      1.2059          1.31        0.2520          0.1674       3.981
+TextTopic3_raw11                             1      7.0243      2.0143         12.16        0.0005          0.5502     999.000
+TextTopic3_raw2                              1      4.8499      1.7260          7.90        0.0050          0.4501     127.729
+TextTopic3_raw4                              1      1.7583      1.0865          2.62        0.1056          0.1551       5.802
+TextTopic3_raw6                              1     11.9506      5.4220          4.86        0.0275          1.1731     999.000
+TextTopic3_raw8                              1      5.9728      1.9997          8.92        0.0028          0.3927     392.619
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+Cause              Animal Attack vs Unusual Body Movement              <0.001
+Cause              Caught in Machine vs Unusual Body Movement          <0.001
+Cause              Contact with Object vs Unusual Body Movement         0.601
+Cause              Environmental vs Unusual Body Movement              <0.001
+Cause              Equipment/Machinery vs Unusual Body Movement         0.278
+Cause              Exposure vs Unusual Body Movement                    7.627
+Cause              Fire vs Unusual Body Movement                        0.998
+Cause              Foreign Body/Object vs Unusual Body Movement         0.439
+Cause              Human Conflict vs Unusual Body Movement            999.000
+Cause              Lifting vs Unusual Body Movement                     0.051
+Cause              MVA vs Unusual Body Movement                         2.600
+Cause              Occupational Illness vs Unusual Body Movement        1.367
+Cause              Pushing/Pulling vs Unusual Body Movement             0.034
+Cause              Repetitive Motion vs Unusual Body Movement           1.805
+Cause              Slip/Fall vs Unusual Body Movement                   0.264
+Cause              Stress vs Unusual Body Movement                    999.000
+Cause              Struck Object vs Unusual Body Movement               0.422
+TextCluster4_SVD1                                                       4.210
+TextCluster4_SVD10                                                     12.651
+TextCluster4_SVD11                                                      0.005
+TextCluster4_SVD13                                                      7.479
+TextCluster4_SVD15                                                      0.015
+TextCluster4_SVD18                                                    349.415
+TextCluster4_SVD20                                                      3.616
+TextCluster4_SVD21                                                      3.981
+TextTopic3_raw11                                                      999.000
+TextTopic3_raw2                                                       127.729
+TextTopic3_raw4                                                         5.802
+TextTopic3_raw6                                                       999.000
+TextTopic3_raw8                                                       392.619
+
+
+Step 17: Effect TextCluster4_SVD1 removed.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              30
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                  19.55143136                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        118.19790      81.4661      9.3186         0        1.110
+   2            0           3              0        105.46189      12.7360      3.1916         0        1.241
+   3            0           4              0        101.73979       3.7221      0.9066         0        1.222
+   4            0           5              0        100.74541       0.9944      0.1707         0        1.225
+   5            0           6              0        100.52092       0.2245      0.0309         0        1.153
+   6            0           7              0        100.49213       0.0288     0.00951         0        1.210
+   7            0           8              0        100.48358      0.00855     0.00397         0        1.263
+   8            0           9              0        100.48045      0.00313     0.00146         0        1.264
+   9            0          10              0        100.47930      0.00115    0.000537         0        1.264
+  10            0          11              0        100.47888     0.000422    0.000198         0        1.264
+  11            0          12              0        100.47872     0.000155    0.000073         0        1.264
+  12            0          13              0        100.47867     0.000057    0.000027         0        1.264
+
+                                            Optimization Results
+
+Iterations                                         12  Function Calls                                     15
+Hessian Calls                                      13  Active Constraints                                  0
+Objective Function                       100.47866734  Max Abs Gradient Element                 0.0000267437
+Ridge                                               0  Actual Over Pred Change                  1.2642359186
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         200.957       198.3706       29         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+Cause                   14     1077.7098        <.0001
+TextCluster4_SVD10       1        2.6869        0.1012
+TextCluster4_SVD11       1       15.6661        <.0001
+TextCluster4_SVD13       1        2.7396        0.0979
+TextCluster4_SVD15       1       10.4886        0.0012
+TextCluster4_SVD18       1       16.0676        <.0001
+TextCluster4_SVD20       1        1.5603        0.2116
+TextCluster4_SVD21       1        1.2219        0.2690
+TextTopic3_raw11         1       12.4062        0.0004
+TextTopic3_raw2          1        9.5426        0.0020
+TextTopic3_raw4          1        3.0860        0.0790
+TextTopic3_raw6          1        5.1564        0.0232
+TextTopic3_raw8          1        9.2917        0.0023
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -1.3404     32.3082          0.00        0.9669                       0.262
+Cause              Animal Attack             1    -11.6567       409.2          0.00        0.9773                       0.000
+Cause              Caught in Machine         1    -12.6868       196.3          0.00        0.9485                       0.000
+Cause              Contact with Object       1      0.2628     32.3284          0.00        0.9935                       1.301
+Cause              Environmental             1     -6.8641           .           .           .                   .       0.001
+Cause              Equipment/Machinery       1     -0.4895     32.3204          0.00        0.9879                       0.613
+Cause              Exposure                  1      2.9400     32.3408          0.01        0.9276                      18.917
+Cause              Fire                      1      0.8274     32.3348          0.00        0.9796                       2.287
+Cause              Foreign Body/Object       1     0.00500     32.3182          0.00        0.9999                       1.005
+Cause              Human Conflict            1     12.8013           .           .           .                   .     999.000
+Cause              Lifting                   1     -2.1884     32.3099          0.00        0.9460                       0.112
+Cause              MVA                       1      2.2032     32.3130          0.00        0.9456                       9.054
+Cause              Occupational Illness      1      1.1105     32.3335          0.00        0.9726                       3.036
+Cause              Pushing/Pulling           1     -2.6298     32.3314          0.01        0.9352                       0.072
+Cause              Repetitive Motion         1      1.3671     32.3266          0.00        0.9663                       3.924
+Cause              Slip/Fall                 1     -0.5319     32.3084          0.00        0.9869                       0.588
+Cause              Stress                    1     14.6731           .           .           .                   .     999.000
+Cause              Struck Object             1    -0.00553     32.3069          0.00        0.9999                       0.994
+TextCluster4_SVD10                           1      2.5496      1.5554          2.69        0.1012          0.2765      12.802
+TextCluster4_SVD11                           1     -5.3798      1.3592         15.67        <.0001         -0.5549       0.005
+TextCluster4_SVD13                           1      2.1004      1.2690          2.74        0.0979          0.2007       8.170
+TextCluster4_SVD15                           1     -4.1047      1.2674         10.49        0.0012         -0.4883       0.016
+TextCluster4_SVD18                           1      5.8894      1.4692         16.07        <.0001          0.6662     361.185
+TextCluster4_SVD20                           1      1.3846      1.1085          1.56        0.2116          0.1718       3.993
+TextCluster4_SVD21                           1      1.3273      1.2007          1.22        0.2690          0.1608       3.771
+TextTopic3_raw11                             1      7.1087      2.0182         12.41        0.0004          0.5568     999.000
+TextTopic3_raw2                              1      5.1306      1.6609          9.54        0.0020          0.4761     169.113
+TextTopic3_raw4                              1      1.8867      1.0740          3.09        0.0790          0.1664       6.598
+TextTopic3_raw6                              1     12.0114      5.2896          5.16        0.0232          1.1791     999.000
+TextTopic3_raw8                              1      6.0723      1.9921          9.29        0.0023          0.3992     433.694
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+Cause              Animal Attack vs Unusual Body Movement              <0.001
+Cause              Caught in Machine vs Unusual Body Movement          <0.001
+Cause              Contact with Object vs Unusual Body Movement         0.549
+Cause              Environmental vs Unusual Body Movement              <0.001
+Cause              Equipment/Machinery vs Unusual Body Movement         0.259
+Cause              Exposure vs Unusual Body Movement                    7.986
+Cause              Fire vs Unusual Body Movement                        0.966
+Cause              Foreign Body/Object vs Unusual Body Movement         0.424
+Cause              Human Conflict vs Unusual Body Movement            999.000
+Cause              Lifting vs Unusual Body Movement                     0.047
+Cause              MVA vs Unusual Body Movement                         3.822
+Cause              Occupational Illness vs Unusual Body Movement        1.282
+Cause              Pushing/Pulling vs Unusual Body Movement             0.030
+Cause              Repetitive Motion vs Unusual Body Movement           1.657
+Cause              Slip/Fall vs Unusual Body Movement                   0.248
+Cause              Stress vs Unusual Body Movement                    999.000
+Cause              Struck Object vs Unusual Body Movement               0.420
+TextCluster4_SVD10                                                     12.802
+TextCluster4_SVD11                                                      0.005
+TextCluster4_SVD13                                                      8.170
+TextCluster4_SVD15                                                      0.016
+TextCluster4_SVD18                                                    361.185
+TextCluster4_SVD20                                                      3.993
+TextCluster4_SVD21                                                      3.771
+TextTopic3_raw11                                                      999.000
+TextTopic3_raw2                                                       169.113
+TextTopic3_raw4                                                         6.598
+TextTopic3_raw6                                                       999.000
+TextTopic3_raw8                                                       433.694
+
+
+Step 18: Effect TextCluster4_SVD17 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              31
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                  19.55143136                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        118.08497      81.5790      9.3162         0        1.110
+   2            0           3              0        105.25869      12.8263      3.1864         0        1.243
+   3            0           4              0        101.30673       3.9520      0.9298         0        1.237
+   4            0           5              0         99.90317       1.4036      0.2196         0        1.276
+   5            0           6              0         99.43263       0.4705      0.0470         0        1.149
+   6            0           7              0         99.39103       0.0416     0.00938         0        1.148
+   7            0           8              0         99.38239      0.00864     0.00401         0        1.262
+   8            0           9              0         99.37923      0.00315     0.00148         0        1.264
+   9            0          10              0         99.37808      0.00116    0.000542         0        1.264
+  10            0          11              0         99.37765     0.000425    0.000200         0        1.264
+  11            0          12              0         99.37749     0.000156    0.000073         0        1.264
+  12            0          13              0         99.37744     0.000058    0.000027         0        1.264
+
+                                            Optimization Results
+
+Iterations                                         12  Function Calls                                     15
+Hessian Calls                                      13  Active Constraints                                  0
+Objective Function                       99.377436959  Max Abs Gradient Element                 0.0000270007
+Ridge                                               0  Actual Over Pred Change                  1.2642357045
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         198.755       200.5730       30         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+Cause                   14     1123.0853        <.0001
+TextCluster4_SVD10       1        2.6626        0.1027
+TextCluster4_SVD11       1       16.3209        <.0001
+TextCluster4_SVD13       1        3.3663        0.0665
+TextCluster4_SVD15       1        9.1048        0.0025
+TextCluster4_SVD17       1        2.0930        0.1480
+TextCluster4_SVD18       1       11.3196        0.0008
+TextCluster4_SVD20       1        2.2863        0.1305
+TextCluster4_SVD21       1        1.8446        0.1744
+TextTopic3_raw11         1       12.6612        0.0004
+TextTopic3_raw2          1       11.1274        0.0009
+TextTopic3_raw4          1        4.1002        0.0429
+TextTopic3_raw6          1        6.3262        0.0119
+TextTopic3_raw8          1       10.2922        0.0013
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -1.6166     32.2421          0.00        0.9600                       0.199
+Cause              Animal Attack             1    -11.6387       408.6          0.00        0.9773                       0.000
+Cause              Caught in Machine         1    -12.8072       195.3          0.00        0.9477                       0.000
+Cause              Contact with Object       1      0.4548     32.2640          0.00        0.9888                       1.576
+Cause              Environmental             1     -6.6685           .           .           .                   .       0.001
+Cause              Equipment/Machinery       1     -0.3252     32.2538          0.00        0.9920                       0.722
+Cause              Exposure                  1      2.5099     32.2742          0.01        0.9380                      12.303
+Cause              Fire                      1      0.8943     32.2672          0.00        0.9779                       2.446
+Cause              Foreign Body/Object       1      0.2446     32.2524          0.00        0.9939                       1.277
+Cause              Human Conflict            1     12.7181           .           .           .                   .     999.000
+Cause              Lifting                   1     -2.1410     32.2430          0.00        0.9471                       0.118
+Cause              MVA                       1      2.4152     32.2470          0.01        0.9403                      11.192
+Cause              Occupational Illness      1      1.0635     32.2684          0.00        0.9737                       2.896
+Cause              Pushing/Pulling           1     -2.8389     32.2620          0.01        0.9299                       0.058
+Cause              Repetitive Motion         1      0.9819     32.2594          0.00        0.9757                       2.670
+Cause              Slip/Fall                 1     -0.5072     32.2418          0.00        0.9874                       0.602
+Cause              Stress                    1     14.9493           .           .           .                   .     999.000
+Cause              Struck Object             1     -0.0572     32.2400          0.00        0.9986                       0.944
+TextCluster4_SVD10                           1      2.5508      1.5632          2.66        0.1027          0.2767      12.817
+TextCluster4_SVD11                           1     -5.6388      1.3958         16.32        <.0001         -0.5816       0.004
+TextCluster4_SVD13                           1      2.3310      1.2705          3.37        0.0665          0.2227      10.288
+TextCluster4_SVD15                           1     -3.9603      1.3125          9.10        0.0025         -0.4711       0.019
+TextCluster4_SVD17                           1     -2.4574      1.6986          2.09        0.1480         -0.2799       0.086
+TextCluster4_SVD18                           1      5.1417      1.5282         11.32        0.0008          0.5816     171.009
+TextCluster4_SVD20                           1      1.8035      1.1927          2.29        0.1305          0.2237       6.071
+TextCluster4_SVD21                           1      1.6972      1.2496          1.84        0.1744          0.2057       5.459
+TextTopic3_raw11                             1      7.2716      2.0436         12.66        0.0004          0.5696     999.000
+TextTopic3_raw2                              1      6.2877      1.8849         11.13        0.0009          0.5835     537.915
+TextTopic3_raw4                              1      2.2465      1.1094          4.10        0.0429          0.1981       9.454
+TextTopic3_raw6                              1     16.2239      6.4503          6.33        0.0119          1.5926     999.000
+TextTopic3_raw8                              1      8.1578      2.5428         10.29        0.0013          0.5363     999.000
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+Cause              Animal Attack vs Unusual Body Movement              <0.001
+Cause              Caught in Machine vs Unusual Body Movement          <0.001
+Cause              Contact with Object vs Unusual Body Movement         0.743
+Cause              Environmental vs Unusual Body Movement              <0.001
+Cause              Equipment/Machinery vs Unusual Body Movement         0.340
+Cause              Exposure vs Unusual Body Movement                    5.798
+Cause              Fire vs Unusual Body Movement                        1.152
+Cause              Foreign Body/Object vs Unusual Body Movement         0.602
+Cause              Human Conflict vs Unusual Body Movement            999.000
+Cause              Lifting vs Unusual Body Movement                     0.055
+Cause              MVA vs Unusual Body Movement                         5.274
+Cause              Occupational Illness vs Unusual Body Movement        1.365
+Cause              Pushing/Pulling vs Unusual Body Movement             0.028
+Cause              Repetitive Motion vs Unusual Body Movement           1.258
+Cause              Slip/Fall vs Unusual Body Movement                   0.284
+Cause              Stress vs Unusual Body Movement                    999.000
+Cause              Struck Object vs Unusual Body Movement               0.445
+TextCluster4_SVD10                                                     12.817
+TextCluster4_SVD11                                                      0.004
+TextCluster4_SVD13                                                     10.288
+TextCluster4_SVD15                                                      0.019
+TextCluster4_SVD17                                                      0.086
+TextCluster4_SVD18                                                    171.009
+TextCluster4_SVD20                                                      6.071
+TextCluster4_SVD21                                                      5.459
+TextTopic3_raw11                                                      999.000
+TextTopic3_raw2                                                       537.915
+TextTopic3_raw4                                                         9.454
+TextTopic3_raw6                                                       999.000
+TextTopic3_raw8                                                       999.000
+
+
+Step 19: Effect TextCluster4_SVD5 entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              32
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                  19.55143136                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        118.06332      81.6006      9.3018         0        1.110
+   2            0           3              0        105.14836      12.9150      3.1777         0        1.244
+   3            0           4              0        101.09091       4.0575      0.9312         0        1.243
+   4            0           5              0         99.45180       1.6391      0.2511         0        1.302
+   5            0           6              0         98.79476       0.6570      0.0552         0        1.145
+   6            0           7              0         98.74469       0.0501     0.00938         0        1.126
+   7            0           8              0         98.73608      0.00861     0.00398         0        1.262
+   8            0           9              0         98.73294      0.00313     0.00146         0        1.264
+   9            0          10              0         98.73179      0.00115    0.000538         0        1.264
+  10            0          11              0         98.73137     0.000423    0.000198         0        1.264
+  11            0          12              0         98.73121     0.000155    0.000073         0        1.264
+  12            0          13              0         98.73116     0.000057    0.000027         0        1.264
+
+                                            Optimization Results
+
+Iterations                                         12  Function Calls                                     15
+Hessian Calls                                      13  Active Constraints                                  0
+Objective Function                       98.731157573  Max Abs Gradient Element                 0.0000268005
+Ridge                                               0  Actual Over Pred Change                  1.2642358043
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         197.462       201.8656       31         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+Cause                   14     1000.8598        <.0001
+TextCluster4_SVD10       1        2.9207        0.0875
+TextCluster4_SVD11       1       11.5147        0.0007
+TextCluster4_SVD13       1        2.3508        0.1252
+TextCluster4_SVD15       1        9.9677        0.0016
+TextCluster4_SVD17       1        2.1969        0.1383
+TextCluster4_SVD18       1       11.2162        0.0008
+TextCluster4_SVD20       1        2.5962        0.1071
+TextCluster4_SVD21       1        2.2937        0.1299
+TextCluster4_SVD5        1        1.2435        0.2648
+TextTopic3_raw11         1        7.6085        0.0058
+TextTopic3_raw2          1        5.4039        0.0201
+TextTopic3_raw4          1        3.9014        0.0482
+TextTopic3_raw6          1        7.1936        0.0073
+TextTopic3_raw8          1       10.7703        0.0010
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -1.9839     32.2570          0.00        0.9510                       0.138
+Cause              Animal Attack             1    -11.4285       408.4          0.00        0.9777                       0.000
+Cause              Caught in Machine         1    -12.8995       196.1          0.00        0.9476                       0.000
+Cause              Contact with Object       1      0.2758     32.2755          0.00        0.9932                       1.318
+Cause              Environmental             1     -7.3045           .           .           .                   .       0.001
+Cause              Equipment/Machinery       1     -0.4229     32.2670          0.00        0.9895                       0.655
+Cause              Exposure                  1      2.9555     32.2971          0.01        0.9271                      19.211
+Cause              Fire                      1      0.7788     32.2803          0.00        0.9808                       2.179
+Cause              Foreign Body/Object       1      0.0592     32.2656          0.00        0.9985                       1.061
+Cause              Human Conflict            1     12.6967           .           .           .                   .     999.000
+Cause              Lifting                   1     -2.3438     32.2572          0.01        0.9421                       0.096
+Cause              MVA                       1      2.7817     32.2621          0.01        0.9313                      16.147
+Cause              Occupational Illness      1      1.3795     32.2832          0.00        0.9659                       3.973
+Cause              Pushing/Pulling           1     -2.9828     32.2776          0.01        0.9264                       0.051
+Cause              Repetitive Motion         1      1.0407     32.2728          0.00        0.9743                       2.831
+Cause              Slip/Fall                 1     -0.6057     32.2553          0.00        0.9850                       0.546
+Cause              Stress                    1     15.3166           .           .           .                   .     999.000
+Cause              Struck Object             1     -0.1046     32.2533          0.00        0.9974                       0.901
+TextCluster4_SVD10                           1      2.6502      1.5507          2.92        0.0875          0.2875      14.157
+TextCluster4_SVD11                           1     -5.0433      1.4862         11.51        0.0007         -0.5202       0.006
+TextCluster4_SVD13                           1      2.0031      1.3065          2.35        0.1252          0.1914       7.412
+TextCluster4_SVD15                           1     -4.1150      1.3034          9.97        0.0016         -0.4896       0.016
+TextCluster4_SVD17                           1     -2.5424      1.7153          2.20        0.1383         -0.2895       0.079
+TextCluster4_SVD18                           1      5.1776      1.5460         11.22        0.0008          0.5857     177.263
+TextCluster4_SVD20                           1      1.9003      1.1794          2.60        0.1071          0.2357       6.688
+TextCluster4_SVD21                           1      1.9263      1.2719          2.29        0.1299          0.2334       6.864
+TextCluster4_SVD5                            1      2.8605      2.5652          1.24        0.2648          0.2826      17.471
+TextTopic3_raw11                             1      6.1993      2.2475          7.61        0.0058          0.4856     492.418
+TextTopic3_raw2                              1      5.0214      2.1601          5.40        0.0201          0.4660     151.619
+TextTopic3_raw4                              1      4.2930      2.1735          3.90        0.0482          0.3786      73.186
+TextTopic3_raw6                              1     18.6066      6.9374          7.19        0.0073          1.8265     999.000
+TextTopic3_raw8                              1      8.3523      2.5450         10.77        0.0010          0.5491     999.000
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+Cause              Animal Attack vs Unusual Body Movement              <0.001
+Cause              Caught in Machine vs Unusual Body Movement          <0.001
+Cause              Contact with Object vs Unusual Body Movement         0.588
+Cause              Environmental vs Unusual Body Movement              <0.001
+Cause              Equipment/Machinery vs Unusual Body Movement         0.292
+Cause              Exposure vs Unusual Body Movement                    8.566
+Cause              Fire vs Unusual Body Movement                        0.972
+Cause              Foreign Body/Object vs Unusual Body Movement         0.473
+Cause              Human Conflict vs Unusual Body Movement            999.000
+Cause              Lifting vs Unusual Body Movement                     0.043
+Cause              MVA vs Unusual Body Movement                         7.200
+Cause              Occupational Illness vs Unusual Body Movement        1.772
+Cause              Pushing/Pulling vs Unusual Body Movement             0.023
+Cause              Repetitive Motion vs Unusual Body Movement           1.262
+Cause              Slip/Fall vs Unusual Body Movement                   0.243
+Cause              Stress vs Unusual Body Movement                    999.000
+Cause              Struck Object vs Unusual Body Movement               0.402
+TextCluster4_SVD10                                                     14.157
+TextCluster4_SVD11                                                      0.006
+TextCluster4_SVD13                                                      7.412
+TextCluster4_SVD15                                                      0.016
+TextCluster4_SVD17                                                      0.079
+TextCluster4_SVD18                                                    177.263
+TextCluster4_SVD20                                                      6.688
+TextCluster4_SVD21                                                      6.864
+TextCluster4_SVD5                                                      17.471
+TextTopic3_raw11                                                      492.418
+TextTopic3_raw2                                                       151.619
+TextTopic3_raw4                                                        73.186
+TextTopic3_raw6                                                       999.000
+TextTopic3_raw8                                                       999.000
+
+
+Step 20: Effect VEHflag entered.
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The DMREG Procedure
+
+Newton-Raphson Ridge Optimization
+
+Without Parameter Scaling
+
+Parameter Estimates              33
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       199.66394989
+Max Abs Gradient Element                  40.59602649                                                       
+
+
+                                                                                                        Ratio
+                                                                                                      Between
+                                                                                                       Actual
+                                                                 Objective     Max Abs                    and
+                     Function         Active        Objective     Function    Gradient              Predicted
+Iter     Restarts       Calls    Constraints         Function       Change     Element     Ridge       Change
+
+   1            0           2              0        117.65078      82.0132     12.8111         0        1.111
+   2            0           3              0        104.61063      13.0402      4.0536         0        1.244
+   3            0           4              0        100.51312       4.0975      1.1184         0        1.245
+   4            0           5              0         98.80977       1.7033      0.3136         0        1.306
+   5            0           6              0         98.11435       0.6954      0.0651         0        1.143
+   6            0           7              0         98.06310       0.0512     0.00937         0        1.123
+   7            0           8              0         98.05448      0.00862     0.00398         0        1.262
+   8            0           9              0         98.05134      0.00313     0.00147         0        1.264
+   9            0          10              0         98.05019      0.00115    0.000539         0        1.264
+  10            0          11              0         98.04977     0.000423    0.000198         0        1.264
+  11            0          12              0         98.04961     0.000156    0.000073         0        1.264
+  12            0          13              0         98.04955     0.000057    0.000027         0        1.264
+
+                                            Optimization Results
+
+Iterations                                         12  Function Calls                                     15
+Hessian Calls                                      13  Active Constraints                                  0
+Objective Function                       98.049554079  Max Abs Gradient Element                  0.000026823
+Ridge                                               0  Actual Over Pred Change                  1.2642358485
+
+Convergence criterion (GCONV=1E-6) satisfied.                                                     
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         196.099       203.2288       32         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+Cause                   14     1007.6254        <.0001
+TextCluster4_SVD10       1        2.9436        0.0862
+TextCluster4_SVD11       1       11.3811        0.0007
+TextCluster4_SVD13       1        2.4270        0.1193
+TextCluster4_SVD15       1       10.3381        0.0013
+TextCluster4_SVD17       1        2.2293        0.1354
+TextCluster4_SVD18       1       11.2944        0.0008
+TextCluster4_SVD20       1        3.1908        0.0741
+TextCluster4_SVD21       1        1.8911        0.1691
+TextCluster4_SVD5        1        1.3942        0.2377
+TextTopic3_raw11         1        7.2106        0.0072
+TextTopic3_raw2          1        5.1744        0.0229
+TextTopic3_raw4          1        3.9888        0.0458
+TextTopic3_raw6          1        7.4758        0.0063
+TextTopic3_raw8          1       11.2862        0.0008
+VEHflag                  1        1.3743        0.2411
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -1.6210     32.2415          0.00        0.9599                       0.198
+Cause              Animal Attack             1    -11.2733       408.2          0.00        0.9780                       0.000
+Cause              Caught in Machine         1    -12.8574       196.1          0.00        0.9477                       0.000
+Cause              Contact with Object       1      0.2856     32.2586          0.00        0.9929                       1.331
+Cause              Environmental             1     -7.2513           .           .           .                   .       0.001
+Cause              Equipment/Machinery       1     -0.3633     32.2503          0.00        0.9910                       0.695
+Cause              Exposure                  1      3.0311     32.2799          0.01        0.9252                      20.720
+Cause              Fire                      1      0.8586     32.2638          0.00        0.9788                       2.360
+Cause              Foreign Body/Object       1      0.1422     32.2492          0.00        0.9965                       1.153
+Cause              Human Conflict            1     12.7458           .           .           .                   .     999.000
+Cause              Lifting                   1     -2.4387     32.2406          0.01        0.9397                       0.087
+Cause              MVA                       1      1.9971     32.2522          0.00        0.9506                       7.368
+Cause              Occupational Illness      1      1.4379     32.2667          0.00        0.9645                       4.212
+Cause              Pushing/Pulling           1     -2.9738     32.2611          0.01        0.9266                       0.051
+Cause              Repetitive Motion         1      1.1394     32.2561          0.00        0.9718                       3.125
+Cause              Slip/Fall                 1     -0.6183     32.2386          0.00        0.9847                       0.539
+Cause              Stress                    1     15.4008           .           .           .                   .     999.000
+Cause              Struck Object             1     -0.1331     32.2366          0.00        0.9967                       0.875
+TextCluster4_SVD10                           1      2.6656      1.5537          2.94        0.0862          0.2891      14.377
+TextCluster4_SVD11                           1     -5.0864      1.5077         11.38        0.0007         -0.5246       0.006
+TextCluster4_SVD13                           1      2.0520      1.3172          2.43        0.1193          0.1961       7.783
+TextCluster4_SVD15                           1     -4.2151      1.3110         10.34        0.0013         -0.5015       0.015
+TextCluster4_SVD17                           1     -2.5766      1.7257          2.23        0.1354         -0.2934       0.076
+TextCluster4_SVD18                           1      5.2182      1.5527         11.29        0.0008          0.5903     184.610
+TextCluster4_SVD20                           1      2.1808      1.2209          3.19        0.0741          0.2706       8.854
+TextCluster4_SVD21                           1      1.7657      1.2840          1.89        0.1691          0.2140       5.846
+TextCluster4_SVD5                            1      3.0537      2.5862          1.39        0.2377          0.3017      21.193
+TextTopic3_raw11                             1      6.0549      2.2549          7.21        0.0072          0.4743     426.195
+TextTopic3_raw2                              1      4.9390      2.1712          5.17        0.0229          0.4584     139.627
+TextTopic3_raw4                              1      4.3458      2.1759          3.99        0.0458          0.3832      77.153
+TextTopic3_raw6                              1     19.1152      6.9912          7.48        0.0063          1.8764     999.000
+TextTopic3_raw8                              1      8.7297      2.5985         11.29        0.0008          0.5739     999.000
+VEHflag            0                         1     -0.4472      0.3814          1.37        0.2411                       0.639
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+Cause              Animal Attack vs Unusual Body Movement              <0.001
+Cause              Caught in Machine vs Unusual Body Movement          <0.001
+Cause              Contact with Object vs Unusual Body Movement         0.557
+Cause              Environmental vs Unusual Body Movement              <0.001
+Cause              Equipment/Machinery vs Unusual Body Movement         0.291
+Cause              Exposure vs Unusual Body Movement                    8.674
+Cause              Fire vs Unusual Body Movement                        0.988
+Cause              Foreign Body/Object vs Unusual Body Movement         0.483
+Cause              Human Conflict vs Unusual Body Movement            999.000
+Cause              Lifting vs Unusual Body Movement                     0.037
+Cause              MVA vs Unusual Body Movement                         3.085
+Cause              Occupational Illness vs Unusual Body Movement        1.763
+Cause              Pushing/Pulling vs Unusual Body Movement             0.021
+Cause              Repetitive Motion vs Unusual Body Movement           1.308
+Cause              Slip/Fall vs Unusual Body Movement                   0.226
+Cause              Stress vs Unusual Body Movement                    999.000
+Cause              Struck Object vs Unusual Body Movement               0.366
+TextCluster4_SVD10                                                     14.377
+TextCluster4_SVD11                                                      0.006
+TextCluster4_SVD13                                                      7.783
+TextCluster4_SVD15                                                      0.015
+TextCluster4_SVD17                                                      0.076
+TextCluster4_SVD18                                                    184.610
+TextCluster4_SVD20                                                      8.854
+TextCluster4_SVD21                                                      5.846
+TextCluster4_SVD5                                                      21.193
+TextTopic3_raw11                                                      426.195
+TextTopic3_raw2                                                       139.627
+TextTopic3_raw4                                                        77.153
+TextTopic3_raw6                                                       999.000
+TextTopic3_raw8                                                       999.000
+VEHflag            0 vs 1                                               0.409
+
+
+NOTE: No (additional) effects met the 0.3 significance level for entry into the model.
+
+
+                                                    Summary of Stepwise Selection
+ 
+                                                                                                                          Validation
+                            Effect                             Number         Score          Wald                  Misclassification
+    Step    Entered               Removed                DF        In    Chi-Square    Chi-Square    Pr > ChiSq                 Rate
+
+       1    TextCluster4_SVD1                             1         1       53.3620                      <.0001               0.2820
+       2    TextCluster4_SVD10                            1         2       29.4102                      <.0001               0.2885
+       3    TextCluster4_SVD11                            1         3       17.5838                      <.0001               0.2984
+       4    TextCluster4_SVD15                            1         4       13.9572                      0.0002               0.3049
+       5    TextCluster4_SVD21                            1         5        7.8116                      0.0052               0.2984
+       6    TextTopic3_raw1                               1         6        5.5448                      0.0185               0.2787
+       7    TextCluster4_SVD18                            1         7        5.4441                      0.0196               0.2885
+       8    TextTopic3_raw11                              1         8        6.2841                      0.0122               0.2787
+       9    TextTopic3_raw8                               1         9        7.0241                      0.0080               0.3016
+      10    Cause                                        17        10       35.7487                      0.0050               0.3148
+      11    TextCluster4_SVD20                            1        11        5.1657                      0.0230               0.3115
+      12    TextTopic3_raw6                               1        12        1.6451                      0.1996               0.3115
+      13    TextTopic3_raw2                               1        13        1.9002                      0.1681               0.3213
+      14    TextCluster4_SVD13                            1        14        1.5208                      0.2175               0.3180
+      15    TextTopic3_raw4                               1        15        1.7303                      0.1884               0.3115
+      16                          TextTopic3_raw1         1        14                      0.0977        0.7546               0.3148
+      17                          TextCluster4_SVD1       1        13                      0.3456        0.5566               0.3180
+      18    TextCluster4_SVD17                            1        14        2.1156                      0.1458               0.3148
+      19    TextCluster4_SVD5                             1        15        1.2601                      0.2616               0.3016
+      20    VEHflag                                       1        16        1.4107                      0.2349               0.3180
+
+
+The selected model, based on the misclassification rate for the validation data, is the model trained in Step 6. It consists of the following effects:
+
+Intercept  TextCluster4_SVD1  TextCluster4_SVD10  TextCluster4_SVD11  TextCluster4_SVD15  TextCluster4_SVD21  TextTopic3_raw1  
+
+
+     Likelihood Ratio Test for Global Null Hypothesis: BETA=0
+ 
+     -2 Log Likelihood          Likelihood
+  Intercept     Intercept &          Ratio
+       Only      Covariates     Chi-Square       DF     Pr > ChiSq
+
+    399.328         266.267       133.0607        6         <.0001
+
+
+              Type 3 Analysis of Effects
+ 
+                                    Wald
+Effect                  DF    Chi-Square    Pr > ChiSq
+
+TextCluster4_SVD1        1       16.3740        <.0001
+TextCluster4_SVD10       1       31.8139        <.0001
+TextCluster4_SVD11       1       11.1434        0.0008
+TextCluster4_SVD15       1       18.4979        <.0001
+TextCluster4_SVD21       1        7.3494        0.0067
+TextTopic3_raw1          1        4.8801        0.0272
+
+
+                                           Analysis of Maximum Likelihood Estimates
+ 
+                                                              Standard          Wald                  Standardized
+Parameter                                   DF    Estimate       Error    Chi-Square    Pr > ChiSq        Estimate    Exp(Est)
+
+Intercept                                    1     -0.7363      0.3030          5.90        0.0151                       0.479
+TextCluster4_SVD1                            1     10.4953      2.5937         16.37        <.0001          1.0599     999.000
+TextCluster4_SVD10                           1      5.0079      0.8879         31.81        <.0001          0.5432     149.584
+TextCluster4_SVD11                           1     -2.8176      0.8441         11.14        0.0008         -0.2906       0.060
+TextCluster4_SVD15                           1     -4.0142      0.9333         18.50        <.0001         -0.4776       0.018
+TextCluster4_SVD21                           1      2.0325      0.7497          7.35        0.0067          0.2463       7.633
+TextTopic3_raw1                              1     -4.1940      1.8985          4.88        0.0272         -0.4542       0.015
+
+
+                            Odds Ratio Estimates
+                                      
+                                                                        Point
+Effect                                                               Estimate
+
+TextCluster4_SVD1                                                     999.000
+TextCluster4_SVD10                                                    149.584
+TextCluster4_SVD11                                                      0.060
+TextCluster4_SVD15                                                      0.018
+TextCluster4_SVD21                                                      7.633
+TextTopic3_raw1                                                         0.015

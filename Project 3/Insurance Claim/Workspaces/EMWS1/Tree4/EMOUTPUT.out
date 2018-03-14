@@ -1,0 +1,245 @@
+*------------------------------------------------------------*
+User:                Gaurav
+Date:                April 27, 2017
+Time:                12:41:21
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+            Measurement    Frequency
+Role           Level         Count
+ 
+ID           INTERVAL           1
+ID           NOMINAL            2
+INPUT        BINARY             1
+INPUT        INTERVAL          19
+INPUT        NOMINAL            3
+REJECTED     INTERVAL           9
+SEGMENT      BINARY             9
+SEGMENT      NOMINAL            1
+TARGET       BINARY             1
+TEXT         NOMINAL            1
+ 
+ 
+ 
+ 
+Model Events
+ 
+                                     Number
+                      Measurement      of
+ Target      Event       Level       Levels      Order                Label
+ 
+SubroFlag      1        BINARY          2      Descending    Subrogation (1=Yes 0=No)
+ 
+ 
+ 
+ 
+Predicted and decision variables
+ 
+Type           Variable      Label
+ 
+TARGET       SubroFlag       Subrogation (1=Yes 0=No)
+PREDICTED    P_SubroFlag1    Predicted: SubroFlag=1
+RESIDUAL     R_SubroFlag1    Residual: SubroFlag=1
+PREDICTED    P_SubroFlag0    Predicted: SubroFlag=0
+RESIDUAL     R_SubroFlag0    Residual: SubroFlag=0
+FROM         F_SubroFlag     From: SubroFlag
+INTO         I_SubroFlag     Into: SubroFlag
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+Variable Importance
+ 
+                                                                                                                            Ratio of
+                                                                  Number of                                               Validation
+                                                                  Splitting                            Validation        to Training
+Variable Name                          Label                        Rules           Importance         Importance         Importance
+ 
+TextTopic2_raw6       accident,+involve,+injury,+multiple,auto        1                 1.0000             1.0000             1.0000
+TextCluster2_SVD10                                                    1                 0.6958             0.0000             0.0000
+TextTopic2_raw8       +strike,left,+finger,+claimant,+door            1                 0.3599             0.0000             0.0000
+VEHflag               Vehicle Flag (1=Motor Vehicle Involved)         1                 0.3324             0.5235             1.5748
+ 
+ 
+ 
+Tree Leaf Report
+ 
+                                 Training
+Node               Training       Percent     Validation     Validation
+ Id     Depth    Observations        1       Observations     Percent 1
+ 
+  4       2           230          0.24           226           0.29
+  3       1            37          0.92            38           0.74
+ 12       4            14          0.79            11           0.36
+ 13       4            11          0.27            22           0.45
+ 11       3            10          1.00             8           0.75
+ 
+ 
+ 
+ 
+Fit Statistics
+ 
+Target=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+   Fit
+Statistics    Statistics Label                Train    Validation
+ 
+  _NOBS_      Sum of Frequencies            302.000      305.000
+  _MISC_      Misclassification Rate          0.212        0.311
+  _MAX_       Maximum Absolute Error          0.919        1.000
+  _SSE_       Sum of Squared Errors          98.287      137.347
+  _ASE_       Average Squared Error           0.163        0.225
+  _RASE_      Root Average Squared Error      0.403        0.475
+  _DIV_       Divisor for ASE               604.000      610.000
+  _DFT_       Total Degrees of Freedom      302.000         .
+ 
+ 
+ 
+ 
+Classification Table
+ 
+Data Role=TRAIN Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+                       Target        Outcome     Frequency       Total
+Target    Outcome    Percentage    Percentage      Count      Percentage
+ 
+  0          0         75.9336       96.8254        183         60.5960
+  1          0         24.0664       51.3274         58         19.2053
+  0          1          9.8361        3.1746          6          1.9868
+  1          1         90.1639       48.6726         55         18.2119
+ 
+ 
+Data Role=VALIDATE Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+                       Target        Outcome     Frequency       Total
+Target    Outcome    Percentage    Percentage      Count      Percentage
+ 
+  0          0         69.3548       90.0524        172         56.3934
+  1          0         30.6452       66.6667         76         24.9180
+  0          1         33.3333        9.9476         19          6.2295
+  1          1         66.6667       33.3333         38         12.4590
+ 
+ 
+ 
+ 
+Event Classification Table
+ 
+Data Role=TRAIN Target=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+  False       True        False       True
+Negative    Negative    Positive    Positive
+ 
+   58          183          6          55
+ 
+ 
+Data Role=VALIDATE Target=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+  False       True        False       True
+Negative    Negative    Positive    Positive
+ 
+   76          172         19          38
+ 
+ 
+ 
+ 
+Assessment Score Rankings
+ 
+Data Role=TRAIN Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+                                                                                    Mean
+                            Cumulative       %      Cumulative     Number of     Posterior
+Depth      Gain     Lift       Lift      Response   % Response   Observations   Probability
+ 
+   5    159.131   2.59131     2.59131     96.9595     96.9595         16          0.96959
+  10    152.577   2.45587     2.52577     91.8919     94.5074         15          0.91892
+  15    150.298   2.45587     2.50298     91.8919     93.6545         15          0.91892
+  20    140.969   2.12361     2.40969     79.4595     90.1639         15          0.79459
+  25    107.323   0.70494     2.07323     26.3768     77.5744         15          0.26377
+  30     83.683   0.63909     1.83683     23.9130     68.7291         15          0.23913
+  35     66.734   0.63909     1.66734     23.9130     62.3872         15          0.23913
+  40     53.987   0.63909     1.53987     23.9130     57.6177         15          0.23913
+  45     44.052   0.63909     1.44052     23.9130     53.9003         15          0.23913
+  50     36.091   0.63909     1.36091     23.9130     50.9214         15          0.23913
+  55     29.175   0.63909     1.29175     23.9130     48.3338         16          0.23913
+  60     23.796   0.63909     1.23796     23.9130     46.3211         15          0.23913
+  65     19.236   0.63909     1.19236     23.9130     44.6149         15          0.23913
+  70     15.322   0.63909     1.15322     23.9130     43.1501         15          0.23913
+  75     11.924   0.63909     1.11924     23.9130     41.8790         15          0.23913
+  80      8.948   0.63909     1.08948     23.9130     40.7654         15          0.23913
+  85      6.319   0.63909     1.06319     23.9130     39.7818         15          0.23913
+  90      3.981   0.63909     1.03981     23.9130     38.9066         15          0.23913
+  95      1.886   0.63909     1.01886     23.9130     38.1230         15          0.23913
+ 100      0.000   0.63909     1.00000     23.9130     37.4172         15          0.23913
+ 
+ 
+Data Role=VALIDATE Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+                                                                                    Mean
+                            Cumulative       %      Cumulative     Number of     Posterior
+Depth     Gain      Lift       Lift      Response   % Response   Observations   Probability
+ 
+   5    98.8977   1.98898     1.98898     74.3421     74.3421         16          0.95946
+  10    98.0460   1.97138     1.98046     73.6842     74.0238         15          0.91892
+  15    97.7498   1.97138     1.97750     73.6842     73.9130         15          0.91892
+  20    74.6411   1.03775     1.74641     38.7879     65.2757         15          0.64892
+  25    63.6219   1.21611     1.63622     45.4545     61.1570         16          0.27273
+  30    50.6285   0.83929     1.50629     31.3703     56.3005         15          0.24361
+  35    40.4655   0.78132     1.40466     29.2035     52.5019         15          0.23913
+  40    32.8016   0.78132     1.32802     29.2035     49.6373         15          0.23913
+  45    26.4631   0.78132     1.26463     29.2035     47.2682         16          0.23913
+  50    21.7248   0.78132     1.21725     29.2035     45.4971         15          0.23913
+  55    17.8326   0.78132     1.17833     29.2035     44.0424         15          0.23913
+  60    14.5785   0.78132     1.14578     29.2035     42.8261         15          0.23913
+  65    11.6481   0.78132     1.11648     29.2035     41.7308         16          0.23913
+  70     9.2989   0.78132     1.09299     29.2035     40.8527         15          0.23913
+  75     7.2574   0.78132     1.07257     29.2035     40.0897         15          0.23913
+  80     5.4669   0.78132     1.05467     29.2035     39.4204         15          0.23913
+  85     3.7848   0.78132     1.03785     29.2035     38.7917         16          0.23913
+  90     2.3856   0.78132     1.02386     29.2035     38.2687         15          0.23913
+  95     1.1311   0.78132     1.01131     29.2035     37.7998         15          0.23913
+ 100     0.0000   0.78132     1.00000     29.2035     37.3770         15          0.23913
+ 
+ 
+ 
+ 
+Assessment Score Distribution
+ 
+Data Role=TRAIN Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+ 
+ 0.95-1.00       10           0         1.00000         3.3113
+ 0.90-0.95       34           3         0.91892        12.2517
+ 0.75-0.80       11           3         0.78571         4.6358
+ 0.25-0.30        3           8         0.27273         3.6424
+ 0.20-0.25       55         175         0.23913        76.1589
+ 
+ 
+Data Role=VALIDATE Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+ 
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+ 
+ 0.95-1.00        6           2         1.00000         2.6230
+ 0.90-0.95       28          10         0.91892        12.4590
+ 0.75-0.80        4           7         0.78571         3.6066
+ 0.25-0.30       10          12         0.27273         7.2131
+ 0.20-0.25       66         160         0.23913        74.0984

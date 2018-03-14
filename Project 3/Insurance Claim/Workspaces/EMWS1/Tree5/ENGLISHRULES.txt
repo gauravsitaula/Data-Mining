@@ -1,0 +1,32 @@
+*------------------------------------------------------------*
+ Node = 3
+*------------------------------------------------------------*
+if TextCluster4_SVD1 >= 0.20079
+then 
+ Tree Node Identifier   = 3
+ Number of Observations = 44
+ Predicted: SubroFlag=1 = 0.89
+ Predicted: SubroFlag=0 = 0.11
+ 
+*------------------------------------------------------------*
+ Node = 4
+*------------------------------------------------------------*
+if TextCluster4_SVD1 < 0.20079 or MISSING
+AND +neck,+shoulder,sprain,+injure,left < 0.007 or MISSING
+then 
+ Tree Node Identifier   = 4
+ Number of Observations = 227
+ Predicted: SubroFlag=1 = 0.23
+ Predicted: SubroFlag=0 = 0.77
+ 
+*------------------------------------------------------------*
+ Node = 5
+*------------------------------------------------------------*
+if TextCluster4_SVD1 < 0.20079 or MISSING
+AND +neck,+shoulder,sprain,+injure,left >= 0.007
+then 
+ Tree Node Identifier   = 5
+ Number of Observations = 31
+ Predicted: SubroFlag=1 = 0.68
+ Predicted: SubroFlag=0 = 0.32
+ 

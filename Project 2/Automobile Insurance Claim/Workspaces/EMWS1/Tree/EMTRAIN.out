@@ -1,0 +1,17 @@
+                                                                                                                                                                                                                           13:59 Saturday, February 25, 2017   1
+
+Obs    NAME            LABEL                      NRULES    IMPORTANCE    VIMPORTANCE     RATIO
+
+  1    JOB             Occupation of driver          2        1.00000       1.00000      1.00000
+  2    AREA            Home/Work Area                1        0.87797       0.98703      1.12422
+  3    CHILD_DRIV      No of driving children        1        0.55653       0.58502      1.05120
+  4    STATUS          Marital Status                4        0.55203       0.49520      0.89705
+  5    REVOKED         License revoked (10yrs)       3        0.37907       0.41868      1.10448
+  6    VEHICLE_TYPE    Type of Car                   1        0.33761       0.00000      0.00000
+  7    CAR_USE         Car use (y/n)                 3        0.30718       0.35573      1.15806
+  8    DISTANCE        Work distance                 2        0.27434       0.13294      0.48459
+  9    HOUSE_VAL       Housing value                 1        0.27074       0.25114      0.92761
+ 10    MVR_PTS         Record points                 1        0.26250       0.20995      0.79979
+ 11    INCOME          Income                        1        0.24999       0.00595      0.02381
+ 12    EDU_LEVEL       Highest Education             1        0.23253       0.00000      0.00000
+ 13    CLM_FREQ        No of claims (10yrs)          1        0.18853       0.27657      1.46696

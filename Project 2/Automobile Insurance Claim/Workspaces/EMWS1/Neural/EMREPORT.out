@@ -1,0 +1,198 @@
+ 
+                                                                                               
+ 
+ 
+Fit Statistics
+
+Target=CLAIM_IND Target Label=Claim flag
+
+   Fit
+Statistics    Statistics Label                     Train    Validation
+
+ _DFT_        Total Degrees of Freedom           4118.00          .   
+ _DFE_        Degrees of Freedom for Error       3947.00          .   
+ _DFM_        Model Degrees of Freedom            171.00          .   
+ _NW_         Number of Estimated Weights         171.00          .   
+ _AIC_        Akaike's Information Criterion     4067.88          .   
+ _SBC_        Schwarz's Bayesian Criterion       5149.13          .   
+ _ASE_        Average Squared Error                 0.15         0.15 
+ _MAX_        Maximum Absolute Error                0.98         0.99 
+ _DIV_        Divisor for ASE                    8236.00      8244.00 
+ _NOBS_       Sum of Frequencies                 4118.00      4122.00 
+ _RASE_       Root Average Squared Error            0.38         0.39 
+ _SSE_        Sum of Squared Errors              1207.32      1250.32 
+ _SUMW_       Sum of Case Weights Times Freq     8236.00      8244.00 
+ _FPE_        Final Prediction Error                0.16          .   
+ _MSE_        Mean Squared Error                    0.15         0.15 
+ _RFPE_       Root Final Prediction Error           0.40          .   
+ _RMSE_       Root Mean Squared Error               0.39         0.39 
+ _AVERR_      Average Error Function                0.45         0.47 
+ _ERR_        Error Function                     3725.88      3844.65 
+ _MISC_       Misclassification Rate                0.21         0.22 
+ _WRONG_      Number of Wrong Classifications     854.00       900.00 
+ 
+                                                                                               
+ 
+ 
+Classification Table
+
+Data Role=TRAIN Target Variable=CLAIM_IND Target Label=Claim flag
+
+                       Target        Outcome     Frequency       Total
+Target    Outcome    Percentage    Percentage      Count      Percentage
+
+  0          0         82.1471       91.4447        2747        66.7071 
+  1          0         17.8529       53.5907         597        14.4973 
+  0          1         33.2041        8.5553         257         6.2409 
+  1          1         66.7959       46.4093         517        12.5546 
+
+
+Data Role=VALIDATE Target Variable=CLAIM_IND Target Label=Claim flag
+
+                       Target        Outcome     Frequency       Total
+Target    Outcome    Percentage    Percentage      Count      Percentage
+
+  0          0         81.5458       90.5522        2722        66.0359 
+  1          0         18.4542       55.1971         616        14.9442 
+  0          1         36.2245        9.4478         284         6.8899 
+  1          1         63.7755       44.8029         500        12.1300 
+ 
+                                                                                               
+ 
+ 
+Event Classification Table
+
+Data Role=TRAIN Target=CLAIM_IND Target Label=Claim flag
+
+  False       True        False       True
+Negative    Negative    Positive    Positive
+
+   597        2747         257         517  
+
+
+Data Role=VALIDATE Target=CLAIM_IND Target Label=Claim flag
+
+  False       True        False       True
+Negative    Negative    Positive    Positive
+
+   616        2722         284         500  
+ 
+                                                                                               
+ 
+ 
+Assessment Score Rankings
+
+Data Role=TRAIN Target Variable=CLAIM_IND Target Label=Claim flag
+
+                                                                                    Mean
+                            Cumulative       %      Cumulative     Number of     Posterior
+Depth      Gain     Lift       Lift      Response   % Response   Observations   Probability
+
+   5    194.292   2.94292     2.94292     79.6117     79.6117         206         0.80289  
+  10    168.272   2.42252     2.68272     65.5340     72.5728         206         0.66732  
+  15    157.206   2.35074     2.57206     63.5922     69.5793         206         0.58337  
+  20    144.047   2.04569     2.44047     55.3398     66.0194         206         0.51886  
+  25    125.743   1.52529     2.25743     41.2621     61.0680         206         0.45879  
+  30    111.746   1.41762     2.11746     38.3495     57.2816         206         0.40652  
+  35     95.596   0.98695     1.95596     26.6990     52.9126         206         0.35224  
+  40     87.073   1.27407     1.87073     34.4660     50.6068         206         0.30184  
+  45     78.050   1.05873     1.78050     28.6408     48.1661         206         0.25782  
+  50     66.966   0.66719     1.66966     18.0488     45.1676         205         0.21869  
+  55     57.819   0.66395     1.57819     17.9612     42.6932         206         0.18324  
+  60     48.851   0.50245     1.48851     13.5922     40.2671         206         0.15416  
+  65     40.158   0.35889     1.40158      9.7087     37.9156         206         0.12836  
+  70     33.734   0.50245     1.33734     13.5922     36.1776         206         0.10433  
+  75     27.687   0.43067     1.27687     11.6505     34.5419         206         0.08470  
+  80     21.387   0.26917     1.21387      7.2816     32.8376         206         0.07044  
+  85     15.829   0.26917     1.15829      7.2816     31.3339         206         0.05997  
+  90      9.691   0.05383     1.09691      1.4563     29.6736         206         0.05003  
+  95      4.389   0.08972     1.04389      2.4272     28.2392         206         0.03771  
+ 100      0.000   0.16229     1.00000      4.3902     27.0520         205         0.02113  
+
+
+Data Role=VALIDATE Target Variable=CLAIM_IND Target Label=Claim flag
+
+                                                                                    Mean
+                            Cumulative       %      Cumulative     Number of     Posterior
+Depth      Gain     Lift       Lift      Response   % Response   Observations   Probability
+
+   5    178.354   2.78354     2.78354     75.3623     75.3623         207         0.80996  
+  10    153.987   2.29502     2.53987     62.1359     68.7651         206         0.66348  
+  15    147.629   2.34881     2.47629     63.5922     67.0436         206         0.58042  
+  20    131.462   1.82884     2.31462     49.5146     62.6667         206         0.51754  
+  25    118.174   1.64955     2.18174     44.6602     59.0689         206         0.46140  
+  30    106.624   1.48818     2.06624     40.2913     55.9418         206         0.40708  
+  35     93.764   1.16544     1.93764     31.5534     52.4602         206         0.35283  
+  40     82.774   1.05786     1.82774     28.6408     49.4845         206         0.29665  
+  45     72.432   0.89649     1.72432     24.2718     46.6846         206         0.25140  
+  50     65.591   1.03993     1.65591     28.1553     44.8326         206         0.21002  
+  55     57.644   0.78510     1.57644     21.2560     42.6808         207         0.17465  
+  60     47.652   0.37653     1.47652     10.1942     39.9757         206         0.14419  
+  65     40.300   0.51997     1.40300     14.0777     37.9851         206         0.11848  
+  70     32.333   0.28688     1.32333      7.7670     35.8281         206         0.09712  
+  75     26.144   0.39446     1.26144     10.6796     34.1527         206         0.08165  
+  80     20.393   0.34067     1.20393      9.2233     32.5955         206         0.06937  
+  85     14.791   0.25102     1.14791      6.7961     31.0788         206         0.05877  
+  90      9.413   0.17930     1.09413      4.8544     29.6226         206         0.04790  
+  95      4.695   0.19723     1.04695      5.3398     28.3453         206         0.03640  
+ 100      0.000   0.10758     1.00000      2.9126     27.0742         206         0.02125  
+ 
+                                                                                               
+ 
+ 
+Assessment Score Distribution
+
+Data Role=TRAIN Target Variable=CLAIM_IND Target Label=Claim flag
+
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+
+ 0.95-1.00         4          0         0.96675         0.0971 
+ 0.90-0.95        15          3         0.91959         0.4371 
+ 0.85-0.90        22          5         0.86783         0.6557 
+ 0.80-0.85        49          7         0.82157         1.3599 
+ 0.75-0.80        39          6         0.77066         1.0928 
+ 0.70-0.75        58         29         0.72170         2.1127 
+ 0.65-0.70        73         39         0.67402         2.7198 
+ 0.60-0.65        69         45         0.62467         2.7683 
+ 0.55-0.60       101         52         0.57457         3.7154 
+ 0.50-0.55        87         71         0.52745         3.8368 
+ 0.45-0.50        82        104         0.47443         4.5168 
+ 0.40-0.45        79        117         0.42546         4.7596 
+ 0.35-0.40        58        129         0.37630         4.5410 
+ 0.30-0.35        63        142         0.32524         4.9781 
+ 0.25-0.30        74        168         0.27477         5.8766 
+ 0.20-0.25        57        215         0.22431         6.6051 
+ 0.15-0.20        55        288         0.17297         8.3293 
+ 0.10-0.15        52        361         0.12410        10.0291 
+ 0.05-0.10        61        725         0.07127        19.0869 
+ 0.00-0.05        16        498         0.03299        12.4818 
+
+
+Data Role=VALIDATE Target Variable=CLAIM_IND Target Label=Claim flag
+
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+
+ 0.95-1.00        6           2         0.96381         0.1941 
+ 0.90-0.95       17           3         0.91713         0.4852 
+ 0.85-0.90       22           4         0.87527         0.6308 
+ 0.80-0.85       33          14         0.82101         1.1402 
+ 0.75-0.80       45          14         0.77454         1.4313 
+ 0.70-0.75       54          29         0.72412         2.0136 
+ 0.65-0.70       56          39         0.67292         2.3047 
+ 0.60-0.65       82          39         0.62094         2.9355 
+ 0.55-0.60       96          55         0.57424         3.6633 
+ 0.50-0.55       89          85         0.52451         4.2213 
+ 0.45-0.50       84          99         0.47599         4.4396 
+ 0.40-0.45       79         119         0.42411         4.8035 
+ 0.35-0.40       68         119         0.37498         4.5366 
+ 0.30-0.35       57         125         0.32430         4.4153 
+ 0.25-0.30       49         172         0.27348         5.3615 
+ 0.20-0.25       72         184         0.22498         6.2106 
+ 0.15-0.20       67         247         0.17442         7.6177 
+ 0.10-0.15       49         373         0.12363        10.2377 
+ 0.05-0.10       66         755         0.07263        19.9175 
+ 0.00-0.05       25         529         0.03328        13.4401 

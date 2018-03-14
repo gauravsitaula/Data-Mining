@@ -1,0 +1,42 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+            Measurement    Frequency
+Role           Level         Count
+
+ID           INTERVAL           1   
+ID           NOMINAL            1   
+INPUT        BINARY             4   
+INPUT        INTERVAL          11   
+INPUT        NOMINAL            5   
+REJECTED     INTERVAL           1   
+TARGET       BINARY             1   
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Model Events
+
+                                     Number
+                      Measurement      of
+ Target      Event       Level       Levels      Order         Label
+
+CLAIM_IND      1        BINARY          2      Descending    Claim flag
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Predicted and decision variables
+
+Type           Variable      Label
+
+TARGET       CLAIM_IND       Claim flag            
+PREDICTED    P_CLAIM_IND1    Predicted: CLAIM_IND=1
+RESIDUAL     R_CLAIM_IND1    Residual: CLAIM_IND=1 
+PREDICTED    P_CLAIM_IND0    Predicted: CLAIM_IND=0
+RESIDUAL     R_CLAIM_IND0    Residual: CLAIM_IND=0 
+FROM         F_CLAIM_IND     From: CLAIM_IND       
+INTO         I_CLAIM_IND     Into: CLAIM_IND       

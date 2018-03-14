@@ -1,0 +1,178 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+          Measurement    Frequency
+ Role        Level         Count
+
+TARGET      BINARY           1    
+ 
+                                                                                               
+ 
+ 
+
+
+
+
+
+
+
+Fit Statistics
+Model Selection based on Valid: Misclassification Rate (_VMISC_)
+
+                                                            Train:                    Valid:
+                                               Valid:      Average       Train:      Average
+Selected Model                           Misclassification Squared Misclassification Squared
+ Model   Node  Model Description                Rate        Error         Rate        Error
+
+   Y     Tree3 Optimal Tree_ASE               0.35454      0.21718      0.35026      0.21928
+         Tree5 Optimal tree_Lift              0.35454      0.21718      0.35026      0.21928
+         Tree2 optimal tree_Decision          0.35454      0.22358      0.35026      0.22514
+         Tree4 Optimal tree_Missclass         0.35454      0.22358      0.35026      0.22514
+         Tree  maximal tree                   0.35478      0.21673      0.34991      0.21961
+         Tree6 Optimal Tree_3 branch_Dec      0.35571      0.22296      0.34979      0.22557
+ 
+                                                                                               
+ 
+ 
+
+
+
+
+
+
+
+Fit Statistics Table
+Target: LBWT
+
+Data Role=Train
+
+Statistics
+
+Train: Bin-Based Two-Way Kolmogorov-Smirnov Probability Cutoff
+Train: Kolmogorov-Smirnov Statistic                           
+Train: Average Squared Error                                  
+Train: Roc Index                                              
+Train: Cumulative Percent Captured Response                   
+Train: Percent Captured Response                              
+Selection Criterion: Valid: Misclassification Rate            
+Train: Total Degrees of Freedom                               
+Train: Divisor for ASE                                        
+Train: Gain                                                   
+Train: Gini Coefficient                                       
+Train: Bin-Based Two-Way Kolmogorov-Smirnov Statistic         
+Train: Kolmogorov-Smirnov Probability Cutoff                  
+Train: Cumulative Lift                                        
+Train: Lift                                                   
+Train: Maximum Absolute Error                                 
+Train: Misclassification Rate                                 
+Train: Sum of Frequencies                                     
+Train: Root Average Squared Error                             
+Train: Cumulative Percent Response                            
+Train: Percent Response                                       
+Train: Sum of Squared Errors                                  
+
+   Tree3       Tree5       Tree2       Tree4        Tree       Tree6
+
+    0.54        0.54        0.57        0.57        0.54        0.57
+    0.30        0.30        0.30        0.30        0.30        0.30
+    0.22        0.22        0.22        0.22        0.22        0.22
+    0.70        0.70        0.68        0.68        0.70        0.68
+   17.10       17.10       14.02       14.02       17.18       14.14
+    8.13        8.13        6.54        6.54        8.02        6.60
+    0.35        0.35        0.35        0.35        0.35        0.36
+ 8548.00     8548.00     8548.00     8548.00     8548.00     8548.00
+17096.00    17096.00    17096.00    17096.00    17096.00    17096.00
+   71.00       71.00       40.14       40.14       71.75       41.38
+    0.40        0.40        0.35        0.35        0.40        0.36
+    0.30        0.30        0.29        0.29        0.30        0.30
+    0.40        0.40        0.40        0.40        0.40        0.40
+    1.71        1.71        1.40        1.40        1.72        1.41
+    1.63        1.63        1.31        1.31        1.61        1.32
+    0.96        0.96        0.95        0.95        0.96        0.95
+    0.35        0.35        0.35        0.35        0.35        0.35
+ 8548.00     8548.00     8548.00     8548.00     8548.00     8548.00
+    0.47        0.47        0.47        0.47        0.47        0.47
+   85.50       85.50       70.07       70.07       85.87       70.69
+   81.33       81.33       65.43       65.43       80.25       66.10
+ 3712.89     3712.89     3822.33     3822.33     3705.27     3811.69
+
+
+Data Role=Valid
+
+Statistics
+
+Valid: Kolmogorov-Smirnov Statistic                           
+Valid: Average Squared Error                                  
+Valid: Roc Index                                              
+Valid: Bin-Based Two-Way Kolmogorov-Smirnov Probability Cutoff
+Valid: Cumulative Percent Captured Response                   
+Valid: Percent Captured Response                              
+Valid: Divisor for VASE                                       
+Valid: Gain                                                   
+Valid: Gini Coefficient                                       
+Valid: Bin-Based Two-Way Kolmogorov-Smirnov Statistic         
+Valid: Kolmogorov-Smirnov Probability Cutoff                  
+Valid: Cumulative Lift                                        
+Valid: Lift                                                   
+Valid: Maximum Absolute Error                                 
+Valid: Misclassification Rate                                 
+Valid: Sum of Frequencies                                     
+Valid: Root Average Squared Error                             
+Valid: Cumulative Percent Response                            
+Valid: Percent Response                                       
+Valid: Sum of Squared Errors                                  
+
+   Tree3       Tree5       Tree2       Tree4        Tree       Tree6
+
+    0.29        0.29        0.29        0.29        0.29        0.29
+    0.22        0.22        0.23        0.23        0.22        0.23
+    0.69        0.69        0.67        0.67        0.69        0.67
+    0.47        0.47        0.48        0.48        0.47        0.48
+   16.69       16.69       13.90       13.90       16.58       13.95
+    8.03        8.03        6.44        6.44        7.91        6.49
+17098.00    17098.00    17098.00    17098.00    17098.00    17098.00
+   66.91       66.91       38.96       38.96       65.77       39.48
+    0.38        0.38        0.34        0.34        0.38        0.34
+    0.28        0.28        0.28        0.28        0.28        0.28
+    0.40        0.40        0.40        0.40        0.40        0.40
+    1.67        1.67        1.39        1.39        1.66        1.39
+    1.61        1.61        1.29        1.29        1.58        1.30
+    1.00        1.00        0.95        0.95        1.00        1.00
+    0.35        0.35        0.35        0.35        0.35        0.36
+ 8549.00     8549.00     8549.00     8549.00     8549.00     8549.00
+    0.47        0.47        0.47        0.47        0.47        0.47
+   83.45       83.45       69.47       69.47       82.87       69.73
+   80.33       80.33       64.47       64.47       79.20       64.91
+ 3749.21     3749.21     3849.38     3849.38     3754.88     3856.74
+ 
+                                                                                               
+ 
+ 
+
+
+
+
+
+
+
+Event Classification Table
+Model Selection based on Valid: Misclassification Rate (_VMISC_)
+
+Model                           Data            Target   False    True     False    True
+Node  Model Description         Role     Target Label  Negative Negative Positive Positive
+
+Tree  maximal tree              TRAIN     LBWT           1199     2482     1792     3075  
+Tree  maximal tree              VALIDATE  LBWT           1173     2415     1860     3101  
+Tree2 optimal tree_Decision     TRAIN     LBWT           1197     2477     1797     3077  
+Tree2 optimal tree_Decision     VALIDATE  LBWT           1169     2413     1862     3105  
+Tree3 Optimal Tree_ASE          TRAIN     LBWT           1197     2477     1797     3077  
+Tree3 Optimal Tree_ASE          VALIDATE  LBWT           1169     2413     1862     3105  
+Tree4 Optimal tree_Missclass    TRAIN     LBWT           1197     2477     1797     3077  
+Tree4 Optimal tree_Missclass    VALIDATE  LBWT           1169     2413     1862     3105  
+Tree5 Optimal tree_Lift         TRAIN     LBWT           1197     2477     1797     3077  
+Tree5 Optimal tree_Lift         VALIDATE  LBWT           1169     2413     1862     3105  
+Tree6 Optimal Tree_3 branch_Dec TRAIN     LBWT           1202     2486     1788     3072  
+Tree6 Optimal Tree_3 branch_Dec VALIDATE  LBWT           1182     2416     1859     3092  

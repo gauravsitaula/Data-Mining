@@ -1,0 +1,590 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+            Measurement    Frequency
+Role           Level         Count
+
+INPUT        BINARY            4    
+INPUT        INTERVAL          6    
+INPUT        NOMINAL           4    
+REJECTED     BINARY            6    
+REJECTED     INTERVAL          6    
+REJECTED     NOMINAL           1    
+TARGET       BINARY            1    
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Model Events
+
+                                     Number
+                      Measurement      of
+ Target      Event       Level       Levels      Order         Label
+
+CLAIM_IND      1        BINARY          2      Descending    Claim flag
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Predicted and decision variables
+
+Type           Variable      Label
+
+TARGET       CLAIM_IND       Claim flag            
+PREDICTED    P_CLAIM_IND1    Predicted: CLAIM_IND=1
+RESIDUAL     R_CLAIM_IND1    Residual: CLAIM_IND=1 
+PREDICTED    P_CLAIM_IND0    Predicted: CLAIM_IND=0
+RESIDUAL     R_CLAIM_IND0    Residual: CLAIM_IND=0 
+FROM         F_CLAIM_IND     From: CLAIM_IND       
+INTO         I_CLAIM_IND     Into: CLAIM_IND       
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The NEURAL Procedure
+
+Preliminary       Starting         Objective         Number
+ Training          Random           Function           of        Terminating
+    Run             Seed             Value         Iterations     Criteria
+
+        1               12345    0.456952718421           10                
+        2          2080999529    0.455041265444           10                
+        3          1121166870    0.456451988297           10                
+        4            21777864    0.461366143293           10                
+        5          1370487091    0.459306221635           10                
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The NEURAL Procedure
+
+                      Optimization Start
+                      Parameter Estimates
+                                                      Gradient
+                                                     Objective
+  N Parameter                         Estimate        Function
+
+  1 CHILD_DRIV_H11                   -0.117458        0.000519
+  2 CLM_FREQ_H11                      0.093806     0.000004171
+  3 DISTANCE_H11                     -0.079699       -0.000175
+  4 IMP_LOG_INCOME_H11                0.010234        0.000216
+  5 LOG_VEHICLE_VAL_H11              -0.390426    -0.000021381
+  6 MVR_PTS_H11                      -0.187145       -0.000479
+  7 CHILD_DRIV_H12                   -0.171907       -0.001270
+  8 CLM_FREQ_H12                     -0.098796       -0.000639
+  9 DISTANCE_H12                      0.091886        0.011250
+ 10 IMP_LOG_INCOME_H12                0.026537       -0.012923
+ 11 LOG_VEHICLE_VAL_H12               0.133505       -0.005864
+ 12 MVR_PTS_H12                      -0.245354       -0.002034
+ 13 CHILD_DRIV_H13                    0.045219     0.000084141
+ 14 CLM_FREQ_H13                      0.009574       -0.001271
+ 15 DISTANCE_H13                     -0.398518        0.002613
+ 16 IMP_LOG_INCOME_H13                0.240714       -0.002157
+ 17 LOG_VEHICLE_VAL_H13               0.123685       -0.000393
+ 18 MVR_PTS_H13                       0.025445       -0.000989
+ 19 CHILD_DRIV_H14                    0.206140        0.004443
+ 20 CLM_FREQ_H14                      0.077239        0.001163
+ 21 DISTANCE_H14                      0.042858       -0.008360
+ 22 IMP_LOG_INCOME_H14                0.008224        0.004246
+ 23 LOG_VEHICLE_VAL_H14               0.030009        0.000628
+ 24 MVR_PTS_H14                      -0.078115        0.002232
+ 25 CHILD_DRIV_H15                   -0.148341        0.001597
+ 26 CLM_FREQ_H15                     -0.066105        0.000582
+ 27 DISTANCE_H15                      0.108931       -0.001169
+ 28 IMP_LOG_INCOME_H15               -0.390114        0.006370
+ 29 LOG_VEHICLE_VAL_H15               0.033199        0.002991
+ 30 MVR_PTS_H15                      -0.069814       -0.002785
+ 31 AREAHighlyUrban_Urban_H11         0.101875    -0.000084567
+ 32 CAR_USECommercial_H11            -0.130723        0.000289
+ 33 M_YOJ0_H11                        0.244401       -0.000156
+ 34 REVOKEDNo_H11                    -0.004712       -0.000114
+ 35 AREAHighlyUrban_Urban_H12        -0.725398        0.004161
+ 36 CAR_USECommercial_H12            -0.177209       -0.003890
+ 37 M_YOJ0_H12                        0.148948        0.005299
+ 38 REVOKEDNo_H12                    -0.109856        0.005374
+ 39 AREAHighlyUrban_Urban_H13        -0.230895       -0.001166
+ 40 CAR_USECommercial_H13            -0.101787       -0.001166
+ 41 M_YOJ0_H13                       -0.097941        0.000735
+ 42 REVOKEDNo_H13                     0.039608        0.001343
+ 43 AREAHighlyUrban_Urban_H14         0.383512       -0.001705
+ 44 CAR_USECommercial_H14             0.013959        0.001866
+ 45 M_YOJ0_H14                       -0.234776       -0.005290
+ 46 REVOKEDNo_H14                    -0.289785       -0.003639
+ 47 AREAHighlyUrban_Urban_H15         0.424841       -0.002528
+ 48 CAR_USECommercial_H15             0.133047       -0.002048
+ 49 M_YOJ0_H15                        0.135754       -0.002916
+ 50 REVOKEDNo_H15                    -0.317138       -0.002819
+ 51 EDU_LEVEL_HighSchool_H11          0.173102     0.000056934
+ 52 EDU_LEVELBachelors_H11           -0.004845    -0.000011111
+ 53 EDU_LEVELMasters_H11              0.007457    -0.000021326
+ 54 EDU_LEVELPhD_H11                 -0.086168     0.000038317
+ 55 IMP_JOBBanking_H11               -0.071510       -0.000124
+ 56 IMP_JOBClerical_H11               0.048469    -0.000053166
+ 57 IMP_JOBDoctor_H11                -0.299660       -0.000112
+ 58 IMP_JOBHomeMaker_H11              0.107540       -0.000127
+ 59 IMP_JOBManager_H11                0.035049       -0.000193
+ 60 IMP_JOBNone_H11                  -0.033015       -0.000116
+ 61 IMP_JOBNurse_H11                 -0.062412       -0.000107
+ 62 IMP_JOBPolice_H11                 0.296108       -0.000124
+ 63 IMP_JOBProfessional_H11          -0.188411       -0.000262
+ 64 IMP_JOBStudent_H11                0.032566       -0.000195
+ 65 STATUSYes_H11                     0.034458        0.000170
+ 66 VEHICLE_TYPEFamily_H11           -0.000293     0.000047170
+ 67 VEHICLE_TYPEMinivan_H11          -0.162816    -0.000014605
+ 68 VEHICLE_TYPEPanelTruck_H11        0.093090     0.000037376
+ 69 VEHICLE_TYPEPickup_H11            0.240482     0.000049941
+ 70 VEHICLE_TYPERacing_H11            0.097579     0.000044947
+ 71 VEHICLE_TYPESportsCar_H11        -0.239837     0.000004911
+ 72 VEHICLE_TYPEVan_H11              -0.137873        0.000137
+ 73 EDU_LEVEL_HighSchool_H12         -0.262800       -0.004162
+ 74 EDU_LEVELBachelors_H12            0.076422       -0.004622
+ 75 EDU_LEVELMasters_H12              0.312138       -0.001401
+ 76 EDU_LEVELPhD_H12                  0.395517       -0.004654
+ 77 IMP_JOBBanking_H12               -0.055065        0.002511
+ 78 IMP_JOBClerical_H12              -0.258557        0.004457
+ 79 IMP_JOBDoctor_H12                 0.105156        0.001928
+ 80 IMP_JOBHomeMaker_H12              0.078863        0.003572
+ 81 IMP_JOBManager_H12                0.407575        0.003098
+ 82 IMP_JOBNone_H12                   0.055710        0.002249
+ 83 IMP_JOBNurse_H12                 -0.346854        0.004144
+ 84 IMP_JOBPolice_H12                -0.468518        0.002480
+ 85 IMP_JOBProfessional_H12           0.138420        0.004418
+ 86 IMP_JOBStudent_H12                0.136103        0.004793
+ 87 STATUSYes_H12                     0.107265       -0.002249
+ 88 VEHICLE_TYPEFamily_H12            0.001389       -0.005333
+ 89 VEHICLE_TYPEMinivan_H12           0.324418       -0.004390
+ 90 VEHICLE_TYPEPanelTruck_H12       -0.040876       -0.004464
+ 91 VEHICLE_TYPEPickup_H12           -0.125687       -0.004180
+ 92 VEHICLE_TYPERacing_H12            0.105758       -0.005201
+ 93 VEHICLE_TYPESportsCar_H12         0.081364       -0.006507
+ 94 VEHICLE_TYPEVan_H12               0.059443       -0.004870
+ 95 EDU_LEVEL_HighSchool_H13         -0.154576       -0.002270
+ 96 EDU_LEVELBachelors_H13            0.060554       -0.002424
+ 97 EDU_LEVELMasters_H13             -0.005420        0.001449
+ 98 EDU_LEVELPhD_H13                  0.052773       -0.001869
+ 99 IMP_JOBBanking_H13               -0.204270        0.000260
+100 IMP_JOBClerical_H13              -0.025317        0.000180
+101 IMP_JOBDoctor_H13                 0.179930       -0.000693
+102 IMP_JOBHomeMaker_H13              0.010144    -0.000002230
+103 IMP_JOBManager_H13                0.389252        0.001349
+104 IMP_JOBNone_H13                   0.244371        0.000117
+105 IMP_JOBNurse_H13                  0.071769        0.001220
+106 IMP_JOBPolice_H13                 0.161444        0.000244
+107 IMP_JOBProfessional_H13          -0.098182     0.000097715
+108 IMP_JOBStudent_H13                0.060873        0.001156
+109 STATUSYes_H13                    -0.013217       -0.001837
+110 VEHICLE_TYPEFamily_H13           -0.078012       -0.002861
+111 VEHICLE_TYPEMinivan_H13           0.047790       -0.002469
+112 VEHICLE_TYPEPanelTruck_H13        0.060982       -0.002656
+113 VEHICLE_TYPEPickup_H13            0.058581       -0.002472
+114 VEHICLE_TYPERacing_H13           -0.241429       -0.002708
+115 VEHICLE_TYPESportsCar_H13        -0.177577       -0.003614
+116 VEHICLE_TYPEVan_H13              -0.018718       -0.003852
+117 EDU_LEVEL_HighSchool_H14         -0.254169        0.002017
+118 EDU_LEVELBachelors_H14            0.235990        0.002571
+119 EDU_LEVELMasters_H14              0.116918       -0.002554
+120 EDU_LEVELPhD_H14                  0.063989     0.000009197
+121 IMP_JOBBanking_H14               -0.257646       -0.000856
+122 IMP_JOBClerical_H14               0.084251        0.000922
+123 IMP_JOBDoctor_H14                -0.060310       -0.000505
+124 IMP_JOBHomeMaker_H14             -0.074192       -0.001658
+125 IMP_JOBManager_H14                0.133476       -0.002343
+126 IMP_JOBNone_H14                   0.187406       -0.000531
+127 IMP_JOBNurse_H14                 -0.167068       -0.002843
+128 IMP_JOBPolice_H14                 0.062212       -0.000849
+129 IMP_JOBProfessional_H14           0.014607       -0.000585
+130 IMP_JOBStudent_H14                0.186068       -0.002536
+131 STATUSYes_H14                    -0.315892        0.004146
+132 VEHICLE_TYPEFamily_H14            0.211616        0.002381
+133 VEHICLE_TYPEMinivan_H14          -0.227764        0.001482
+134 VEHICLE_TYPEPanelTruck_H14        0.028657        0.002098
+135 VEHICLE_TYPEPickup_H14           -0.205822        0.002301
+136 VEHICLE_TYPERacing_H14            0.139988        0.002158
+137 VEHICLE_TYPESportsCar_H14         0.467872        0.001918
+138 VEHICLE_TYPEVan_H14               0.007138        0.002170
+139 EDU_LEVEL_HighSchool_H15          0.218106        0.001935
+140 EDU_LEVELBachelors_H15           -0.039126        0.001845
+141 EDU_LEVELMasters_H15             -0.083514        0.001871
+142 EDU_LEVELPhD_H15                 -0.013300        0.002907
+143 IMP_JOBBanking_H15               -0.212992       -0.000200
+144 IMP_JOBClerical_H15               0.075577       -0.000945
+145 IMP_JOBDoctor_H15                -0.232945    -0.000052662
+146 IMP_JOBHomeMaker_H15             -0.296350       -0.000914
+147 IMP_JOBManager_H15               -0.092693        0.000160
+148 IMP_JOBNone_H15                   0.050053       -0.000177
+149 IMP_JOBNurse_H15                  0.068274       -0.000379
+150 IMP_JOBPolice_H15                -0.085834       -0.000197
+151 IMP_JOBProfessional_H15           0.192744       -0.000310
+152 IMP_JOBStudent_H15               -0.279660       -0.001438
+153 STATUSYes_H15                    -0.081464        0.001745
+154 VEHICLE_TYPEFamily_H15            0.098228        0.001089
+155 VEHICLE_TYPEMinivan_H15           0.080872        0.000905
+156 VEHICLE_TYPEPanelTruck_H15       -0.092744        0.001521
+157 VEHICLE_TYPEPickup_H15            0.127250       -0.000181
+158 VEHICLE_TYPERacing_H15            0.020128        0.001097
+159 VEHICLE_TYPESportsCar_H15         0.083930        0.000770
+160 VEHICLE_TYPEVan_H15               0.277797        0.000873
+161 BIAS_H11                          2.082512    -0.000049631
+162 BIAS_H12                          0.689663        0.006026
+163 BIAS_H13                         -1.113035        0.000991
+164 BIAS_H14                         -0.893810       -0.002367
+165 BIAS_H15                         -1.670522       -0.002247
+166 H11_CLAIM_IND1                    0.402877       -0.005108
+167 H12_CLAIM_IND1                   -1.664942        0.002274
+168 H13_CLAIM_IND1                   -1.885103        0.004430
+169 H14_CLAIM_IND1                    1.921736        0.005005
+170 H15_CLAIM_IND1                    0.974306        0.003329
+171 BIAS_CLAIM_IND1                  -0.602482       -0.005179
+
+Value of Objective Function = 0.4550412654
+
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The NEURAL Procedure
+
+Dual Quasi-Newton Optimization
+
+
+Minimum Iterations                                0
+Maximum Iterations                              100
+Maximum Function Calls                   2147483647
+Maximum CPU Time                              14400
+ABSGCONV Gradient Criterion                 0.00001
+GCONV Gradient Criterion                       1E-8
+ABSFCONV Function Criterion                       0
+FCONV Function Criterion                     0.0001
+FCONV2 Function Criterion                         0
+FSIZE Parameter                                   0
+ABSXCONV Parameter Change Criterion               0
+XCONV Parameter Change Criterion                  0
+XSIZE Parameter                                   0
+ABSCONV Function Criterion             0.0016228333
+Line Search Method                                2
+Starting Alpha for Line Search                    1
+Line Search Precision LSPRECISION               0.4
+DAMPSTEP Parameter for Line Search                .
+Singularity Tolerance (SINGULAR)               1E-8
+
+Dual Quasi-Newton Optimization
+
+Dual Broyden - Fletcher - Goldfarb - Shanno Update (DBFGS)
+
+Parameter Estimates             171
+
+                                             Optimization Start
+
+Active Constraints                                  0  Objective Function                       0.4550412654
+Max Abs Gradient Element                 0.0129227673                                                       
+
+
+                                                                 Objective     Max Abs                Slope of
+                     Function         Active        Objective     Function    Gradient       Step       Search
+Iter     Restarts       Calls    Constraints         Function       Change     Element       Size    Direction
+
+   1            0           5              0          0.45416     0.000882     0.00642     0.0127       -0.144
+   2            0           7              0          0.45371     0.000448     0.00527      1.000      -0.0009
+   3            0           9              0          0.45324     0.000475     0.00455      1.000      -0.0009
+   4            0          13              0          0.45239     0.000847     0.00770      4.016      -0.0004
+   5            0          17              0          0.45110      0.00129     0.00457      3.510      -0.0008
+   6            0          20              0          0.45034     0.000751     0.00828      3.867      -0.0004
+   7            0          22              0          0.44947     0.000875     0.00897      2.629      -0.0007
+   8            0          25              0          0.44901     0.000462     0.00563      1.281      -0.0007
+   9            0          27              0          0.44878     0.000230      0.0102      2.429      -0.0005
+  10            0          29              0          0.44840     0.000373     0.00257      1.128      -0.0005
+  11            0          31              0          0.44798     0.000429     0.00799      3.073      -0.0003
+  12            0          33              0          0.44725     0.000729     0.00323      2.583      -0.0004
+  13            0          36              0          0.44673     0.000515     0.00460      1.523      -0.0006
+  14            0          38              0          0.44638     0.000351     0.00555      4.616      -0.0003
+  15            0          40              0          0.44614     0.000236     0.00281      2.275      -0.0004
+  16            0          42              0          0.44585     0.000297     0.00278      1.940      -0.0003
+  17            0          44              0          0.44536     0.000488     0.00308      3.375      -0.0002
+  18            0          47              0          0.44509     0.000267     0.00422      1.822      -0.0003
+  19            0          49              0          0.44474     0.000349     0.00276      3.004      -0.0002
+  20            0          52              0          0.44452     0.000223     0.00373      1.712      -0.0002
+  21            0          56              0          0.44383     0.000688     0.00639      4.960      -0.0003
+  22            0          58              0          0.44306     0.000768     0.00696      3.059      -0.0006
+  23            0          60              0          0.44262     0.000440     0.00578      3.651      -0.0005
+  24            0          62              0          0.44223     0.000389     0.00350      1.668      -0.0007
+  25            0          64              0          0.44213     0.000104     0.00531      3.990      -0.0002
+  26            0          68              0          0.44170     0.000429     0.00237      1.287      -0.0007
+  27            0          70              0          0.44157     0.000127     0.00603      3.683      -0.0003
+  28            0          74              0          0.44101     0.000562     0.00190      1.328      -0.0008
+  29            0          77              0          0.44061     0.000404     0.00292      4.165      -0.0002
+  30            0          79              0          0.44019     0.000420     0.00474      3.729      -0.0003
+  31            0          82              0          0.43994     0.000253     0.00250      1.941      -0.0003
+  32            0          84              0          0.43960     0.000332     0.00554      3.608      -0.0002
+  33            0          86              0          0.43908     0.000520     0.00630      2.424      -0.0003
+  34            0          88              0          0.43865     0.000438     0.00506      1.997      -0.0007
+  35            0          91              0          0.43838     0.000271     0.00360      1.135      -0.0005
+  36            0          93              0          0.43819     0.000182     0.00271      2.449      -0.0003
+  37            0          95              0          0.43788     0.000318     0.00249      1.220      -0.0004
+  38            0          97              0          0.43754     0.000336     0.00427      2.171      -0.0004
+  39            0          99              0          0.43722     0.000317     0.00226      2.766      -0.0003
+  40            0         102              0          0.43699     0.000236     0.00227      1.546      -0.0003
+  41            0         104              0          0.43670     0.000285     0.00245      2.720      -0.0002
+  42            0         106              0          0.43639     0.000316     0.00379      2.488      -0.0003
+  43            0         108              0          0.43611     0.000277     0.00322      3.485      -0.0002
+  44            0         110              0          0.43590     0.000214     0.00372      2.383      -0.0003
+  45            0         112              0          0.43569     0.000208     0.00309      2.220      -0.0002
+  46            0         114              0          0.43557     0.000118     0.00542      3.323      -0.0002
+  47            0         116              0          0.43539     0.000180     0.00201      1.200      -0.0002
+  48            0         118              0          0.43516     0.000234     0.00432      2.703      -0.0002
+  49            0         120              0          0.43484     0.000318     0.00295      1.997      -0.0003
+  50            0         123              0          0.43468     0.000159     0.00277      1.660      -0.0002
+  51            0         125              0          0.43441     0.000267     0.00227      3.730      -0.0001
+  52            0         127              0          0.43422     0.000189     0.00607      2.104      -0.0003
+  53            0         129              0          0.43400     0.000217     0.00279      1.565      -0.0003
+  54            0         131              0          0.43391     0.000092     0.00444      3.969      -0.0001
+  55            0         133              0          0.43378     0.000131     0.00147      0.938      -0.0002
+  56            0         135              0          0.43374     0.000041     0.00333      6.498      -505E-7
+  57            0         139              0          0.43359     0.000155     0.00131      1.459      -0.0002
+  58            0         141              0          0.43347     0.000120     0.00306      5.055      -0.0001
+  59            0         144              0          0.43338     0.000081     0.00135      1.352      -0.0001
+  60            0         146              0          0.43332     0.000060     0.00200      4.420      -456E-7
+  61            1         151              0          0.43329     0.000031     0.00287     0.0106      -0.0059
+  62            1         153              0          0.43325     0.000043     0.00153      1.000      -0.0001
+  63            1         155              0          0.43323     0.000020     0.00173      2.046      -523E-7
+  64            1         157              0          0.43320     0.000033     0.00120      1.104      -455E-7
+  65            1         159              0          0.43315     0.000044     0.00152      2.767      -297E-7
+  66            1         161              0          0.43308     0.000073     0.00188      2.673      -414E-7
+  67            1         164              0          0.43304     0.000045     0.00156      1.958      -462E-7
+  68            1         166              0          0.43296     0.000077     0.00131      3.497      -323E-7
+  69            1         168              0          0.43288     0.000078     0.00283      2.747      -0.0001
+  70            1         170              0          0.43275     0.000125     0.00148      2.599      -0.0001
+  71            1         173              0          0.43267     0.000081     0.00190      1.746      -0.0001
+  72            1         175              0          0.43255     0.000126     0.00174      4.343      -465E-7
+  73            1         177              0          0.43245     0.000100     0.00488      3.353      -0.0001
+  74            1         179              0          0.43235     0.000099     0.00107      2.188      -0.0001
+  75            1         181              0          0.43229     0.000059     0.00194      3.922      -0.0001
+  76            1         183              0          0.43220     0.000091     0.00130      1.283      -0.0001
+  77            1         185              0          0.43207     0.000128     0.00168      2.793      -0.0001
+  78            1         187              0          0.43202     0.000053     0.00285      3.679      -0.0001
+  79            1         189              0          0.43193     0.000090     0.00165      0.838      -0.0002
+  80            1         191              0          0.43184     0.000091     0.00138      2.872      -0.0001
+  81            1         193              0          0.43170     0.000140     0.00130      2.911      -0.0001
+  82            1         195              0          0.43166     0.000037     0.00216      3.493      -0.0001
+  83            1         199              0          0.43153     0.000133     0.00142      1.272      -0.0002
+  84            1         201              0          0.43137     0.000156     0.00184      5.479      -605E-7
+  85            1         204              0          0.43131     0.000065     0.00156      1.771      -0.0001
+  86            1         208              0          0.43117     0.000135     0.00262      5.530      -591E-7
+  87            1         210              0          0.43112     0.000047     0.00238      3.731      -0.0001
+  88            1         214              0          0.43102     0.000099     0.00117      1.561      -0.0002
+  89            1         216              0          0.43095     0.000075     0.00327      5.569      -444E-7
+  90            1         218              0          0.43082     0.000125     0.00115      1.597      -0.0001
+  91            1         220              0          0.43073     0.000091     0.00243      2.645      -0.0001
+  92            1         222              0          0.43067     0.000061     0.00128      2.263      -0.0001
+  93            1         224              0          0.43061     0.000066     0.00106      2.141      -0.0001
+  94            1         226              0          0.43051     0.000101    0.000974      3.379       -49E-6
+  95            1         228              0          0.43046     0.000042     0.00193      3.248      -0.0001
+  96            1         230              0          0.43040     0.000068     0.00124      0.965      -0.0001
+  97            1         232              0          0.43035     0.000046     0.00251      3.877      -437E-7
+  98            1         234              0          0.43027     0.000078     0.00129      1.501      -0.0001
+  99            1         236              0          0.43016     0.000111    0.000994      2.070      -0.0001
+ 100            1         238              0          0.43007     0.000088     0.00142      3.478      -0.0001
+
+                                            Optimization Results
+
+Iterations                                        100  Function Calls                                    240
+Gradient Calls                                    112  Active Constraints                                  0
+Objective Function                       0.4300721511  Max Abs Gradient Element                 0.0014152927
+Slope of Search Direction                -0.000079714                                                       
+
+QUANEW needs more than 100 iterations or 2147483647 function calls.                               
+
+WARNING: QUANEW Optimization cannot be completed.
+
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+
+The NEURAL Procedure
+
+                     Optimization Results
+                      Parameter Estimates
+                                                      Gradient
+                                                     Objective
+  N Parameter                         Estimate        Function
+
+  1 CHILD_DRIV_H11                   -0.764673        0.000523
+  2 CLM_FREQ_H11                      0.079688        0.000353
+  3 DISTANCE_H11                     -0.685930        0.000299
+  4 IMP_LOG_INCOME_H11               -0.364804       -0.000178
+  5 LOG_VEHICLE_VAL_H11               0.392767       -0.000157
+  6 MVR_PTS_H11                       0.208944        0.000545
+  7 CHILD_DRIV_H12                   -0.217797        0.000141
+  8 CLM_FREQ_H12                     -0.058932    -0.000055400
+  9 DISTANCE_H12                      0.127067        0.000938
+ 10 IMP_LOG_INCOME_H12                0.160147       -0.000974
+ 11 LOG_VEHICLE_VAL_H12               0.087698        0.000259
+ 12 MVR_PTS_H12                      -0.146741       -0.000263
+ 13 CHILD_DRIV_H13                   -0.028087       -0.000214
+ 14 CLM_FREQ_H13                     -0.049409       -0.000739
+ 15 DISTANCE_H13                     -0.401268       -0.000622
+ 16 IMP_LOG_INCOME_H13                0.163508       -0.000629
+ 17 LOG_VEHICLE_VAL_H13               0.086844    -0.000046681
+ 18 MVR_PTS_H13                      -0.087508        0.000694
+ 19 CHILD_DRIV_H14                    0.396191        0.000594
+ 20 CLM_FREQ_H14                      0.062599       -0.000597
+ 21 DISTANCE_H14                      0.457674        0.000902
+ 22 IMP_LOG_INCOME_H14                0.312520       -0.000424
+ 23 LOG_VEHICLE_VAL_H14              -0.087348     0.000025912
+ 24 MVR_PTS_H14                      -0.435086    -0.000002908
+ 25 CHILD_DRIV_H15                    0.044109       -0.000572
+ 26 CLM_FREQ_H15                     -0.057497        0.000475
+ 27 DISTANCE_H15                     -0.123036        0.000596
+ 28 IMP_LOG_INCOME_H15               -0.288198     0.000023370
+ 29 LOG_VEHICLE_VAL_H15               0.001106       -0.000849
+ 30 MVR_PTS_H15                       0.186893        0.000861
+ 31 AREAHighlyUrban_Urban_H11         0.526643    -0.000026687
+ 32 CAR_USECommercial_H11            -1.014535        0.000182
+ 33 M_YOJ0_H11                       -0.436887        0.000638
+ 34 REVOKEDNo_H11                    -0.174532        0.000245
+ 35 AREAHighlyUrban_Urban_H12        -0.793960       -0.000253
+ 36 CAR_USECommercial_H12             0.153101        0.000187
+ 37 M_YOJ0_H12                        0.311273       -0.000732
+ 38 REVOKEDNo_H12                    -0.083151        0.000316
+ 39 AREAHighlyUrban_Urban_H13         0.183267       -0.000134
+ 40 CAR_USECommercial_H13            -0.299811        0.001294
+ 41 M_YOJ0_H13                       -0.160886       -0.000810
+ 42 REVOKEDNo_H13                    -0.179424       -0.000210
+ 43 AREAHighlyUrban_Urban_H14         0.181637       -0.001304
+ 44 CAR_USECommercial_H14             0.705276       -0.000631
+ 45 M_YOJ0_H14                        0.284479    -0.000032772
+ 46 REVOKEDNo_H14                    -0.619428     0.000076949
+ 47 AREAHighlyUrban_Urban_H15         0.167132    -0.000033103
+ 48 CAR_USECommercial_H15             0.413818        0.000383
+ 49 M_YOJ0_H15                        0.124933        0.000351
+ 50 REVOKEDNo_H15                    -0.390906     0.000038250
+ 51 EDU_LEVEL_HighSchool_H11          0.579808       -0.000482
+ 52 EDU_LEVELBachelors_H11           -0.985918       -0.000557
+ 53 EDU_LEVELMasters_H11              0.977197       -0.000419
+ 54 EDU_LEVELPhD_H11                  0.694270     0.000059521
+ 55 IMP_JOBBanking_H11               -0.233761     0.000075079
+ 56 IMP_JOBClerical_H11              -0.674762     0.000016307
+ 57 IMP_JOBDoctor_H11                -0.287099        0.000249
+ 58 IMP_JOBHomeMaker_H11             -0.390988     0.000021345
+ 59 IMP_JOBManager_H11                0.886668     0.000050393
+ 60 IMP_JOBNone_H11                  -0.201386     0.000076108
+ 61 IMP_JOBNurse_H11                 -0.009207    -0.000041166
+ 62 IMP_JOBPolice_H11                 0.122990     0.000076489
+ 63 IMP_JOBProfessional_H11           0.061225     0.000038884
+ 64 IMP_JOBStudent_H11                0.251119        0.000192
+ 65 STATUSYes_H11                    -0.451480        0.000292
+ 66 VEHICLE_TYPEFamily_H11           -0.269167       -0.000280
+ 67 VEHICLE_TYPEMinivan_H11          -0.285769       -0.000597
+ 68 VEHICLE_TYPEPanelTruck_H11        0.521847       -0.000330
+ 69 VEHICLE_TYPEPickup_H11            0.501234    -0.000060226
+ 70 VEHICLE_TYPERacing_H11           -0.167329       -0.000281
+ 71 VEHICLE_TYPESportsCar_H11        -0.736170       -0.000268
+ 72 VEHICLE_TYPEVan_H11              -0.398414       -0.000502
+ 73 EDU_LEVEL_HighSchool_H12         -0.366005       -0.000418
+ 74 EDU_LEVELBachelors_H12           -0.168166       -0.000162
+ 75 EDU_LEVELMasters_H12              0.522914        0.000595
+ 76 EDU_LEVELPhD_H12                  0.757995    -0.000008494
+ 77 IMP_JOBBanking_H12               -0.010900        0.000473
+ 78 IMP_JOBClerical_H12              -0.790999        0.000648
+ 79 IMP_JOBDoctor_H12                -0.188837        0.000406
+ 80 IMP_JOBHomeMaker_H12              0.192100        0.000729
+ 81 IMP_JOBManager_H12                0.456311        0.001219
+ 82 IMP_JOBNone_H12                   0.527470        0.000428
+ 83 IMP_JOBNurse_H12                 -0.250529        0.000985
+ 84 IMP_JOBPolice_H12                -0.296124        0.000431
+ 85 IMP_JOBProfessional_H12          -0.146503       -0.000170
+ 86 IMP_JOBStudent_H12                0.657976        0.000476
+ 87 STATUSYes_H12                     0.110340       -0.001005
+ 88 VEHICLE_TYPEFamily_H12            0.282079       -0.000205
+ 89 VEHICLE_TYPEMinivan_H12           0.415089        0.000364
+ 90 VEHICLE_TYPEPanelTruck_H12       -0.669261       -0.000280
+ 91 VEHICLE_TYPEPickup_H12           -0.378096       -0.000276
+ 92 VEHICLE_TYPERacing_H12            0.392951       -0.000242
+ 93 VEHICLE_TYPESportsCar_H12         0.210978       -0.000616
+ 94 VEHICLE_TYPEVan_H12              -0.363083        0.000420
+ 95 EDU_LEVEL_HighSchool_H13          0.433126       -0.001415
+ 96 EDU_LEVELBachelors_H13            0.278604       -0.001374
+ 97 EDU_LEVELMasters_H13             -0.951402       -0.000486
+ 98 EDU_LEVELPhD_H13                 -0.187129       -0.000768
+ 99 IMP_JOBBanking_H13               -0.288061     0.000037091
+100 IMP_JOBClerical_H13               0.210458        0.000178
+101 IMP_JOBDoctor_H13                 0.287623       -0.000145
+102 IMP_JOBHomeMaker_H13              0.118940        0.000254
+103 IMP_JOBManager_H13                0.424388        0.000668
+104 IMP_JOBNone_H13                   0.477552     0.000004966
+105 IMP_JOBNurse_H13                 -0.082896        0.000155
+106 IMP_JOBPolice_H13                 0.141787     0.000007562
+107 IMP_JOBProfessional_H13          -0.127807       -0.000347
+108 IMP_JOBStudent_H13               -0.689354       -0.000252
+109 STATUSYes_H13                     0.147447    -0.000024600
+110 VEHICLE_TYPEFamily_H13            0.228789       -0.000166
+111 VEHICLE_TYPEMinivan_H13          -0.362169     0.000000429
+112 VEHICLE_TYPEPanelTruck_H13        0.364608        0.000241
+113 VEHICLE_TYPEPickup_H13            0.428888       -0.000236
+114 VEHICLE_TYPERacing_H13           -0.121678       -0.000182
+115 VEHICLE_TYPESportsCar_H13        -0.421518       -0.000420
+116 VEHICLE_TYPEVan_H13               0.314959       -0.000122
+117 EDU_LEVEL_HighSchool_H14         -1.345319       -0.000150
+118 EDU_LEVELBachelors_H14            0.562020       -0.000937
+119 EDU_LEVELMasters_H14              0.155437       -0.001287
+120 EDU_LEVELPhD_H14                  1.159420       -0.000697
+121 IMP_JOBBanking_H14               -0.156409        0.000221
+122 IMP_JOBClerical_H14              -0.348082       -0.000148
+123 IMP_JOBDoctor_H14                -0.524051        0.000415
+124 IMP_JOBHomeMaker_H14              0.720323        0.000186
+125 IMP_JOBManager_H14                0.528683    -0.000039511
+126 IMP_JOBNone_H14                  -0.059764        0.000235
+127 IMP_JOBNurse_H14                  0.030405     0.000069425
+128 IMP_JOBPolice_H14                 0.138747        0.000222
+129 IMP_JOBProfessional_H14          -0.254784        0.000608
+130 IMP_JOBStudent_H14                0.805123        0.000395
+131 STATUSYes_H14                    -0.025050    -0.000018543
+132 VEHICLE_TYPEFamily_H14           -0.100230     0.000053416
+133 VEHICLE_TYPEMinivan_H14           0.139663     0.000013805
+134 VEHICLE_TYPEPanelTruck_H14       -0.815979       -0.000257
+135 VEHICLE_TYPEPickup_H14           -0.445165     0.000078230
+136 VEHICLE_TYPERacing_H14            0.080016     0.000026111
+137 VEHICLE_TYPESportsCar_H14         0.942358    -0.000073687
+138 VEHICLE_TYPEVan_H14               0.282506        0.000112
+139 EDU_LEVEL_HighSchool_H15          0.635128        0.000289
+140 EDU_LEVELBachelors_H15           -0.058039        0.000219
+141 EDU_LEVELMasters_H15             -0.192861     0.000065697
+142 EDU_LEVELPhD_H15                 -1.103962        0.000101
+143 IMP_JOBBanking_H15               -0.126199    -0.000089011
+144 IMP_JOBClerical_H15               0.658607    -0.000006447
+145 IMP_JOBDoctor_H15                -0.168725    -0.000089908
+146 IMP_JOBHomeMaker_H15             -0.418603       -0.000353
+147 IMP_JOBManager_H15               -0.331121       -0.000153
+148 IMP_JOBNone_H15                   0.123000    -0.000088558
+149 IMP_JOBNurse_H15                  0.073191    -0.000085354
+150 IMP_JOBPolice_H15                -0.075428    -0.000071587
+151 IMP_JOBProfessional_H15          -0.271731       -0.000152
+152 IMP_JOBStudent_H15                0.008330        0.000383
+153 STATUSYes_H15                    -0.209495        0.000252
+154 VEHICLE_TYPEFamily_H15            0.129625    -0.000009664
+155 VEHICLE_TYPEMinivan_H15          -0.153205        0.000438
+156 VEHICLE_TYPEPanelTruck_H15       -0.531985       -0.000288
+157 VEHICLE_TYPEPickup_H15            0.510252       -0.000238
+158 VEHICLE_TYPERacing_H15           -0.025964    -0.000006702
+159 VEHICLE_TYPESportsCar_H15         0.672191        0.000168
+160 VEHICLE_TYPEVan_H15              -0.107223     0.000085120
+161 BIAS_H11                          3.468377    -0.000070850
+162 BIAS_H12                          0.567287        0.000424
+163 BIAS_H13                         -0.440851        0.000137
+164 BIAS_H14                         -1.297552       -0.000257
+165 BIAS_H15                         -2.341824        0.000274
+166 H11_CLAIM_IND1                    1.848324     0.000042177
+167 H12_CLAIM_IND1                   -2.297104       -0.000413
+168 H13_CLAIM_IND1                   -1.562831        0.000280
+169 H14_CLAIM_IND1                    1.693455        0.000310
+170 H15_CLAIM_IND1                    1.682176        0.000371
+171 BIAS_CLAIM_IND1                  -0.872621       -0.000338
+
+Value of Objective Function = 0.4300721511
+

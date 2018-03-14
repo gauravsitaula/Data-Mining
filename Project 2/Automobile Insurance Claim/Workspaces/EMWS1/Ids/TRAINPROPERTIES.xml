@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?><_ROOT_  DataSource="claimrawdata" Scope="LOCAL" Role="RAW" Library="AIC" Table="CLAIMRAWDATA"
+ NCols="24" NObs="8240" NBytes="1901568" Segment="" DataSourceRole="RAW" OutputType="VIEW"
+ ForceRun="N" ComputeStatistics="N" DataSelection="DATASOURCE" NewTable="" MetaAdvisor="BASIC"
+ ApplyIntervalLevelLowerLimit="Y" IntervalLowerLimit="20" ApplyMaxPercentMissing="Y"
+ MaxPercentMissing="50" ApplyMaxClassLevels="Y" MaxClassLevels="20" IdentifyEmptyColumns="Y"
+ VariableValidation="STRICT" NewVariableRole="REJECT" DropMapVariables="Y" DsId="claimrawdata"
+ DsSampleName="" DsSampleSizeType="" DsSampleSize="" DsCreatedBy="Gaurav" DsCreateDate="1803650272.6"
+ DsModifiedBy="Gaurav" DsModifyDate="1803650272.7" DsScope="LOCAL" Sample="D" SampleSizeType="PERCENT"
+ SampleSizePercent="20" SampleSizeObs="10000" DBPassThrough="Y" RunAction="Train"
+ Component="DataSource" RawCreateTime="1803650394.9" CreateTime="25FEB2017:13:59:55"
+ Description="" Data="AIC.CLAIMRAWDATA" CMeta="WORK.M0MH1YM7" RunId="885bb03c-0ccb-438e-ac1d-03a3e6043bab"
+ RawLastTimeRun="1803654372.3" RawRunTime="2.9240000248" LastTimeRun="25FEB2017:15:06:12"
+ RunTime="0 Hr. 0 Min. 2.92 Sec.">
+<VARIABLEPROPERTIES/>
+<FILEPROPERTIES/>
+</_ROOT_>

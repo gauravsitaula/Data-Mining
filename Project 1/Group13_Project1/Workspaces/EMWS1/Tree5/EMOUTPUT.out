@@ -1,0 +1,269 @@
+*------------------------------------------------------------*
+User:                Gaurav
+Date:                February 09, 2017
+Time:                19:35:19
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+          Measurement    Frequency
+Role         Level         Count
+ 
+ID         INTERVAL           1
+INPUT      BINARY             3
+INPUT      INTERVAL          13
+INPUT      NOMINAL           21
+TARGET     BINARY             1
+ 
+ 
+ 
+ 
+Model Events
+ 
+                                  Number
+                   Measurement      of
+Target    Event       Level       Levels      Order       Label
+ 
+ LBWT       1        BINARY          2      Descending
+ 
+ 
+ 
+ 
+Predicted and decision variables
+ 
+Type         Variable    Label
+ 
+TARGET       LBWT
+PREDICTED    P_LBWT1     Predicted: LBWT=1
+RESIDUAL     R_LBWT1     Residual: LBWT=1
+PREDICTED    P_LBWT0     Predicted: LBWT=0
+RESIDUAL     R_LBWT0     Residual: LBWT=0
+FROM         F_LBWT      From: LBWT
+INTO         I_LBWT      Into: LBWT
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+Variable Importance
+ 
+                                                                                                                    Ratio of
+                                                          Number of                                               Validation
+                                                          Splitting                            Validation        to Training
+Variable Name       Label                                   Rules           Importance         Importance         Importance
+ 
+ETHNICITYDAD                                                  1                 1.0000             1.0000             1.0000
+HYPERPR             Hypertension, preg.                       2                 0.8110             0.9064             1.1176
+smoker                                                        1                 0.5763             0.7694             1.3352
+HYDRAM              Hydramnios/Oligo.                         3                 0.4544             0.4520             0.9948
+YrsLastLiveBirth                                              1                 0.4492             0.5091             1.1335
+PRETERM             Prev. preterm/small                       2                 0.4150             0.5064             1.2204
+ECLAMP              Eclampsia                                 2                 0.3627             0.4256             1.1734
+PRENATAL            Month of preg. prenatal care began        1                 0.3434             0.3604             1.0493
+CERVIX              Incompetent cervix                        1                 0.2543             0.3105             1.2210
+UTERINE             Uterine bleeding                          1                 0.1597             0.1535             0.9614
+ 
+ 
+ 
+Tree Leaf Report
+ 
+                                 Training
+Node               Training       Percent     Validation     Validation
+ Id     Depth    Observations        1       Observations     Percent 1
+ 
+ 33       6          2745          0.57          2810           0.55
+ 34       6          1962          0.39          1894           0.40
+ 37       6          1712          0.25          1688           0.25
+ 27       5           743          0.54           784           0.58
+  6       2           442          0.73           435           0.73
+  4       2           341          0.82           327           0.81
+  8       3           181          0.85           197           0.81
+ 16       4            97          0.90            93           0.87
+ 28       5            70          0.77            49           0.73
+ 30       5            56          0.63            55           0.71
+ 22       5            48          0.96            48           0.90
+ 36       6            44          0.64            30           0.73
+ 32       6            43          0.95            62           0.90
+ 18       4            33          0.91            30           0.93
+ 35       6            19          0.95            32           0.91
+ 26       5            12          1.00            15           0.93
+ 
+ 
+ 
+ 
+Fit Statistics
+ 
+Target=LBWT Target Label=' '
+ 
+   Fit
+Statistics    Statistics Label                 Train    Validation
+ 
+  _NOBS_      Sum of Frequencies             8548.00      8549.00
+  _MISC_      Misclassification Rate            0.35         0.35
+  _MAX_       Maximum Absolute Error            0.96         1.00
+  _SSE_       Sum of Squared Errors          3712.89      3749.21
+  _ASE_       Average Squared Error             0.22         0.22
+  _RASE_      Root Average Squared Error        0.47         0.47
+  _DIV_       Divisor for ASE               17096.00     17098.00
+  _DFT_       Total Degrees of Freedom       8548.00          .
+ 
+ 
+ 
+ 
+Classification Table
+ 
+Data Role=TRAIN Target Variable=LBWT Target Label=' '
+ 
+                       Target        Outcome     Frequency       Total
+Target    Outcome    Percentage    Percentage      Count      Percentage
+ 
+  0          0         67.4197       57.9551        2477        28.9775
+  1          0         32.5803       28.0066        1197        14.0033
+  0          1         36.8691       42.0449        1797        21.0225
+  1          1         63.1309       71.9934        3077        35.9967
+ 
+ 
+Data Role=VALIDATE Target Variable=LBWT Target Label=' '
+ 
+                       Target        Outcome     Frequency       Total
+Target    Outcome    Percentage    Percentage      Count      Percentage
+ 
+  0          0         67.3646       56.4444        2413        28.2255
+  1          0         32.6354       27.3514        1169        13.6741
+  0          1         37.4874       43.5556        1862        21.7803
+  1          1         62.5126       72.6486        3105        36.3200
+ 
+ 
+ 
+ 
+Event Classification Table
+ 
+Data Role=TRAIN Target=LBWT Target Label=' '
+ 
+  False       True        False       True
+Negative    Negative    Positive    Positive
+ 
+  1197        2477        1797        3077
+ 
+ 
+Data Role=VALIDATE Target=LBWT Target Label=' '
+ 
+  False       True        False       True
+Negative    Negative    Positive    Positive
+ 
+  1169        2413        1862        3105
+ 
+ 
+ 
+ 
+Assessment Score Rankings
+ 
+Data Role=TRAIN Target Variable=LBWT Target Label=' '
+ 
+                                                                                    Mean
+                            Cumulative       %      Cumulative     Number of     Posterior
+Depth     Gain      Lift       Lift      Response   % Response   Observations   Probability
+ 
+   5    79.3205   1.79320     1.79320     89.6602     89.6602         428         0.89660
+  10    71.0031   1.62666     1.71003     81.3332     85.5016         427         0.81333
+  15    62.7136   1.46154     1.62714     73.0769     81.3568         428         0.73077
+  20    51.2986   1.17000     1.51299     58.5001     75.6493         427         0.58500
+  25    43.8364   1.13953     1.43836     56.9763     71.9182         427         0.56976
+  30    38.8500   1.13953     1.38850     56.9763     69.4250         428         0.56976
+  35    35.2968   1.13953     1.35297     56.9763     67.6484         427         0.56976
+  40    32.6256   1.13953     1.32626     56.9763     66.3128         428         0.56976
+  45    30.5530   1.13953     1.30553     56.9763     65.2765         427         0.56976
+  50    28.7204   1.12210     1.28720     56.1049     64.3602         427         0.56105
+  55    26.9024   1.08748     1.26902     54.3742     63.4512         428         0.54374
+  60    23.8969   0.90801     1.23897     45.4005     61.9485         427         0.45400
+  65    20.4155   0.78695     1.20415     39.3476     60.2077         428         0.39348
+  70    17.4384   0.78695     1.17438     39.3476     58.7192         427         0.39348
+  75    14.8580   0.78695     1.14858     39.3476     57.4290         427         0.39348
+  80    12.5821   0.78492     1.12582     39.2458     56.2910         428         0.39246
+  85     8.8837   0.49650     1.08884     24.8248     54.4419         427         0.24825
+  90     5.5887   0.49650     1.05589     24.8248     52.7943         428         0.24825
+  95     2.6474   0.49650     1.02647     24.8248     51.3237         427         0.24825
+ 100     0.0000   0.49650     1.00000     24.8248     50.0000         427         0.24825
+ 
+ 
+Data Role=VALIDATE Target Variable=LBWT Target Label=' '
+ 
+                                                                                    Mean
+                            Cumulative       %      Cumulative     Number of     Posterior
+Depth     Gain      Lift       Lift      Response   % Response   Observations   Probability
+ 
+   5    73.1286   1.73129     1.73129     86.5542     86.5542         428         0.90430
+  10    66.9112   1.60679     1.66911     80.3303     83.4459         427         0.82065
+  15    60.0101   1.46224     1.60010     73.1034     79.9957         428         0.73077
+  20    49.4735   1.17814     1.49474     58.9003     74.7280         427         0.58344
+  25    41.7521   1.10903     1.41752     55.4448     70.8678         428         0.56976
+  30    36.6166   1.10903     1.36617     55.4448     68.3003         427         0.56976
+  35    32.9395   1.10903     1.32939     55.4448     66.4620         428         0.56976
+  40    30.1881   1.10903     1.30188     55.4448     65.0864         427         0.56976
+  45    28.0430   1.10903     1.28043     55.4448     64.0140         428         0.56976
+  50    26.4480   1.12074     1.26448     56.0305     63.2166         427         0.56416
+  55    25.5301   1.16340     1.25530     58.1633     62.7577         427         0.54374
+  60    23.5869   1.02238     1.23587     51.1132     61.7862         428         0.48651
+  65    20.1848   0.79312     1.20185     39.6515     60.0854         427         0.39348
+  70    17.2619   0.79312     1.17262     39.6515     58.6241         428         0.39348
+  75    14.7347   0.79312     1.14735     39.6515     57.3606         427         0.39348
+  80    12.5182   0.79312     1.12518     39.6515     56.2525         428         0.39348
+  85     8.9033   0.50996     1.08903     25.4953     54.4453         427         0.25539
+  90     5.6010   0.49532     1.05601     24.7630     52.7943         428         0.24825
+  95     2.6533   0.49532     1.02653     24.7630     51.3206         427         0.24825
+ 100     0.0000   0.49532     1.00000     24.7630     49.9942         427         0.24825
+ 
+ 
+ 
+ 
+Assessment Score Distribution
+ 
+Data Role=TRAIN Target Variable=LBWT Target Label=' '
+ 
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+ 
+ 0.95-1.00        99           4        0.96117         1.2050
+ 0.90-0.95        48           4        0.92308         0.6083
+ 0.85-0.90       241          37        0.86691         3.2522
+ 0.80-0.85       281          60        0.82405         3.9892
+ 0.75-0.80        54          16        0.77143         0.8189
+ 0.70-0.75       323         119        0.73077         5.1708
+ 0.60-0.65        63          37        0.63000         1.1699
+ 0.55-0.60      1564        1181        0.56976        32.1128
+ 0.50-0.55       404         339        0.54374         8.6921
+ 0.35-0.40       772        1190        0.39348        22.9527
+ 0.20-0.25       425        1287        0.24825        20.0281
+ 
+ 
+Data Role=VALIDATE Target Variable=LBWT Target Label=' '
+ 
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+ 
+ 0.95-1.00       113          12        0.96093         1.4622
+ 0.90-0.95        57           5        0.92885         0.7252
+ 0.85-0.90       240          50        0.86561         3.3922
+ 0.80-0.85       266          61        0.82405         3.8250
+ 0.75-0.80        36          13        0.77143         0.5732
+ 0.70-0.75       318         117        0.73077         5.0883
+ 0.60-0.65        61          24        0.62901         0.9943
+ 0.55-0.60      1558        1252        0.56976        32.8693
+ 0.50-0.55       456         328        0.54374         9.1707
+ 0.35-0.40       751        1143        0.39348        22.1546
+ 0.20-0.25       418        1270        0.24825        19.7450

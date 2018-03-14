@@ -1,0 +1,74 @@
+*------------------------------------------------------------*
+User:                Gaurav
+Date:                April 27, 2017
+Time:                12:33:49
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+          Measurement    Frequency
+Role         Level         Count
+ 
+ID          NOMINAL          1
+INPUT       BINARY           1
+INPUT       NOMINAL          3
+TARGET      BINARY           1
+TEXT        NOMINAL          1
+ 
+ 
+ 
+ 
+Partition Summary
+ 
+                                     Number of
+Type             Data Set          Observations
+ 
+DATA        EMWS1.Ids_DATA              607
+TRAIN       EMWS1.Part_TRAIN            302
+VALIDATE    EMWS1.Part_VALIDATE         305
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Summary Statistics for Class Targets
+ 
+Data=DATA
+ 
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent             Label
+ 
+SubroFlag       0           0           380       62.6030    Subrogation (1=Yes 0=No)
+SubroFlag       1           1           227       37.3970    Subrogation (1=Yes 0=No)
+ 
+ 
+Data=TRAIN
+ 
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent             Label
+ 
+SubroFlag       0           0           189       62.5828    Subrogation (1=Yes 0=No)
+SubroFlag       1           1           113       37.4172    Subrogation (1=Yes 0=No)
+ 
+ 
+Data=VALIDATE
+ 
+             Numeric    Formatted    Frequency
+Variable      Value       Value        Count      Percent             Label
+ 
+SubroFlag       0           0           191       62.6230    Subrogation (1=Yes 0=No)
+SubroFlag       1           1           114       37.3770    Subrogation (1=Yes 0=No)

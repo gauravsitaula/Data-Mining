@@ -1,0 +1,197 @@
+ 
+                                                                                               
+ 
+ 
+Fit Statistics
+
+Target=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+
+   Fit
+Statistics    Statistics Label                    Train    Validation
+
+ _AIC_        Akaike's Information Criterion    1702.23          .   
+ _ASE_        Average Squared Error                0.17         0.17 
+ _AVERR_      Average Error Function               0.52         0.55 
+ _DFE_        Degrees of Freedom for Error      1456.00          .   
+ _DFM_        Model Degrees of Freedom            62.00          .   
+ _DFT_        Total Degrees of Freedom          1518.00          .   
+ _DIV_        Divisor for ASE                   3036.00      3038.00 
+ _ERR_        Error Function                    1578.23      1669.53 
+ _FPE_        Final Prediction Error               0.19          .   
+ _MAX_        Maximum Absolute Error               0.98         1.00 
+ _MSE_        Mean Square Error                    0.18         0.17 
+ _NOBS_       Sum of Frequencies                1518.00      1519.00 
+ _NW_         Number of Estimate Weights          62.00          .   
+ _RASE_       Root Average Sum of Squares          0.41         0.42 
+ _RFPE_       Root Final Prediction Error          0.43          .   
+ _RMSE_       Root Mean Squared Error              0.42         0.42 
+ _SBC_        Schwarz's Bayesian Criterion      2032.39          .   
+ _SSE_        Sum of Squared Errors              522.53       527.29 
+ _SUMW_       Sum of Case Weights Times Freq    3036.00      3038.00 
+ _MISC_       Misclassification Rate               0.24         0.24 
+ 
+                                                                                               
+ 
+ 
+Classification Table
+
+Data Role=TRAIN Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+
+                       Target        Outcome     Frequency       Total
+Target    Outcome    Percentage    Percentage      Count      Percentage
+
+  0          0         73.5604       95.3733        907         59.7497 
+  1          0         26.4396       57.4956        326         21.4756 
+  0          1         15.4386        4.6267         44          2.8986 
+  1          1         84.5614       42.5044        241         15.8762 
+
+
+Data Role=VALIDATE Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+
+                       Target        Outcome     Frequency       Total
+Target    Outcome    Percentage    Percentage      Count      Percentage
+
+  0          0         74.3913       93.1651        886         58.3278 
+  1          0         25.6087       53.6972        305         20.0790 
+  0          1         19.8171        6.8349         65          4.2791 
+  1          1         80.1829       46.3028        263         17.3140 
+ 
+                                                                                               
+ 
+ 
+Event Classification Table
+
+Data Role=TRAIN Target=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+
+  False       True        False       True
+Negative    Negative    Positive    Positive
+
+   326         907         44          241  
+
+
+Data Role=VALIDATE Target=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+
+  False       True        False       True
+Negative    Negative    Positive    Positive
+
+   305         886         65          263  
+ 
+                                                                                               
+ 
+ 
+Assessment Score Rankings
+
+Data Role=TRAIN Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+
+                                                                                    Mean
+                            Cumulative       %      Cumulative     Number of     Posterior
+Depth      Gain     Lift       Lift      Response   % Response   Observations   Probability
+
+   5    148.644   2.48644     2.48644     92.8728     92.8728         76          0.96993  
+  10    149.231   2.49818     2.49231     93.3114     93.0921         76          0.89192  
+  15    137.312   2.13475     2.37312     79.7368     88.6404         76          0.78777  
+  20    119.288   1.65214     2.19288     61.7105     81.9079         76          0.55551  
+  25    101.570   1.30696     2.01570     48.8175     75.2898         76          0.43848  
+  30     84.354   0.98279     1.84354     36.7089     68.8596         76          0.40937  
+  35     73.493   1.08323     1.73493     40.4605     64.8026         76          0.38987  
+  40     61.989   0.81462     1.61989     30.4276     60.5058         76          0.36751  
+  45     52.285   0.74652     1.52285     27.8838     56.8811         76          0.35374  
+  50     48.148   1.10422     1.48148     41.2444     55.3360         75          0.33308  
+  55     42.359   0.84545     1.42359     31.5789     53.1737         76          0.29562  
+  60     35.890   0.64818     1.35890     24.2105     50.7574         76          0.26491  
+  65     29.811   0.56936     1.29811     21.2664     48.4866         76          0.23721  
+  70     24.119   0.50198     1.24119     18.7500     46.3605         76          0.23495  
+  75     19.333   0.52400     1.19333     19.5724     44.5731         76          0.22592  
+  80     14.974   0.49636     1.14974     18.5398     42.9447         76          0.20065  
+  85     11.901   0.62782     1.11901     23.4503     41.7971         76          0.18562  
+  90      8.223   0.45743     1.08223     17.0860     40.4232         76          0.14928  
+  95      4.455   0.36688     1.04455     13.7035     39.0159         76          0.11915  
+ 100      0.000   0.14279     1.00000      5.3333     37.3518         75          0.05497  
+
+
+Data Role=VALIDATE Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+
+                                                                                    Mean
+                            Cumulative       %      Cumulative     Number of     Posterior
+Depth      Gain     Lift       Lift      Response   % Response   Observations   Probability
+
+   5    125.790   2.25790     2.25790     84.4298     84.4298         76          0.98039  
+  10    139.572   2.53354     2.39572     94.7368     89.5833         76          0.91346  
+  15    137.268   2.32660     2.37268     86.9987     88.7218         76          0.83164  
+  20    119.926   1.67898     2.19926     62.7820     82.2368         76          0.67385  
+  25     97.053   1.05564     1.97053     39.4737     73.6842         76          0.48669  
+  30     84.175   1.19784     1.84175     44.7909     68.8687         76          0.41856  
+  35     73.930   1.12457     1.73930     42.0512     65.0376         76          0.40504  
+  40     67.056   1.18936     1.67056     44.4737     62.4671         76          0.37658  
+  45     54.828   0.57005     1.54828     21.3158     57.8947         76          0.35928  
+  50     47.614   0.82692     1.47614     30.9211     55.1974         76          0.33650  
+  55     42.177   0.87810     1.42177     32.8349     53.1644         76          0.29746  
+  60     37.625   0.87544     1.37625     32.7352     51.4620         76          0.26757  
+  65     30.076   0.39489     1.30076     14.7661     48.6392         76          0.23833  
+  70     22.907   0.29714     1.22907     11.1111     45.9586         76          0.23495  
+  75     18.675   0.59429     1.18675     22.2222     44.3762         76          0.21727  
+  80     15.846   0.73406     1.15846     27.4488     43.3183         76          0.19511  
+  85     11.981   0.50143     1.11981     18.7500     41.8731         76          0.17213  
+  90      7.894   0.38414     1.07894     14.3640     40.3448         76          0.12948  
+  95      4.483   0.43082     1.04483     16.1096     39.0693         76          0.11507  
+ 100      0.000   0.13692     1.00000      5.1200     37.3930         75          0.05780  
+ 
+                                                                                               
+ 
+ 
+Assessment Score Distribution
+
+Data Role=TRAIN Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+
+ 0.95-1.00       57           5         0.97805         4.0843 
+ 0.90-0.95       33           1         0.92763         2.2398 
+ 0.85-0.90       72           7         0.87409         5.2042 
+ 0.80-0.85        7           1         0.81192         0.5270 
+ 0.75-0.80       26           5         0.77213         2.0422 
+ 0.70-0.75        2           4         0.72210         0.3953 
+ 0.65-0.70       11           6         0.66578         1.1199 
+ 0.60-0.65       11           5         0.63069         1.0540 
+ 0.55-0.60        6           2         0.56413         0.5270 
+ 0.50-0.55       16           8         0.51943         1.5810 
+ 0.45-0.50       21          23         0.47500         2.8986 
+ 0.40-0.45       59          86         0.41347         9.5520 
+ 0.35-0.40       62         135         0.36938        12.9776 
+ 0.30-0.35       46          71         0.32668         7.7075 
+ 0.25-0.30       33          88         0.27548         7.9710 
+ 0.20-0.25       56         225         0.22731        18.5112 
+ 0.15-0.20       29         114         0.18066         9.4203 
+ 0.10-0.15       16         100         0.12270         7.6416 
+ 0.05-0.10        4          39         0.08106         2.8327 
+ 0.00-0.05        0          26         0.00001         1.7128 
+
+
+Data Role=VALIDATE Target Variable=SubroFlag Target Label=Subrogation (1=Yes 0=No)
+
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+
+ 0.95-1.00       68          12         0.98000         5.2666 
+ 0.90-0.95       39           1         0.93034         2.6333 
+ 0.85-0.90       64           6         0.87338         4.6083 
+ 0.80-0.85       13           4         0.81991         1.1192 
+ 0.75-0.80       36           6         0.77461         2.7650 
+ 0.70-0.75        4           2         0.72418         0.3950 
+ 0.65-0.70       10          13         0.66428         1.5142 
+ 0.60-0.65        6           5         0.62814         0.7242 
+ 0.55-0.60       10           6         0.57159         1.0533 
+ 0.50-0.55       13          10         0.52419         1.5142 
+ 0.45-0.50       15          27         0.47659         2.7650 
+ 0.40-0.45       59          86         0.41525         9.5458 
+ 0.35-0.40       59         107         0.37133        10.9282 
+ 0.30-0.35       35          76         0.32747         7.3074 
+ 0.25-0.30       39          83         0.27627         8.0316 
+ 0.20-0.25       39         201         0.22827        15.7999 
+ 0.15-0.20       32         106         0.18191         9.0849 
+ 0.10-0.15       23         127         0.12266         9.8749 
+ 0.05-0.10        3          50         0.08416         3.4891 
+ 0.00-0.05        1          23         0.00257         1.5800 

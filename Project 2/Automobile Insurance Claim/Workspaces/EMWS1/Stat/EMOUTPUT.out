@@ -1,0 +1,85 @@
+*------------------------------------------------------------*
+User:                Gaurav
+Date:                February 25, 2017
+Time:                14:08:45
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+         Measurement    Frequency
+Role        Level         Count
+ 
+ID        NOMINAL            1
+INPUT     INTERVAL          14
+INPUT     NOMINAL            9
+ 
+ 
+ 
+Variable Levels Summary
+(maximum 500 observations printed)
+ 
+                    Frequency
+Variable    Role      Count
+ 
+   ID        ID        8173
+ 
+ 
+ 
+Class Variable Summary Statistics
+(maximum 500 observations printed)
+ 
+Data Role=TRAIN
+ 
+                                  Number
+Data     Variable                   of                                           Mode                                  Mode2
+Role     Name            Role     Levels    Missing    Mode                   Percentage    Mode2                    Percentage
+ 
+TRAIN    AREA            INPUT       2          0      Highly Urban/ Urban      79.85       z_Highly Rural/ Rural      20.15
+TRAIN    CAR_USE         INPUT       2          0      Private                  63.19       Commercial                 36.81
+TRAIN    EDU_LEVEL       INPUT       5          0      z_High School            28.20       Bachelors                  27.38
+TRAIN    GENDER          INPUT       2          0      Fem                      53.53       Mal                        46.47
+TRAIN    JOB             INPUT      12        543      Teacher                  21.84       Clerical                   15.42
+TRAIN    REVOKED         INPUT       2          0      No                       87.34       Yes                        12.66
+TRAIN    STATE_CODE      INPUT      10          0      Bayern                   49.81       Thueringen                 10.85
+TRAIN    STATUS          INPUT       3          0      Yes                      59.82       z_No                       40.16
+TRAIN    VEHICLE_TYPE    INPUT       8          0      unknown                  27.77       Minivan                    26.30
+ 
+ 
+ 
+Interval Variable Summary Statistics
+(maximum 500 observations printed)
+ 
+Data Role=TRAIN
+ 
+                                     Standard          Non
+Variable        Role         Mean    Deviation     Missing     Missing     Minimum      Median     Maximum    Skewness    Kurtosis
+ 
+AGE             INPUT    53.87712    13.18211         8236           4           5          54         103    -0.00434    0.047158
+CHILDREN        INPUT    0.718325    1.114363         8240           0           0           0           5    1.335328    0.615168
+CHILD_DRIV      INPUT    0.170146    0.507673         8240           0           0           0           4    3.324972    11.50905
+CLAIM_AMOUNT    INPUT    1859.953    4953.117         8240           0         118         324    123616.1    9.405464    136.3389
+CLAIM_IND       INPUT    0.270631    0.444313         8240           0           0           0           1    1.032717    -0.93372
+CLM_FREQ        INPUT    1.806311    1.530722         8240           0           0           2           7    0.501953    -0.30939
+DISTANCE        INPUT      78.549    15.84076         8240           0          50    77.95954    187.1206    0.424597    0.633547
+HOUSE_VAL       INPUT    416311.7    235845.3         7777         463           0    387849.5     1586073    0.689502    0.524258
+INCOME          INPUT    62609.21    47590.78         7781         459         560    54468.13    367590.3     1.13174    1.860039
+MVR_PTS         INPUT    3.213228    2.598943         8240           0           0           3          17    0.930244    0.788122
+VEHICLE_AGE     INPUT    10.34713    5.706805         7732         508          -1          10          30    0.265482    -0.77004
+VEHICLE_VAL     INPUT    15670.87    8406.699         8240           0        1500       14420       65970    0.758644    0.604778
+YOJ             INPUT    13.44685    4.123959         7808         432           3          14          26    -1.18419    1.103759
+_dataobs_       INPUT    5172.489    2987.699         8240           0           1        5204       10300    -0.00513    -1.21312
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*

@@ -1,0 +1,2526 @@
+MPRINT(EM_DIAGRAM):    data _null_;
+MPRINT(EM_DIAGRAM):   call symput('NLDATE', strip(put(date(), NLDATE.)));
+MPRINT(EM_DIAGRAM):   call symput('NLTIME', strip(put(datetime(), NLTIME.)));
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   data _null_;
+MPRINT(EM_DIAGRAM):   nldate= sasmsg("sashelp.dmine", "log_date_note", 'N', "April 27, 2017" );
+MPRINT(EM_DIAGRAM):   nltime= sasmsg("sashelp.dmine", "log_time_note", 'N', "17:01:17" );
+MPRINT(EM_DIAGRAM):   put "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   put "* Score Log";
+MPRINT(EM_DIAGRAM):   put nldate;
+MPRINT(EM_DIAGRAM):   put nltime;
+MPRINT(EM_DIAGRAM):   put "*------------------------------------------------------------*";
+MPRINT(EM_DIAGRAM):   run;
+*------------------------------------------------------------*
+* Score Log
+Date:                April 27, 2017
+Time:                17:01:17
+*------------------------------------------------------------*
+MPRINT(EM_DIAGRAM):    filename O04WTH5H "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextTopic\EMSCORE.out" encoding="UTF-8" NOBOM;
+MPRINT(EM_DIAGRAM):   proc printto print=O04WTH5H new;
+MPRINT(EM_DIAGRAM):   run;
+24514      %let EMEXCEPTIONSTRING=;
+24515      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):    *------------------------------------------------------------*;
+24516      * SCORE: TextTopic;
+MPRINT(EM_DIAGRAM):   * SCORE: TextTopic;
+24517      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+24518      %let EM_ACTION = SCORE;
+24519      %let syscc = 0;
+24520      %macro main;
+24521          %if %upcase(&EM_ACTION) = CREATE %then %do;
+24522              filename temp catalog 'sashelp.emtxtext.topic_create.source';
+24523              %include temp;
+24524              %create;
+24525          %end;
+24526          %if %upcase(&EM_ACTION) = TRAIN %then %do;
+24527              filename temp catalog 'sashelp.emtxtext.topic_train.source';
+24528              %include temp;
+24529              %train;
+24530          %end;
+24531         %if %upcase(&EM_ACTION) = SCORE %then %do;
+24532              filename temp catalog 'sashelp.emtxtext.topic_score.source';
+24533              %include temp;
+24534              %score;
+24535          %end;
+24536          %if %upcase(&EM_ACTION) = REPORT %then %do;
+24537              filename temp catalog 'sashelp.emtxtext.topic_report.source';
+24538              %include temp;
+24539              %report;
+24540          %end;
+24541      %mend main;
+24542      
+24543      %main;
+MPRINT(EM_DIAGRAM):    
+MPRINT(MAIN):   filename temp catalog 'sashelp.emtxtext.topic_score.source';
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMTXTEXT.TOPIC_SCORE.SOURCE.
+24544     +/* ****************************************************************
+24545     + * Copyright (C) 1996 by SAS Institute Inc., Cary, NC 27513
+24546     + *
+24547     + * Name:             topic_score.sas
+24548     + * Support:          cox  James A. Cox
+24549     + * Product:          SAS Text Miner
+24550     + * Language:         Sas
+24551     + * Script:
+24552     + *
+24553     + * Usage:
+24554     + *
+24555     + * Purpose:  Implements Score action for Text Topic Node.
+24556     + *
+24557     + * History:
+24558     + * 26May09 Initial Coding [cox]
+24559     + *
+24560     + * Notes:
+24561     + *
+24562     + * Last Modified By:
+24563     + * Last Modified On: Thu Sep 11 15:28:20 2014
+24564     + *
+24565     + * End
+24566     + * ************************************************************** */
+24567     +%macro tmt_score(import=,export=,import_out=,termds=,weighttermds=,topics=,termtopics=,
+24568     +                 export_out=, export_trans=,
+24569     +                 config_ds=, parsevar=, em_norm_out=,col_sum_ds=&em_user_term_sums,
+24570     +                 cellwgt=LOG);
+24571     +   %if &import ne %then %do;
+24572     +      %if &em_norm_out ne %then %do; data &export_out; set &em_norm_out; run; %end;
+24573     +      %else %do;
+24575     +         /* If no filter node input */
+24576     +         %if &import_out =  %then %do;
+24577     +            data _tmpdocs;
+24578     +            set &import;
+24579     +            _document_=_n_;
+24580     +            rc=tgscore(&parsevar,"&config_ds","&termds","work.top_tmp_out",0,0);
+24581     +            drop rc;
+24582     +            run;
+24583     +            %let import=_tmpdocs;
+24584     +            %let import_out=work.top_tmp_out;
+24585     +            %end;
+24587     +         %let syscc=0;
+24588     +         /* First, weight output data set */
+24589     +         proc tmutil data=&import_out key=&termds;
+24590     +         control init release;
+24591     +         weight cellwgt=&cellwgt in_weight=&weighttermds(keep=key weight);
+24592     +         output out=work._weighted_tmout;
+24593     +         run;
+24595     +       %if &tmm_norm_pivot ne 0 %then %do;
+24596     +         %row_pivot_normalize(transds=work._weighted_tmout, outtransds=&export_out,
+24597     +                              col_sumds=work._termsumds,
+24598     +                              row=_document_,col=_termnum_,entry=_count_, pivot=&tmm_norm_pivot,
+24599     +                              tmt_config=&config_ds,
+24600     +                              tmt_train=0, prefix=&EM_NODEID.);
+24601     +         %let col_sum_ds=work._termsumds;
+24602     +          %end;
+24603     +       %else %do;
+24604     +          data &export_out; set work._weightedtmout; run;
+24605     +          %end;
+24606     +         %end;
+24607     +      %tmt_doc_score(termtopds=&termtopics, docds=&import, outds=&export_out, topicds=&topics,
+24608     +                    newdocds=&export, scoring=yes, termsumds=&col_sum_ds, prefix=&EM_NODEID._,
+24609     +                    pivot=&tmm_norm_pivot);
+24610     +      proc sql noprint;
+24611     +      create view &export_trans as
+24612     +       select ktrim(term) || '|' || role as _item_, b.*
+24613     +       from &weighttermds as a, &em_user_weightedtmout as b /*S1120236:  use &em_user_weightedtmout including unormalized _count_ instead of &export_out including normalized _count_*/
+24614     +       where b._termnum_=a.key and a._ispar ne '.'
+24615     +       order by b._termnum_, b._document_ ;
+24616     +            quit;
+24618     +         %end;
+24620     +%mend;
+24622     +%macro score;
+24623     +   %if ^%symexist(tm_debug) %then %let tm_debug=0;
+24624     +    %global last_parse_node last_filter_node last_prescore_node server_err
+24625     +      parsevar EM_SASMSG;
+24626     +   %let EM_SASMSG=TMINE;
+24627     +   %let syscc=0;
+24631     +   /*use saved version of em_info in case macro is not populated*/
+24632     +   %em_getname(key=last_tm_nodes, type=data);
+24634     +    filename temp catalog 'sashelp.emtxtext.tm_get_last_filter.source';
+24635     +    %include temp;
+24636     +    %tm_get_last_filter(eminfo=&em_user_last_tm_nodes,em_lib=&em_lib,
+24637     +                        em_variableset=&em_data_variableset);
+24638     +    %if &EMEXCEPTIONSTRING ne %then %goto end_topic_score;
+24639     +    %let lastparsenode=&last_parse_node;
+24640     +    %let lastfilternode=&last_filter_node;
+24641     +    %let lastprescore=&last_prescore_node;
+24642     +    %let filt_node=;
+24643     +    %if &lastfilternode ne &lastparsenode %then %do;
+24644     +        %let filt_node=Y;
+24645     +    %end;
+24647     +   * options mstored sasmstore=sashelp;
+24649     +    filename temp catalog 'sashelp.emtxtext.row_pivot_normalize.source';
+24650     +    %include temp;
+24652     +    filename temp catalog 'sashelp.emtxtext.tmt_doc_score.source';
+24653     +    %include temp;
+24654     +    filename temp catalog 'sashelp.emtxtext.tm_parse_score.source';
+24655     +    %include temp;
+24656     +    filename temp catalog 'sashelp.emtxtext.tm_data2code.source';
+24657     +    %include temp;
+24659     +    %em_getname(key=terms,            type=data);
+24660     +    %em_getname(key=topics,           type=data);
+24661     +    %em_getname(key=termtopics,       type=data);
+24662     +    %em_getname(key=weightedterms,    type=data);
+24663     +    %em_getname(key=weightedtmout,    type=data);
+24664     +   %em_getname(key=tmout_normalized, type=data);
+24665     +   %em_getname(key=term_sums,        type=data);
+24666     +    %em_checkmacro(name=tmm_norm_pivot,      global=Y, value=.7);
+24667     +  %if &tmm_norm_pivot<0 or &tmm_norm_pivot>1 %then %let tmm_norm_pivot=0.7;
+24668     +   %em_getname(key=repTopics, type=data);
+24670     +   /* Update topics to include translated cats */
+24671     +   /* If old topic node that has reptopics as a view, delete it
+24672     +      (em_report doesn't link views between tables and graphs)
+24673     +    */
+24674     +   %if %sysfunc(exist(&em_user_reptopics,VIEW)) %then %do;
+24675     +      proc sql noprint; drop view &em_user_reptopics; quit;
+24676     +      %end;
+24678     +   /* Translate cat values to _displayCats for reptopics */
+24679     +   data &em_user_reptopics(drop=_cat);
+24680     +       set &em_user_topics;
+24681     +       label _displayCat  = "%sysfunc(sasmsg(sashelp.tmine,  rpt_text_category_vlabel, NOQUOTE))";
+24682     +       select(ksubstr(_cat,1,1));
+24683     +          when('S') _displayCat = "%sysfunc(sasmsg(sashelp.tmine,  rpt_text_topicsingle_value, NOQUOTE))";
+24684     +          when('M') _displayCat = "%sysfunc(sasmsg(sashelp.tmine,  rpt_text_topicmulti_value, NOQUOTE))";
+24685     +          when('U') _displayCat = "%sysfunc(sasmsg(sashelp.tmine,  rpt_text_topicuser_value, NOQUOTE))";
+24686     +          otherwise;
+24687     +          end;
+24688     +       run;
+24690     +      /* Check to see if previous filter node had a weight for terms, or whether
+24691     +          it had to be created in this node */
+24692     +      %let isweight = 0;
+24693     +      %let dsid=%sysfunc(open(%str(&em_lib..&lastfilternode._terms)));
+24694     +      %if &dsid gt 0 %then %do;
+24695     +         %let isweight =%sysfunc(varnum(&dsid, weight));
+24696     +         %let rc=%sysfunc(close(&dsid));
+24697     +         %end;
+24699     +    data _null_;
+24700     +         cellwgt="LOG";
+24701     +         set &em_lib..&lastfilternode._tmconfig;
+24702     +         call symput('cellwgt',cellwgt);
+24703     +         run;
+24705     +      /* If no weights passed in, create work._termview to contain weights, (commented
+24706     +         out) */
+24707     +      %if "&isweight" eq "0" %then %do;
+24708     +         proc sql noprint;
+24709     +         create table work._termview as
+24710     +            select a.weight, b.*
+24711     +            from &em_user_terms as a, &em_lib..&lastfilternode._terms as b
+24712     +            where a.key=b.key and a.parent = b.parent;
+24713     +               quit;
+24714     +         proc datasets nolist nodetails;
+24715     +               modify _termview;
+24716     +               index create both=(term role);
+24717     +               run;
+24718     +               quit;
+24719     +         %let score_terms=work._termview;
+24720     +      %end;
+24721     +      %else %let score_terms=&em_lib..&lastfilternode._terms;;
+24722     +    %em_getname(key=weightedterms, type=data);
+24724     +      /* Use only the termtopics rows that exceed the current _termcutoff */
+24725     +         proc sql noprint;
+24726     +         create table work._termtopics as
+24727     +            select a.* from &em_user_termtopics as a, &em_user_topics as b
+24728     +            where a._topicid=b._topicid and abs(_weight)>=_termCutoff
+24729     +              /* and _apply='Y' */;
+24730     +        select parsevar into :_tm_parseVar from &EM_LIB..&lastfilternode._tmconfig;
+24731     +               quit;
+24733     +           %em_getname(key=tmout, type=data);
+24734     +           %em_getname(key=validout, type=data);
+24735     +           %em_getname(key=testout, type=data);
+24737     +           %em_getname(key=valid_trans, type=data);
+24738     +           %em_getname(key=test_trans, type=data);
+24740     +      /* Now do flow scoring for train, test, and validate tables, including exporting
+24741     +       a transaction table for the training data */
+24742     +      %tmt_score(import=&em_import_data,export=&em_export_train,
+24743     +                 /* %if &filt_node ne %then */ import_out=&EM_LIB..&lastfilternode._tmout,
+24744     +                 termds=&score_terms,topics=&em_user_topics,
+24745     +                 weighttermds=&em_user_weightedterms,
+24746     +                 config_ds=&EM_LIB..&lastfilternode._tmconfig,
+24747     +                 termtopics=work._termtopics,
+24748     +                 parsevar=&_tm_parsevar,
+24749     +                 export_out=&em_user_tmout,export_trans=&em_export_transaction,
+24750     +                 cellwgt=&cellwgt
+24751     +                 , em_norm_out   = &em_user_tmout_normalized,
+24752     +                 col_sum_ds=&em_user_term_sums);
+24753     +      %tmt_score(import=&em_import_validate,export=&em_export_validate,
+24754     +                 %if &filt_node ne %then import_out=&EM_LIB..&lastfilternode._validout,;
+24755     +                 termds=&score_terms,topics=&em_user_topics,
+24756     +                 weighttermds=&em_user_weightedterms,
+24757     +                 config_ds=&EM_LIB..&lastfilternode._tmconfig,
+24758     +                 termtopics=work._termtopics,
+24759     +                 parsevar=&_tm_parsevar,
+24760     +                 cellwgt=&cellwgt,
+24761     +                 export_out=&EM_LIB..&EM_NODEID._validout,
+24762     +                 export_trans=&em_user_valid_trans);
+24763     +      %tmt_score(import=&em_import_test,export=&em_export_test,
+24764     +                 %if &filt_node ne %then import_out=&EM_LIB..&lastfilternode._testout,;
+24765     +                 termds=&score_terms,topics=&em_user_topics,
+24766     +                 weighttermds=&em_user_weightedterms,
+24767     +                 config_ds=&EM_LIB..&lastfilternode._tmconfig,
+24768     +                 termtopics=work._termtopics,
+24769     +                 parsevar=&_tm_parsevar,
+24770     +                 cellwgt=&cellwgt,
+24771     +                 export_out=&EM_LIB..&EM_NODEID._testout,
+24772     +                 export_trans=&em_user_test_trans);
+24774     +      /* Set up appropriate metadata of training table */
+24775     +      filename _meta "&EM_FILE_CDELTA_TRAIN";
+24776     +      data _null_;
+24777     +         file _meta;
+24778     +         put 'if CREATOR = "&EM_NODEID" and upcase(NAME) =: upcase("&EM_NODEID") then do;';
+24779     +         put '   if upcase(NAME) =: upcase("&EM_NODEID._RAW") then do;';
+24780     +         put '      ROLE="INPUT";';
+24781     +         put '      LEVEL="INTERVAL";';
+24782     +         put '      end;';
+24783     +         put '   else do;';
+24784     +         put '      ROLE="SEGMENT";';
+24785     +         put '      LEVEL="BINARY";';
+24786     +         put '      end;';
+24787     +         put '   end;';
+24788     +         put '   if upcase(NAME) = "_DOCUMENT_" then do;';
+24789     +         put '      ROLE="ID";';
+24790     +         put '      LEVEL="NOMINAL";';
+24791     +         put '      end;';
+24792     +      run;
+24793     +      filename _meta;
+24795     +      /* Set up appropriate metadata on output transaction table */
+24796     +      filename _meta "&EM_FILE_CDELTA_TRANSACTION";
+24797     +      data _null_;
+24798     +         file _meta;
+24799     +         put 'if upcase(NAME)="_DOCUMENT_" then do;';
+24800     +         put '   ROLE="ID";';
+24801     +         put '   LEVEL="NOMINAL";';
+24802     +         put 'end;';
+24803     +         put 'if upcase(NAME)="_ITEM_" then do;';
+24804     +         put '   ROLE="TARGET";';
+24805     +         put '   LEVEL="NOMINAL";';
+24806     +         put 'end;';
+24807     +         put 'if upcase(NAME) in ("_COUNT_","_TERMNUM_") then do;';
+24808     +         put '   ROLE="REJECTED";';
+24809     +         put 'end;';
+24810     +      run;
+24811     +      filename _meta;
+24814     +      /* Retrieve path of Diagram */
+24815     +      data _null_;
+24816     +         call symput("emwspath", strip(pathname("&em_lib")));
+24817     +      run;
+24819     +     /* Following calculates all prescore code for Text Topic Node */
+24820     +     /* Prescorecode of previous Text Mining Node */
+24821     +     %em_getname(key=PRESCORECODE, type=file, extension=sas);
+24823     +    filename topicpre "&EM_USER_prescorecode";
+24824     +    data _null_;
+24825     +           file topicpre;
+24826     +           put 'filename temp catalog "sashelp.emtxtext.tmt_doc_score.source";';
+24827     +           put '%include temp;';
+24828     +           put 'filename temp catalog "sashelp.emtxtext.row_pivot_normalize.source";';
+24829     +           put '%include temp;';
+24830     +           put 'filename temp;';
+24831     +           run;
+24832     +     %if &lastprescore ne %then %do;
+24833     +        %let tmprescoreFile = %bquote(&emwspath)&em_dsep&lastprescore&em_dsep.PRESCORECODE.sas;
+24835     +        filename tmpre    "&tmprescoreFile";
+24836     +        %em_copyfile(infref=tmpre, outfref=topicpre, append=Y);
+24837     +        filename tmpre;
+24838     +        %end;
+24840     +    /* interactive view close
+24841     +     %if %eval(&syscc)>4 %then %do;
+24842     +         %let  EMEXCEPTIONSTRING = exception.server.EMTOOL.GENERICRUNTIMEEXCEPTION;
+24843     +         %goto end_topic_score;
+24845     +     %end;*/
+24848     +     %if not %symexist(em_term_loc) %then %do;
+24849     +        /* If em_term_loc is not specified, we use existing datasets in EMWS project folder for scoring*/
+24850     +       %let emtermloc_exists = 0;
+24851     +       %let em_term_loc = %bquote(%sysfunc(pathname(&EM_LIB)));
+24852     +       libname termloc "&em_term_loc";
+24854     +       /* If no weights passed in, we copy work._termview to termloc.&EM_NODEID._termview that contain weights*/
+24855     +       /* score_termds refer to terms data set used for the tm_parse_score macro in some cases (e.g., text filter was not previously used). scored_terms refer to a terms data set to score for this Text Topic node*/
+24856     +       %if "&isweight" eq "0" %then %do;
+24857     +           data termloc.&EM_NODEID._termview;
+24858     +              set work._termview;
+24859     +           run;
+24860     +           %let score_termds =termloc.&EM_NODEID._termview;
+24861     +       %end;
+24862     +        %else %do;
+24863     +              %if &lastfilternode = &lastparsenode %then %do;
+24864     +               /* When _filtterms do not exist*/
+24865     +              data termloc.&lastfilternode._filtterms;
+24866     +              set &EM_LIB..&lastfilternode._terms;
+24867     +             run;
+24868     +            %end;
+24869     +            %let score_termds =termloc.&lastfilternode._filtterms;
+24870     +       %end;
+24872     +       %let scored_config =  termloc.&lastfilternode._tmconfig;
+24873     +       %let scored_multids = termloc.&lastparsenode._multiall;
+24874     +       %let scored_topics = termloc.&EM_NODEID._topics;
+24875     +       %let scored_termtopics = termloc.&EM_NODEID._termtopics  ;
+24877     +   %end;
+24879     +    %else %do;
+24880     +     /* If em_term_loc is not specified, we write existing datasets in EMWS project folder to an external directory specified by em_term_loc location for scoring*/
+24881     +       %let emtermloc_exists = 1;
+24882     +       libname termloc "&em_term_loc";
+24884     +        %if %sysfunc(libref(termloc)) ne 0 %then %do;
+24885     +        %let  EMEXCEPTIONSTRING = EMTOOL.EMTERMLOC,&em_term_loc;
+24886     +        %goto end_topic_score;
+24887     +        %end;
+24889     +       /* If no weights passed in, we copy work._termview to termloc.&EM_LIB._&EM_NODEID._termview that contain weights*/
+24890     +      /* score_termds refer to terms data set used for the tm_parse_score macro in some cases (e.g., text filter was not previously used). scored_terms refer to a terms data set to score for this Text Topic node*/
+24891     +        %if "&isweight" eq "0" %then %do;
+24892     +           data termloc.&EM_LIB._&EM_NODEID._termview;
+24893     +              set work._termview;
+24894     +           run;
+24895     +           %let score_termds =termloc.&EM_LIB._&EM_NODEID._termview;
+24896     +        %end;
+24897     +        %else %do;
+24898     +             %if &lastfilternode = &lastparsenode %then %do;
+24899     +               /* When _filtterms do not exist*/
+24900     +              data termloc.&EM_LIB._&lastfilternode._filtterms;
+24901     +              set &EM_LIB..&lastfilternode._terms;
+24902     +             run;
+24903     +            %end;
+24904     +            %let score_termds =termloc.&EM_LIB._&lastfilternode._filtterms;
+24905     +        %end;
+24907     +       data termloc.&EM_LIB._&EM_NODEID._topics;
+24908     +           set &em_user_topics;
+24909     +       run;
+24911     +       data termloc.&EM_LIB._&EM_NODEID._termtopics;
+24912     +           set &em_user_termtopics;
+24913     +       run;
+24915     +       /* tmconfig needs to be updated with a new weight setting*/
+24916     +       data termloc.&EM_LIB._&lastfilternode._tmconfig;
+24917     +           set  &EM_LIB..&lastfilternode._tmconfig;
+24918     +        run;
+24920     +        %if &lastfilternode = &lastparsenode %then %do;
+24921     +              %if %sysfunc(exist(&EM_LIB..&lastparsenode._multiall))  %then %do;
+24922     +                 data termloc.&EM_LIB._&lastparsenode._multiall;
+24923     +                   set &EM_LIB..&lastparsenode._multiall;
+24924     +                 run;
+24925     +            %end;
+24926     +        %end;
+24928     +       %let scored_config = termloc.&EM_LIB._&lastfilternode._tmconfig;
+24929     +       %let scored_multids = termloc.&EM_LIB._&lastparsenode._multiall;
+24930     +       %let scored_topics = termloc.&EM_LIB._&EM_NODEID._topics;
+24931     +       %let scored_termtopics = termloc.&EM_LIB._&EM_NODEID._termtopics;
+24933     +   %end;
+24935     +      %if &lastfilternode = &lastparsenode %then %do;
+24936     +        %tm_parse_score(nodeid=&EM_NODEID,termds=&score_termds,
+24937     +                        configds=&scored_config,
+24938     +                        multids=&scored_multids,
+24939     +                        outds=&EM_NODEID._out,
+24940     +                        prefile=&em_user_PRESCORECODE,
+24941     +                        scorefile=&EM_FILE_EMPUBLISHSCORECODE);
+24942     +              %let scored_terms = &score_termds;
+24943     +              %let scored_out=&EM_NODEID._out;
+24944     +              %let _score_append=mod;
+24945     +        %end;
+24946     +     %else %do;
+24947     +              %if (&emtermloc_exists=0) %then %do;
+24948     +                  %let scored_terms = termloc.&lastfilternode._filtterms;
+24949     +              %end;
+24950     +              %else %if (&emtermloc_exists=1) %then %do;
+24951     +                  %let scored_terms = termloc.&EM_LIB._&lastfilternode._filtterms;
+24952     +              %end;
+24953     +              %let scored_out=work.&lastfilternode._out;
+24954     +              %let _score_append=;
+24955     +     %end;
+24957     +     %let syscc=0;
+24958     +     filename topicpre;
+24960     +     filename _tpcscr "&EM_FILE_EMPUBLISHSCORECODE";
+24961     +     data _null_;
+24962     +        file _tpcscr &_score_append;
+24964     +        %let tmoutweighted = TMOUT_WEIGHTED;
+24965     +        put '/* First we create a Weighted TMOUT Data Set based on weighted terms*/';
+24966     +        put "proc tmutil data=&scored_out key=&scored_terms;";
+24967     +        put "control init release;";
+24968     +        put  "weight cellwgt=&cellwgt in_weight=&scored_terms (keep=key weight);";
+24969     +        put "output out=work._weighted_tmout;"/;
+24971     +        put '%row_pivot_normalize(transds=work._weighted_tmout, outtransds=WORK.TMOUTNORM,';
+24972     +        put '      col_sumds=work._termsumds,row=_document_,col=_termnum_,entry=_count_,';
+24973     +        put "      pivot=&tmm_norm_pivot,tmt_config=&scored_config,tmt_train=0,prefix=&em_nodeid.);"/;
+24975     +        put '/*initialize topics and termtopics datasets in case they do not exist (0 topics case)*/';
+24976     +        put '%macro tmt_check_topics_exist;';
+24977     +        put '%if(^%sysfunc(exist('"&scored_topics"'))) %then %do;';
+24978     +        put '   proc sql noprint; create table '"&scored_topics";
+24979     +        put '   (_topicid decimal, _docCutoff decimal, _termCutoff decimal, _name char(1024), _cat char(4), /* _apply char(1), */ _numterms decimal, _numdocs decimal, _displayCat char(200) );';
+24980     +        put '   quit;';
+24981     +        put '%end;';
+24982     +        put '%if(^%sysfunc(exist('"&scored_termtopics"'))) %then %do;';
+24983     +        put '   proc sql noprint; create table '"&scored_termtopics";
+24984     +        put '   (_topicid decimal, _weight decimal, _termid decimal);';
+24985     +        put '   quit;';
+24986     +        put '%end;';
+24987     +        put '%mend tmt_check_topics_exist;';
+24988     +        put '%tmt_check_topics_exist;';
+24990     +        put "data work.&EM_NODEID._termtopics; set &scored_termtopics; run;";
+24991     +        put "data work.&EM_NODEID._topics; set &scored_topics; run;";
+24993     +        put '%'"tmt_doc_score(termtopds=work.&EM_NODEID._termtopics"', docds=&em_score_output,';
+24994     +        put "outds=WORK.TMOUTNORM, topicds=work.&EM_NODEID._topics, newdocds=work._newdocds, scoring=yes,";
+24996     +        put "termsumds=work._termsumds, prefix=&em_nodeid._,pivot=&tmm_norm_pivot);";
+24997     +        put 'data &em_score_output; set work._newdocds;'; ;
+24998     +     run;
+24999     +     filename _tpcscr;
+25002     +     %if %eval(&syscc)>4 %then %do;
+25003     +       %let  EMEXCEPTIONSTRING = exception.server.EMTOOL.GENERICRUNTIMEEXCEPTION;
+25004     +     %end;
+25006     +  %end_topic_score:
+25008     +%if &tm_debug =0 %then %do;
+25009     +proc sql;
+25010     +   drop table _tmpdocs;
+25011     +   drop table _termview ;
+25012     +   drop table _termtopics;
+25013     +   drop table top_tmp_out;
+25014     +   drop table _weighted_tmout;
+25015     +   drop table _termsumds;
+25016     +   * drop table &EM_NODEID._filterset;
+25017     +   * drop table &EM_NODEID._terms;
+25018     +   * drop table &EM_NODEID._termtopics;
+25019     +   * drop table &EM_NODEID._topics;
+25020     +   drop table _i;
+25021     +   drop table tmutil_memloc_i;
+25022     +quit;
+25023     +%end;
+25026     +%mend score;
+NOTE: %INCLUDE (level 1) ending.
+MPRINT(SCORE):  ;
+MPRINT(SCORE):   filename temp catalog 'sashelp.emtxtext.tm_get_last_filter.source';
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMTXTEXT.TM_GET_LAST_FILTER.SOURCE.
+25027     +/* ****************************************************************
+25028     + * Copyright (C) 2009 by SAS Institute Inc., Cary, NC 27513
+25029     + *
+25030     + * Name:             tm_get_last_filter.sas
+25031     + * Product:          SAS Text Miner
+25032     + * Language:         Sas
+25033     + * Script:
+25034     + *
+25035     + * Usage:
+25036     + *
+25037     + * Purpose:  macro to get the last filter node and the last parse node in the
+25038     + *   diagram that corresponds to the current parse variable.  If there is no filter
+25039     + *   node, the filter node is set to the last parse node.
+25040     + *
+25041     + *
+25042     + *
+25043     + * History:
+25044     + * 14Aug09 Initial Coding
+25045     + *
+25046     + * Notes:
+25047     + *    Returns an error in the following cases:
+25048     + *      1. There is no preceding parse node.
+25049     + *      2. There is no parse node with the current parse variable.
+25050     + *
+25051     + * Last Modified By:
+25052     + * Last Modified On: Wed Sep 23 15:35:04 2009
+25053     + *
+25054     + * End
+25055     + * ************************************************************** */
+25056     +%macro tm_get_last_filter(eminfo=,em_lib=, em_variableset=);
+25057     +   %let last_parse_node=;
+25058     +   %let last_filter_node=;
+25059     +   %let last_prescore_node=;
+25060     +   %let server_err=;
+25061     +   %let EMEXCEPTIONSTRING=;
+25062     +   %let syscc=0;
+25063     +
+25064     +    /* verify that setinit for SAS Text Miner is currently active */
+25065     +    %if %sysfunc(sysprod(PRODNUM107)) ne 1 %then %do;
+25066     +       %let EMEXCEPTIONSTRING = EMTOOL.NOTMLICENSE;
+25067     +        %goto end_macro;
+25068     +        %end;
+25069     +
+25070     +
+25071     +    * find last filter or text parse node if no filter node. ;
+25072     +   %if %sysfunc(exist(&eminfo)) %then %do;
+25073     +      proc sql noprint;
+25074     +      select data into :last_parse_node from &eminfo where key="LastTextParsing";
+25075     +         select data into :last_filter_node from &eminfo where key="LastTextFilter";
+25076     +         select data into :last_prescore_node from &eminfo where kupcase(key)="PRESCORECODE";
+25077     +      quit;
+25078     +
+25079     +   %end;
+25080     +
+25081     +   %if &last_parse_node= %then %do;
+25082     +      %let EMEXCEPTIONSTRING = EMTOOL.NOPARSINGNODE;
+25083     +      %goto end_macro;
+25084     +      %end;
+25085     +
+25086     +   %else %if &last_filter_node= %then %let last_filter_node = %ktrim(&last_parse_node);
+25087     +   %else %let last_filter_node = %ktrim(&last_filter_node);
+25088     +   %let last_parse_node = %ktrim(&last_parse_node);
+25089     +
+25090     +   * Check to make sure parse variable is present and still exists;
+25091     +   %let parsevar = ;
+25092     +   proc sql noprint;
+25093     +    select parsevar into :parsevar
+25094     +    from &em_lib..&last_filter_node._tmconfig;
+25095     +    quit;
+25096     +
+25097     +    *check for dropped parsevar on input dataset;
+25098     +       %let parsevarOK= ;
+25099     +       %let parsevarN=%kupcase(%ktrim(&parsevar));
+25100     +       data _null_;
+25101     +         set &em_variableset(where=(kupcase(NAME)="&parsevarN" and USE in('Y' 'D')));
+25102     +         if (ROLE='TEXT' or ROLE='TEXTLOC') then call symput('parsevarOK', strip(ROLE));
+25103     +         run;
+25104     +       %if(&parsevarOK eq ) %then %do;
+25105     +          %let EMEXCEPTIONSTRING = EMTOOL.NOPARSINGVAR;
+25106     +          %goto end_macro;
+25107     +          %end;
+25108     +%end_macro:
+25109     +
+25110     +%mend tm_get_last_filter;
+NOTE: %INCLUDE (level 1) ending.
+MPRINT(TM_GET_LAST_FILTER):   * find last filter or text parse node if no filter node. ;
+MPRINT(TM_GET_LAST_FILTER):   proc sql noprint;
+MPRINT(TM_GET_LAST_FILTER):   select data into :last_parse_node from EMWS1.TextTopic_last_tm_nodes where key="LastTextParsing";
+MPRINT(TM_GET_LAST_FILTER):   select data into :last_filter_node from EMWS1.TextTopic_last_tm_nodes where key="LastTextFilter";
+MPRINT(TM_GET_LAST_FILTER):   select data into :last_prescore_node from EMWS1.TextTopic_last_tm_nodes where kupcase(key)="PRESCORECODE";
+MPRINT(TM_GET_LAST_FILTER):   quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(TM_GET_LAST_FILTER):   * Check to make sure parse variable is present and still exists;
+MPRINT(TM_GET_LAST_FILTER):   proc sql noprint;
+MPRINT(TM_GET_LAST_FILTER):   select parsevar into :parsevar from EMWS1.TextFilter_tmconfig;
+MPRINT(TM_GET_LAST_FILTER):   quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(TM_GET_LAST_FILTER):   *check for dropped parsevar on input dataset;
+MPRINT(TM_GET_LAST_FILTER):   data _null_;
+MPRINT(TM_GET_LAST_FILTER):   set EMWS1.TextTopic_VariableSet(where=(kupcase(NAME)="ADJUSTERNOTES" and USE in('Y' 'D')));
+MPRINT(TM_GET_LAST_FILTER):   if (ROLE='TEXT' or ROLE='TEXTLOC') then call symput('parsevarOK', strip(ROLE));
+MPRINT(TM_GET_LAST_FILTER):   run;
+
+NOTE: There were 1 observations read from the data set EMWS1.TEXTTOPIC_VARIABLESET.
+      WHERE (KUPCASE(NAME)='ADJUSTERNOTES') and USE in ('D', 'Y');
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(SCORE):  ;
+MPRINT(SCORE):   * options mstored sasmstore=sashelp;
+MPRINT(SCORE):   filename temp catalog 'sashelp.emtxtext.row_pivot_normalize.source';
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMTXTEXT.ROW_PIVOT_NORMALIZE.SOURCE.
+25111     +/* ****************************************************************
+25112     + * Copyright (C) 1996 by SAS Institute Inc., Cary, NC 27513
+25113     + *
+25114     + * Name:             row_pivot_normalize_docs.sas
+25115     + * Product:          SAS/GRAPH
+25116     + * Language:         Sas
+25117     + * Script:
+25118     + *
+25119     + * Usage:
+25120     + *
+25121     + * Purpose:          To output a new out table that is normalized so that each
+25122     + *  row is normalized so "on average" the sums of squares of the _count_ is 1.
+25123     + *
+25124     + * History:
+25125     + * 05May09 Initial Coding
+25126     + *
+25127     + * Notes:
+25128     + *
+25129     + * Last Modified By:
+25130     + * Last Modified On: Thu Jan 06 17:08:35 2011
+25131     + *
+25132     + * End
+25133     + * ************************************************************** */
+25134     +%macro row_pivot_normalize(transds=,outtransds=,row=,col=,entry=,
+25135     +                           col_sumds=, pivot=.5, tmt_config= , tmt_train=1, prefix=);
+25137     +   /* Calculate sum of the squared entries for each row */
+25138     +proc summary nway data=&transds;
+25139     +   class &row;
+25140     +   var &entry;
+25141     +   output out=_sqrowvals uss=;
+25142     +   run;
+25144     +   /* Put into &meandiv what the average euclidean length is across rows */
+25147     +%if &tmt_train = 1  %then %do;
+25148     +   proc sql noprint;
+25149     +      select mean(sqrt(&entry)) into :meaneuclen
+25150     +      from _sqrowvals;
+25151     +   quit;
+25152     +   %if &tmt_config ne %then %do;
+25153     +      *populate the config file with the mean value;
+25154     +      data &tmt_config;
+25155     +         set &tmt_config;
+25156     +         &prefix._meaneuclen= symget('meaneuclen');
+25157     +      run;
+25158     +   %end;
+25159     +    data _sqrowvals;
+25160     +      set _sqrowvals;
+25161     +      meaneuclen=symget('meaneuclen');
+25162     +      divisor = meaneuclen + (sqrt(&entry) - meaneuclen)*&pivot;
+25163     +      drop meaneuclen;
+25164     +   run;
+25167     +%end;
+25168     +%else %do;
+25169     +      * grab the mean value from the config file  and put into meaneuclien;
+25170     +   data _null_;
+25171     +      set &tmt_config;
+25172     +      call symput('meaneuclen',&prefix._meaneuclen);
+25173     +   run;
+25174     +    data _sqrowvals;
+25175     +      set _sqrowvals;
+25176     +      meaneuclen=symget('meaneuclen');
+25177     +      divisor = meaneuclen + (sqrt(&entry) - meaneuclen)*&pivot;
+25178     +   run;
+25180     +%end;
+25185     +proc sql noprint;
+25186     +   create table &outtransds as
+25187     +      select a.&row,a.&col,a.&entry / divisor as &entry
+25188     +      from &transds as a,_sqrowvals as b
+25189     +      where a.&row=b.&row;
+25190     +   drop table _sqrowvals;
+25191     +         quit;
+25192     +%if &col_sumds ne %then %do;
+25193     +   proc summary nway data=&outtransds;
+25194     +   class &col;
+25195     +   var &entry;
+25196     +   output out=&col_sumds mean=;
+25197     +   run;
+25198     +%end;
+25199     +%mend row_pivot_normalize;
+NOTE: %INCLUDE (level 1) ending.
+MPRINT(SCORE):   filename temp catalog 'sashelp.emtxtext.tmt_doc_score.source';
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMTXTEXT.TMT_DOC_SCORE.SOURCE.
+25200     +/* ****************************************************************
+25201     + * Copyright (C) 2010 by SAS Institute Inc., Cary, NC 27513
+25202     + *
+25203     + * Name:             tmt_doc_score.sas
+25204     + * Support:          cox  James A. Cox
+25205     + * Product:          SAS Text Miner
+25206     + * Language:         Sas
+25207     + * Script:
+25208     + *
+25209     + * Usage:
+25210     + *
+25211     + * Purpose:  To score documents based on contents of a topic table (&topicds), a term-topic table
+25212     + *      (&termtopds), and a weighted "out" table (&outds).  A topic weight is a weighted sum of the
+25213     + *      term weights from the term-topic table  (_weight_) where such weight is above a minimum
+25214     + *      _termcutoff,  multiplied by the weighted _count_ (_count_) from the weighted "out" table,
+25215     + *      where such counts are the tfidf weighted counts.
+25216     + *
+25217     + *
+25218     + * History:
+25219     + * 01May09 Initial Coding [cox]
+25220     + * 08Nov10 Changed to use hash tables [cox]
+25221     + *
+25222     + * Notes:
+25223     + *   scoring=yes is passed in in topic_score.source for both flow and saved score code.
+25224     + *       Otherwise, a blank value is passed in.
+25225     + *   docds is blank only when called from the Topic Viewer, since the new document table does
+25226     + *       not need to be recalculated until scoring time ( a view is actually displayed that joins
+25227     + *        them in the Document table part).  So when scoring is nonblank, docds is
+25228     + *       never non-blank.
+25229     + *
+25230     + *   This routine will score topics inclusive from the minimum topic number (computed internally as
+25231     + *        &_mintopic) to the maximum topic number (computed as &_maxtopic) from the input topic data
+25232     + *        set.
+25233     + *
+25234     + *
+25235     + *   If &scoring is blank, then topic variables are created for each such topic as <nodename>_#.
+25236     + *    For example, if the smallest topic number in topic table is 4 and the largest is 10, and the
+25237     + *    nodename is "texttopic", then Texttopic_4-TextTopic10 will be created on the output &newdocds.
+25238     + *    In this case, the topic table is updated for the variables _numterms and _numdocs to have the
+25239     + *    number of terms and documents that exceed their "minimum" value as indicated on the topic ds.
+25240     + *   If &scoring is nonblank, the same variables will contain either 1 (if the weighted sum >=
+25241     + *    _docCutoff) or 0 (if it is not).  In this case, variables including a raw suffix will indicate
+25242     + *   the raw values as calculated above (e.g. texttopic_raw4-texttopic_raw10).  Also, the topic ds
+25243     + *    is NOT updated when scoring.
+25244     + *
+25245     + *   If docds is passed in, then all variables are added to existing variables on the docds.  In this
+25246     + *     case, any documents that have no terms for any of the topics will have 0 for all topic variables.
+25247     + *     If docds is not passed in, of course, no concatenation is done, and topics that have no terms
+25248     + *     for any of the topics will not appear.
+25249     + *
+25250     + * Unit Tests:  These unit tests were performed satisfactorily from 11/05-11/23 on this code:
+25251     + *   Used existing topic node results to work from... this involves using an existing Text Topic Node and
+25252     + *   then rescoring the topics.  Unfortunately, it is not quite this easy since the current tmt_doc_score
+25253     + *   also normalizes the topic weights each time it is called for all current topics.  This is incorrect, which
+25254     + *   was part of the motivation for this rewrite.  I was able to verify same results using some transformations,
+25255     + *   however.
+25256     + *
+25257     + *   1. Verify that when docds= valid value, that the newdocds contains the new variables, and set to the new
+25258     + *       values when they differ from the old ones.  Also that it only has the
+25259     + *      new variables when docds is not passed in.
+25260     + *   2. Verify that when scoring=yes, the _numdocs and _numterms is not updated, but that the _# variables and
+25261     + *      the raw_# variables ARE created, and that the number of 1s in each _# variable is correct based on the
+25262     + *      document cutoffs specified.
+25263     + *   3. Verify that when scoring=, _numdocs and _numterms IS updated, but that _numterms is the same as was
+25264     + *      generated by tmt_doc_score before, and _numdocs is equal to the count of the # of 1s in each topic
+25265     + *      variable as generated in the result from 2. above.
+25266     + *   4. Verify that the results obtained using tmt_doc_score can be made equivalent to this by performing the
+25267     + *      normalization before this code is called.  This was tried for scoring=,docds=, and for scoring=y,
+25268     + *      docds=train ds, and scoring=,docds
+25269     + *   5. Verify that subsetting topics from 4-10 generate same results for those topics as for topics 1-10.  This
+25270     + *      was verified for both scoring=yes and scoring=no.
+25271     + *   6. Show that documents that contain no terms for all topics appear and generate 0s for all topic scores when
+25272     + *      docds is passed in, but don't appear when docds is not passed in.
+25273     + *
+25274     + *
+25275     + * Last Modified By:
+25276     + * Last Modified On: Tue Oct 22 15:19:28 2013
+25277     + *
+25278     + * End
+25279     + * ************************************************************** */
+25280     +%macro tmt_doc_score(termtopds=tmp_term_topics,outds=,docds=,newdocds=work.topdocs,
+25281     +                     topicds=tmp_topics, termsumds=,scoring=,prefix=_topic,
+25282     +                     pivot=.5,norm=,outpos=,topicpos=);
+25283     +%let _mintopic=1;
+25284     +
+25285     +/* Remove any duplicate topic ids before scoring */
+25286     +proc sort data=&topicds nodupkey; by _topicid;
+25287     +proc sort data=&termtopds nodupkey; by _termid _topicid; run;
+25288     +proc sql noprint;
+25289     +    select max(_topicid), min(_topicid) into :_maxtopic, :_mintopic from &topicds;
+25290     +       quit;
+25291     +%if &_mintopic eq . %then %let _mintopic=1;
+25292     +/*
+25293     +%if &scoring ne %then %do;
+25294     +    %let _mintopic=1;
+25295     +%end;
+25296     +*/
+25297     +
+25298     +%let _mintopic=%left(&_mintopic);
+25299     +%let _maxtopic=%left(&_maxtopic);
+25300     +
+25301     +/* Do the following if there are any topics to be scored */
+25302     +%if &_maxtopic >0 %then %do;
+25303     +
+25304     +%let _minlab=%ktrim(_tmlab)&_mintopic;
+25305     +%let _maxlab=%ktrim(_tmlab)&_maxtopic;
+25306     +proc sql noprint;
+25307     +    select _name into :&_minlab - :&_maxlab from &topicds;
+25308     +       quit;
+25309     +
+25310     +data &newdocds (drop=_topicid _doccutoff _termCutoff _name _cat _displaycat  _numterms _numdocs
+25311     +                _weight _termid rc _termnum_ i _count_)
+25312     +   %if &scoring= %then %do;
+25313     +      &topicds (keep=_topicid _name _cat _displaycat _numterms _numdocs _docCutoff _termCutoff)
+25314     +         %end;
+25315     +   %if &outpos ne and &topicpos ne %then %do;
+25316     +      &topicpos (keep=_topicid _document_ _offset_ _length_ _termnum_)
+25317     +         %end;
+25318     +   ;
+25319     +   if 0 then set &topicds &termtopds;
+25320     +
+25321     +   /* Create topic hash table */
+25322     +   dcl hash _topic_hash(dataset: "&topicds", ordered: "a");
+25323     +   _topic_hash.defineKey("_topicid");
+25324     +   _topic_hash.defineData("_topicid","_docCutoff","_termCutoff","_name","_cat","_numterms",
+25325     +                     "_numdocs");
+25326     +   _topic_hash.defineDone();
+25327     +
+25328     +   dcl hiter _it_topic("_topic_hash");
+25329     +
+25330     +   /* Unless we are scoring, zero out _numterms and _numdocs since we will recalculate based on
+25331     +    currently specified cutoffs
+25332     +    */
+25333     +   %if &scoring= %then %do;
+25334     +      rc=_it_topic.first();
+25335     +      do while(rc=0);
+25336     +         _numterms=0; _numdocs=0;
+25337     +         _topic_hash.replace();
+25338     +         rc=_it_topic.next();
+25339     +         end;
+25340     +      %end;
+25341     +
+25342     +   /* Create term-topic hash table */
+25343     +   dcl hash _termtopics(multidata: "Y");
+25344     +   _termtopics.defineKey("_termid");
+25345     +   _termtopics.defineData("_termid","_topicid", "_weight");
+25346     +   _termtopics.defineDone();
+25347     +
+25348     +   /* Now read in observations, and, for every one whose abs(weight) >= _termCutoff, add
+25349     +    it to _termtopics hash table and increment the _numdocs count in the topics hash table
+25350     +    */
+25351     +   do until(eof);
+25352     +      set &termtopds end=eof;
+25353     +      if _topic_hash.find() ne 0 then do;
+25354     +         put "topic " _topicid " not found in topic data set";
+25355     +         end;
+25356     +      else if abs(_weight)>= _termCutoff then do;
+25357     +
+25358     +         /* If we are not scoring, adjust the term counts */
+25359     +         %if &scoring= %then %do;
+25360     +            _numterms+1;
+25361     +            _topic_hash.replace();
+25362     +            %end;
+25363     +
+25364     +         /* Add to _termtopics */
+25365     +         _termtopics.add();
+25366     +         end;
+25367     +      end;
+25368     +
+25369     +   /* Now create document hash table. This will have one row for each document, and contain the
+25370     +      weighted topic values for each of the topics on that one row.
+25371     +    */
+25372     +   array _topic{&_mintopic:&_maxtopic} &prefix.raw&_mintopic-&prefix.raw&_maxtopic;
+25373     +   format &prefix.raw&_mintopic-&prefix.raw&_maxtopic 5.3;
+25374     +      %if &scoring ne %then %do;
+25375     +         array trunc{&_mintopic:&_maxtopic} &prefix.&_mintopic-&prefix.&_maxtopic;
+25376     +         array notrunc{&_mintopic:&_maxtopic} &prefix.raw&_mintopic-&prefix.raw&_maxtopic;
+25377     +         /* %put "using superq"; */
+25378     +         %do i=&_mintopic %to &_maxtopic;
+25379     +            /* %put &_tm_tmp; */
+25380     +            %let _tm_tmp=_1_0_%bquote(&&_tmlab&i);
+25381     +            label &prefix.&i="&_tm_tmp";
+25382     +            %let _tm_tmp=%bquote(&&_tmlab&i);
+25383     +            label &prefix.raw&i="&_tm_tmp";
+25384     +            %end;
+25385     +
+25386     +         %end;
+25387     +
+25388     +   dcl hash _doc_hash(hashexp:16,ordered: 'a');
+25389     +   _doc_hash.defineKey("_document_");
+25390     +   _doc_hash.defineData("_document_"
+25391     +                    %do i=&_mintopic %to &_maxtopic; ,"&prefix.raw&i" %end;
+25392     +                    );
+25393     +   _doc_hash.defineDone();
+25394     +
+25395     +   /* Now read in out data set */
+25396     +   eof=0;
+25397     +   do until(eof);
+25398     +      set &outds end=eof;
+25399     +
+25400     +      /* If we haven't seen this document yet, set all topic weights to zero */
+25401     +      if _doc_hash.find() ne 0 then do;
+25402     +         do i=&_mintopic to &_maxtopic;
+25403     +            _topic{i}=0;
+25404     +            end;
+25405     +         _doc_hash.add();
+25406     +         end;
+25407     +
+25408     +      /* Check to see if this term has significant weights on any topics */
+25409     +      _termid=_termnum_;
+25410     +      rc=_termtopics.find();
+25411     +      if rc = 0 then do;
+25412     +         do while(rc=0);
+25413     +            _topic{_topicid}= _topic{_topicid}+_weight*_count_;
+25414     +            rc=_termtopics.find_next();
+25415     +            end;
+25416     +         _doc_hash.replace();
+25417     +         end;
+25418     +      end;
+25419     +   _doc_hash.output(dataset: "docds");
+25420     +
+25421     +   /****************************************************************************
+25422     +    * Following is new code for tmt_doc_score_new.  Should be moved into %tmt_doc_score
+25423     +    * for 9.4
+25424     +    ****************************************************************************/
+25425     +
+25426     +   %if &outpos ne and &topicpos ne %then %do;
+25427     +   /* Now read in outpos data set */
+25428     +   eof=0;
+25429     +   do until(eof);
+25430     +      set &outpos end=eof;
+25431     +      if _doc_hash.find() = 0 then do;
+25432     +         /* Check to see if this term and document are both in the topic.  If so, output */
+25433     +         _termid=_termnum_;
+25434     +         rc=_termtopics.find();
+25435     +         do while(rc=0);
+25436     +            if _topic_hash.find()=0 then
+25437     +               if round( _topic{_topicid},.001) >= _doccutoff then output &topicpos;
+25438     +            rc=_termtopics.find_next();
+25439     +            end;
+25440     +         end;
+25441     +               else put 'document ' _document_ ' not found.';
+25442     +      end;
+25443     +
+25444     +
+25445     +    %end;
+25446     +
+25447     +   /****************************************************************************
+25448     +    * end of new code
+25449     +    ****************************************************************************/
+25450     +
+25451     +   /* Now we have info in the docds hash table for cumulative weights.  Prepare for output and
+25452     +      create numdocs for the topics hash table */
+25453     +
+25454     +   /* Note: If a docds was passed in, we load it here... this accounts for documents that have no
+25455     +      positive topic weights.  Otherwise, we process docds hash table iteratively
+25456     +    */
+25457     +   %if &docds= %then %do;
+25458     +      dcl hiter _doc_it("_doc_hash");
+25459     +      rc=_doc_itfirst();
+25460     +      do while(rc=0);
+25461     +         %end;
+25462     +      %else %do;
+25463     +         eof=0;
+25464     +         do until(eof);
+25465     +            set &docds end=eof;
+25466     +            rc=_doc_hash.find();
+25467     +            %end;
+25468     +         if rc ne 0 then
+25469     +            do i=&_mintopic to &_maxtopic;
+25470     +               _topic{i}=0; %if &scoring ne %then trunc{i} = 0;;
+25471     +               end;
+25472     +         else do _topicid=&_mintopic to &_maxtopic;
+25473     +            /* Round value to nearest thousandth */
+25474     +            _topic{_topicid}=round( _topic{_topicid},.001);
+25475     +            _topic_hash.find();
+25476     +            if _topic{_topicid} >= _doccutoff then do;
+25477     +               %if &scoring= %then %do;
+25478     +                  _numdocs=_numdocs+1;
+25479     +                  _topic_hash.replace();
+25480     +                  end;
+25481     +                  %end;
+25482     +               %else %do;
+25483     +                  trunc{_topicid} = 1;
+25484     +                  end;
+25485     +            else trunc{_topicid} = 0;
+25486     +            %end;
+25487     +         end;
+25488     +         output &newdocds;
+25489     +       %if &docds= %then rc=_doc_itnext();;
+25490     +       end;
+25491     +
+25492     +   %if &scoring= %then %do;
+25493     +      eof=0;
+25494     +      do until(eof);
+25495     +         set &topicds end=eof;
+25496     +         rc=_topic_hash.find();
+25497     +         output &topicds;
+25498     +         end;
+25499     +      %end;
+25500     +   * _termtopics.output(dataset: "&termtopds");
+25501     +   run;
+25502     +
+25503     +/* proc sort data=&termtopds; by _topicid _termid; run; */
+25504     +%end;
+25505     +%else %if &docds ne %then %do;
+25506     +    /* If there were no documents,set the new document table to contain the old documents */
+25507     +    data &newdocds;
+25508     +        set &docds;
+25509     +    run;
+25510     +
+25511     +%end;
+25512     +
+25513     +%mend;
+NOTE: %INCLUDE (level 1) ending.
+MPRINT(SCORE):   filename temp catalog 'sashelp.emtxtext.tm_parse_score.source';
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMTXTEXT.TM_PARSE_SCORE.SOURCE.
+25514     +/* ****************************************************************
+25515     + * Copyright (C) 2009 by SAS Institute Inc., Cary, NC 27513
+25516     + *
+25517     + * Name:             tm_parse_score.sas
+25518     + * Product:          SAS Text Miner
+25519     + * Language:         Sas
+25520     + * Script:
+25521     + *
+25522     + * Usage:
+25523     + *
+25524     + * Purpose:  Used to score new documents.
+25525     + *
+25526     + * History:
+25527     + * 11Jun09 Initial Coding
+25528     + *
+25529     + * Notes:
+25530     + *
+25531     + * Last Modified By:
+25532     + * Last Modified On: Tue May 12 15:06:35 2015
+25533     + *
+25534     + * End
+25535     + * ************************************************************** */
+25536     +* options mstored sasmstore=sashelp;
+MPRINT(SCORE):   * options mstored sasmstore=sashelp;
+25537     +
+25538     +%macro tm_parse_score(nodeid=,termds=,multids=,configds=,outds=,prefile=,scorefile=,
+25539     +                      where_phrase=,need_search=0);
+25540     +proc sql noprint;
+25541     +   select parsevar into :_tm_parseVar from &configds;
+25542     +   quit;
+25543     +
+25544     +
+25545     +%let _hasmultitermdata=0;
+25546     +data _config;
+25547     +   set &configds;
+25548     +run;
+25549     +%if %sysfunc(exist(&multids))  %then %do;
+25550     +    proc sql noprint;
+25551     +       select count(*) into: _numMultis
+25552     +       from &multids;
+25553     +    quit;
+25554     +   %if &_numMultis >0 %then %do;
+25555     +      %let _hasmultitermdata =1;
+25556     +   %end;
+25557     +   %else %do;
+25558     +      data _config;
+25559     +         length multiterm $ 1;
+25560     +         set _config;
+25561     +         multiterm="";
+25562     +      run;
+25563     +      /* update &configds, which may change configds*/
+25564     +      data  &configds;
+25565     +        set _config;
+25566     +      run;
+25567     +   %end;
+25568     +
+25569     +%end;
+25570     +
+25571     +
+25572     +   %if %eval(&syscc)>4 %then %do;
+25573     +      %let  EMEXCEPTIONSTRING = exception.server.EMTOOL.GENERICRUNTIMEEXCEPTION;
+25574     +      %return;
+25575     +   %end;
+25576     +
+25577     +filename _tmcode "&prefile";
+25578     +
+25579     +data _null_;
+25580     +   length string $256 string2 $256 string3 $256;
+25581     +   file _tmcode mod;
+25582     +   put;
+25583     +     %if &lastprescore eq %then %do;
+25584     +      put 'libname termloc "' "&em_term_loc" '";';
+25585     +      put;
+25586     +     %end;
+25587     +
+25588     +   %if &_hasmultitermdata > 0 %then %do;
+25589     +
+25590     +      string='%let _multifile=' || '%SYSFUNC(PATHNAME(work))'||'/'||"&NODEID._multi.txt;";
+25591     +      put string;
+25592     +      string='%let _multiSLength='||' %klength(&_multifile);';
+25593     +      put string;
+25594     +      put;
+25595     +
+25596     +      put "data &configds;";
+25597     +      put 'length multiterm $ &_multiSLength;';
+25598     +      put "set &configds;";
+25599     +      string ='multiterm='|| 'ktrim(symget('||"'"||'_multifile'||"'));";
+25600     +      put string;
+25601     +      put 'run;';
+25602     +      put;
+25603     +
+25604     +      put 'proc sql noprint;';
+25605     +      put     'select multiencoding into: _tmmultiencoding';
+25606     +      put     "from &configds;";
+25607     +      put 'quit;';
+25608     +
+25609     +      put;
+25610     +
+25611     +      string= 'filename _multout '||'"'|| '&_multifile'||'";';
+25612     +      put string;
+25613     +      put 'data _NULL_;';
+25614     +      string= "set &multids;";
+25615     +      put string;
+25616     +      string= 'file _multout encoding= '||'"'|| '%trim(&_tmmultiencoding)'||'";';
+25617     +      put string;
+25618     +      string = 'put term '||"'"|| ":3:"||"'"||' role;';
+25619     +      put string;
+25620     +      put 'run;';
+25621     +
+25622     +   %end;
+25623     +
+25624     + run;
+25625     +
+25626     +
+25627     + filename _tmcode "&scorefile";
+25628     +    data _NULL_;
+25629     +        file _tmcode;
+25630     +        length string $200;
+25631     +
+25632     +          /*Fix for S1155404: data step between tgscore functions*/
+25633     +        %if %symexist(last_prescore_node) %then %do;
+25634     +          %if (&last_filter_node eq &last_prescore_node and &last_filter_node ne &last_parse_node) %then %do;
+25635     +             put;
+25636     +             put 'data &em_score_output; set &em_score_output;';
+25637     +             put;
+25638     +          %end;
+25639     +        %end;
+25640     +
+25641     +        %if &where_phrase ne %then %do; put "where &where_phrase;"; %end;
+25642     +        put '_document_ = _n_;';
+25643     +        string='rc=tgscore(' || "%trim(&_tm_parseVar)" || ',"' || "&configds" ||
+25644     +           '", "' || "&termds" || '", "' || "&outds" || '", "' || '&_multifile' || '", ' ||
+25645     +
+25646     +           "&need_search);";
+25647     +        put string;
+25648     +        put 'drop rc;';
+25649     +    run;
+25650     +filename _tmcode;
+25651     +
+25652     +
+25653     +%mend;
+25654     +
+25655     +/*
+25656     + filename temp catalog 'sashelp.emutil.em_copyfile.source';
+25657     + %include temp;
+25658     + %tm_parse_score(nodeid=node1,termds=unittest.textparsing_terms,
+25659     +configds=unittest.textparsing_tmconfig,
+25660     + outds=work._tmout, prefile=c:\pre.sas,scorefile=c:\score.sas,
+25661     + need_search=1);
+25662     +%include "c:\pre.sas";
+25663     + data work._scored;
+25664     +%include "c:\score.sas";
+25665     + run;
+25666     +
+25667     + */
+NOTE: %INCLUDE (level 1) ending.
+MPRINT(SCORE):   filename temp catalog 'sashelp.emtxtext.tm_data2code.source';
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMTXTEXT.TM_DATA2CODE.SOURCE.
+25668     +/* ****************************************************************
+25669     + * Copyright (C) 2009 by SAS Institute Inc., Cary, NC 27513
+25670     + *
+25671     + * Name:             tm_data2code.sas
+25672     + * Product:          SAS Text Miner
+25673     + * Language:         Sas
+25674     + * Script:
+25675     + *
+25676     + * Usage:  %tm_data2code(data=, outdata=WORK.DATA);
+25677     + *
+25678     + * Purpose:          To do a data2code (like %em_data2code()) but allow the input data
+25679     + *  to be view or data.
+25680     + *
+25681     + *    PARAMETERS:
+25682     + *        DATA        = data set
+25683     + *        OUTDATA     = out data set
+25684     + *        OUTFILE     = file where to saved the code
+25685     + *        APPEND      = append (Y/N)
+25686     + * History:
+25687     + * 11Jun09 Initial Coding
+25688     + *
+25689     + * Notes:
+25690     + *
+25691     + * Last Modified By:
+25692     + * Last Modified On: Thu Jul 23 11:00:06 2009
+25693     + *
+25694     + * End
+25695     + * ************************************************************** */
+25696     +%macro tm_data2code(data=, outdata=WORK.DATA, outfile=, append=N);
+25697     +%if &data eq %then %do;
+25698     +   %put ERROR: Data set not defined;
+25699     +   %end;
+25700     +%else %do;
+25701     +   %if (^%sysfunc(exist(&data)) and ^%sysfunc(exist(&data, view))) %then %do;
+25702     +       %put ERROR: Data set does not exist;
+25703     +       %end;
+25704     +   %else %do;
+25705     +      %global em_data em_outdata em_codefile em_append;
+25706     +      %let em_data=&data;
+25707     +      %let em_outdata=&outdata;
+25708     +      %let em_codefile=&outfile;
+25709     +      %let em_append=&append;
+25710     +      proc display c=sashelp.emutil.data2code.scl; run;
+25711     +      %end;
+25712     +   %end;
+25713     +%mend;
+NOTE: %INCLUDE (level 1) ending.
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):   data EMWS1.TextTopic_repTopics(drop=_cat);
+MPRINT(SCORE):   set EMWS1.TextTopic_topics;
+MPRINT(SCORE):   label _displayCat = "Category";
+MPRINT(SCORE):   select(ksubstr(_cat,1,1));
+MPRINT(SCORE):   when('S') _displayCat = "Single";
+MPRINT(SCORE):   when('M') _displayCat = "Multiple";
+MPRINT(SCORE):   when('U') _displayCat = "User";
+MPRINT(SCORE):   otherwise;
+MPRINT(SCORE):   end;
+MPRINT(SCORE):   run;
+
+NOTE: There were 6 observations read from the data set EMWS1.TEXTTOPIC_TOPICS.
+NOTE: The data set EMWS1.TEXTTOPIC_REPTOPICS has 6 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.04 seconds
+      
+
+MPRINT(SCORE):   data _null_;
+MPRINT(SCORE):   cellwgt="LOG";
+MPRINT(SCORE):   set EMWS1.TextFilter_tmconfig;
+MPRINT(SCORE):   call symput('cellwgt',cellwgt);
+MPRINT(SCORE):   run;
+
+NOTE: There were 1 observations read from the data set EMWS1.TEXTFILTER_TMCONFIG.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):   proc sql noprint;
+MPRINT(SCORE):   create table work._termtopics as select a.* from EMWS1.TextTopic_termtopics as a, EMWS1.TextTopic_topics as b where a._topicid=b._topicid and abs(_weight)>=_termCutoff ;
+NOTE: Table WORK._TERMTOPICS created, with 49 rows and 3 columns.
+
+MPRINT(SCORE):   select parsevar into :_tm_parseVar from EMWS1.TextFilter_tmconfig;
+MPRINT(SCORE):   quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(TMT_SCORE):   data EMWS1.TextTopic_tmout;
+MPRINT(TMT_SCORE):   set EMWS1.TextTopic_tmout_normalized;
+MPRINT(TMT_SCORE):   run;
+
+NOTE: There were 1643 observations read from the data set EMWS1.TEXTTOPIC_TMOUT_NORMALIZED.
+NOTE: The data set EMWS1.TEXTTOPIC_TMOUT has 1643 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(TMT_DOC_SCORE):   proc sort data=EMWS1.TextTopic_topics nodupkey;
+MPRINT(TMT_DOC_SCORE):   by _topicid;
+NOTE: There were 6 observations read from the data set EMWS1.TEXTTOPIC_TOPICS.
+NOTE: 0 observations with duplicate key values were deleted.
+NOTE: The data set EMWS1.TEXTTOPIC_TOPICS has 6 observations and 8 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(TMT_DOC_SCORE):   proc sort data=work._termtopics nodupkey;
+MPRINT(TMT_DOC_SCORE):   by _termid _topicid;
+MPRINT(TMT_DOC_SCORE):   run;
+
+NOTE: There were 49 observations read from the data set WORK._TERMTOPICS.
+NOTE: 0 observations with duplicate key values were deleted.
+NOTE: The data set WORK._TERMTOPICS has 49 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(TMT_DOC_SCORE):   proc sql noprint;
+MPRINT(TMT_DOC_SCORE):   select max(_topicid), min(_topicid) into :_maxtopic, :_mintopic from EMWS1.TextTopic_topics;
+MPRINT(TMT_DOC_SCORE):   quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(TMT_DOC_SCORE):   proc sql noprint;
+MPRINT(TMT_DOC_SCORE):   select _name into :_tmlab1 - :_tmlab6 from EMWS1.TextTopic_topics;
+MPRINT(TMT_DOC_SCORE):   quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(TMT_DOC_SCORE):   data EMWS1.TextTopic_TRAIN (drop=_topicid _doccutoff _termCutoff _name _cat _displaycat _numterms _numdocs _weight _termid rc _termnum_ i _count_) ;
+MPRINT(TMT_DOC_SCORE):   if 0 then set EMWS1.TextTopic_topics work._termtopics;
+MPRINT(TMT_DOC_SCORE):   dcl hash _topic_hash(dataset: "EMWS1.TextTopic_topics", ordered: "a");
+MPRINT(TMT_DOC_SCORE):   _topic_hash.defineKey("_topicid");
+MPRINT(TMT_DOC_SCORE):   _topic_hash.defineData("_topicid","_docCutoff","_termCutoff","_name","_cat","_numterms", "_numdocs");
+MPRINT(TMT_DOC_SCORE):   _topic_hash.defineDone();
+MPRINT(TMT_DOC_SCORE):   dcl hiter _it_topic("_topic_hash");
+MPRINT(TMT_DOC_SCORE):   dcl hash _termtopics(multidata: "Y");
+MPRINT(TMT_DOC_SCORE):   _termtopics.defineKey("_termid");
+MPRINT(TMT_DOC_SCORE):   _termtopics.defineData("_termid","_topicid", "_weight");
+MPRINT(TMT_DOC_SCORE):   _termtopics.defineDone();
+MPRINT(TMT_DOC_SCORE):   do until(eof);
+MPRINT(TMT_DOC_SCORE):   set work._termtopics end=eof;
+MPRINT(TMT_DOC_SCORE):   if _topic_hash.find() ne 0 then do;
+MPRINT(TMT_DOC_SCORE):   put "topic " _topicid " not found in topic data set";
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   else if abs(_weight)>= _termCutoff then do;
+MPRINT(TMT_DOC_SCORE):   _termtopics.add();
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   array _topic{1:6} TextTopic_raw1-TextTopic_raw6;
+MPRINT(TMT_DOC_SCORE):   format TextTopic_raw1-TextTopic_raw6 5.3;
+MPRINT(TMT_DOC_SCORE):   array trunc{1:6} TextTopic_1-TextTopic_6;
+MPRINT(TMT_DOC_SCORE):   array notrunc{1:6} TextTopic_raw1-TextTopic_raw6;
+MPRINT(TMT_DOC_SCORE):   label TextTopic_1= "_1_0_vehicle,+strike,+neck,ambulance,driving";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_raw1= "vehicle,+strike,+neck,ambulance,driving";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_2= "_1_0_+employee,+finger,+unload,+right,+door";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_raw2= "+employee,+finger,+unload,+right,+door";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_3= "_1_0_+fall,+shoulder,+neck,+injure,+head";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_raw3= "+fall,+shoulder,+neck,+injure,+head";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_4= "_1_0_+car,+hit,+drive,+claimant,+push";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_raw4= "+car,+hit,+drive,+claimant,+push";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_5= "_1_0_machine,+strike,+employee,+head,+work";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_raw5= "machine,+strike,+employee,+head,+work";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_6= "_1_0_accident,+involve,+injury,+employee,+multiple";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_raw6= "accident,+involve,+injury,+employee,+multiple";
+MPRINT(TMT_DOC_SCORE):   dcl hash _doc_hash(hashexp:16,ordered: 'a');
+MPRINT(TMT_DOC_SCORE):   _doc_hash.defineKey("_document_");
+MPRINT(TMT_DOC_SCORE):   _doc_hash.defineData("_document_" ,"TextTopic_raw1" ,"TextTopic_raw2" ,"TextTopic_raw3" ,"TextTopic_raw4" ,"TextTopic_raw5" ,"TextTopic_raw6" );
+MPRINT(TMT_DOC_SCORE):   _doc_hash.defineDone();
+MPRINT(TMT_DOC_SCORE):   eof=0;
+MPRINT(TMT_DOC_SCORE):   do until(eof);
+MPRINT(TMT_DOC_SCORE):   set EMWS1.TextTopic_tmout end=eof;
+MPRINT(TMT_DOC_SCORE):   if _doc_hash.find() ne 0 then do;
+MPRINT(TMT_DOC_SCORE):   do i=1 to 6;
+MPRINT(TMT_DOC_SCORE):   _topic{i}=0;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   _doc_hash.add();
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   _termid=_termnum_;
+MPRINT(TMT_DOC_SCORE):   rc=_termtopics.find();
+MPRINT(TMT_DOC_SCORE):   if rc = 0 then do;
+MPRINT(TMT_DOC_SCORE):   do while(rc=0);
+MPRINT(TMT_DOC_SCORE):   _topic{_topicid}= _topic{_topicid}+_weight*_count_;
+MPRINT(TMT_DOC_SCORE):   rc=_termtopics.find_next();
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   _doc_hash.replace();
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   _doc_hash.output(dataset: "docds");
+MPRINT(TMT_DOC_SCORE):   eof=0;
+MPRINT(TMT_DOC_SCORE):   do until(eof);
+MPRINT(TMT_DOC_SCORE):   set EMWS1.TextCluster_TRAIN end=eof;
+MPRINT(TMT_DOC_SCORE):   rc=_doc_hash.find();
+MPRINT(TMT_DOC_SCORE):   if rc ne 0 then do i=1 to 6;
+MPRINT(TMT_DOC_SCORE):   _topic{i}=0;
+MPRINT(TMT_DOC_SCORE):   trunc{i} = 0;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   else do _topicid=1 to 6;
+MPRINT(TMT_DOC_SCORE):   _topic{_topicid}=round( _topic{_topicid},.001);
+MPRINT(TMT_DOC_SCORE):   _topic_hash.find();
+MPRINT(TMT_DOC_SCORE):   if _topic{_topicid} >= _doccutoff then do;
+MPRINT(TMT_DOC_SCORE):   trunc{_topicid} = 1;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   else trunc{_topicid} = 0;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   output EMWS1.TextTopic_TRAIN;
+MPRINT(TMT_DOC_SCORE):  ;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   * _termtopics.output(dataset: "&termtopds");
+MPRINT(TMT_DOC_SCORE):   run;
+
+NOTE: There were 6 observations read from the data set EMWS1.TEXTTOPIC_TOPICS.
+NOTE: The data set WORK.DOCDS has 298 observations and 7 variables.
+NOTE: There were 6 observations read from the data set EMWS1.TEXTTOPIC_TOPICS.
+NOTE: There were 49 observations read from the data set WORK._TERMTOPICS.
+NOTE: There were 1643 observations read from the data set EMWS1.TEXTTOPIC_TMOUT.
+NOTE: There were 302 observations read from the data set EMWS1.TEXTCLUSTER_TRAIN.
+NOTE: The data set EMWS1.TEXTTOPIC_TRAIN has 302 observations and 46 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.08 seconds
+      cpu time            0.07 seconds
+      
+
+MPRINT(TMT_SCORE):  ;
+MPRINT(TMT_SCORE):   proc sql noprint;
+MPRINT(TMT_SCORE):   create view EMWS1.TextTopic_TRANSACTION as select ktrim(term) || '|' || role as _item_, b.* from EMWS1.TextTopic_weightedterms as a, EMWS1.TextTopic_weightedtmout as b where b._termnum_=a.key and a._ispar ne '.' order by b._termnum_, 
+b._document_ ;
+NOTE: SQL view EMWS1.TEXTTOPIC_TRANSACTION has been defined.
+MPRINT(TMT_SCORE):   quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(SCORE):  ;
+MPRINT(TMT_SCORE):   proc tmutil data=EMWS1.TextFilter_validout key=EMWS1.TextFilter_terms;
+MPRINT(TMT_SCORE):   control init release;
+MPRINT(TMT_SCORE):   weight cellwgt=LOG in_weight=EMWS1.TextTopic_weightedterms(keep=key weight);
+MPRINT(TMT_SCORE):   output out=work._weighted_tmout;
+MPRINT(TMT_SCORE):   run;
+
+NOTE: There were 1392 observations read from the data set EMWS1.TEXTFILTER_VALIDOUT.
+NOTE: There were 421 observations read from the data set EMWS1.TEXTFILTER_TERMS_DATA.
+      WHERE KEEP='Y';
+NOTE: There were 1442 observations read from the data set EMWS1.TEXTFILTER_TERM_STRINGS.
+NOTE: There were 184 observations read from the data set EMWS1.TEXTTOPIC_WEIGHTEDTERMS.
+NOTE: The data set WORK._WEIGHTED_TMOUT has 1392 observations and 3 variables.
+NOTE: PROCEDURE TMUTIL used (Total process time):
+      real time           0.15 seconds
+      cpu time            0.07 seconds
+      
+
+MPRINT(ROW_PIVOT_NORMALIZE):   proc summary nway data=work._weighted_tmout;
+MPRINT(ROW_PIVOT_NORMALIZE):   class _document_;
+MPRINT(ROW_PIVOT_NORMALIZE):   var _count_;
+MPRINT(ROW_PIVOT_NORMALIZE):   output out=_sqrowvals uss=;
+MPRINT(ROW_PIVOT_NORMALIZE):   run;
+
+NOTE: There were 1392 observations read from the data set WORK._WEIGHTED_TMOUT.
+NOTE: The data set WORK._SQROWVALS has 303 observations and 4 variables.
+NOTE: PROCEDURE SUMMARY used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+
+MPRINT(ROW_PIVOT_NORMALIZE):   * grab the mean value from the config file and put into meaneuclien;
+MPRINT(ROW_PIVOT_NORMALIZE):   data _null_;
+MPRINT(ROW_PIVOT_NORMALIZE):   set EMWS1.TextFilter_tmconfig;
+MPRINT(ROW_PIVOT_NORMALIZE):   call symput('meaneuclen',TextTopic_meaneuclen);
+MPRINT(ROW_PIVOT_NORMALIZE):   run;
+
+NOTE: There were 1 observations read from the data set EMWS1.TEXTFILTER_TMCONFIG.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(ROW_PIVOT_NORMALIZE):   data _sqrowvals;
+MPRINT(ROW_PIVOT_NORMALIZE):   set _sqrowvals;
+MPRINT(ROW_PIVOT_NORMALIZE):   meaneuclen=symget('meaneuclen');
+MPRINT(ROW_PIVOT_NORMALIZE):   divisor = meaneuclen + (sqrt(_count_) - meaneuclen)*0.7;
+MPRINT(ROW_PIVOT_NORMALIZE):   run;
+
+NOTE: Character values have been converted to numeric values at the places given by: (Line):(Column).
+      45:109   45:138   
+NOTE: There were 303 observations read from the data set WORK._SQROWVALS.
+NOTE: The data set WORK._SQROWVALS has 303 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(ROW_PIVOT_NORMALIZE):   proc sql noprint;
+MPRINT(ROW_PIVOT_NORMALIZE):   create table EMWS1.TextTopic_validout as select a._document_,a._termnum_,a._count_ / divisor as _count_ from work._weighted_tmout as a,_sqrowvals as b where a._document_=b._document_;
+NOTE: Table EMWS1.TEXTTOPIC_VALIDOUT created, with 1392 rows and 3 columns.
+
+MPRINT(ROW_PIVOT_NORMALIZE):   drop table _sqrowvals;
+NOTE: Table WORK._SQROWVALS has been dropped.
+MPRINT(ROW_PIVOT_NORMALIZE):   quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(ROW_PIVOT_NORMALIZE):   proc summary nway data=EMWS1.TextTopic_validout;
+MPRINT(ROW_PIVOT_NORMALIZE):   class _termnum_;
+MPRINT(ROW_PIVOT_NORMALIZE):   var _count_;
+MPRINT(ROW_PIVOT_NORMALIZE):   output out=work._termsumds mean=;
+MPRINT(ROW_PIVOT_NORMALIZE):   run;
+
+NOTE: There were 1392 observations read from the data set EMWS1.TEXTTOPIC_VALIDOUT.
+NOTE: The data set WORK._TERMSUMDS has 157 observations and 4 variables.
+NOTE: PROCEDURE SUMMARY used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.06 seconds
+      
+
+MPRINT(TMT_SCORE):  ;
+MPRINT(TMT_DOC_SCORE):   proc sort data=EMWS1.TextTopic_topics nodupkey;
+MPRINT(TMT_DOC_SCORE):   by _topicid;
+NOTE: Input data set is already sorted, no sorting done.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(TMT_DOC_SCORE):   proc sort data=work._termtopics nodupkey;
+MPRINT(TMT_DOC_SCORE):   by _termid _topicid;
+MPRINT(TMT_DOC_SCORE):   run;
+
+NOTE: Input data set is already sorted, no sorting done.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(TMT_DOC_SCORE):   proc sql noprint;
+MPRINT(TMT_DOC_SCORE):   select max(_topicid), min(_topicid) into :_maxtopic, :_mintopic from EMWS1.TextTopic_topics;
+MPRINT(TMT_DOC_SCORE):   quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(TMT_DOC_SCORE):   proc sql noprint;
+MPRINT(TMT_DOC_SCORE):   select _name into :_tmlab1 - :_tmlab6 from EMWS1.TextTopic_topics;
+MPRINT(TMT_DOC_SCORE):   quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(TMT_DOC_SCORE):   data EMWS1.TextTopic_VALIDATE (drop=_topicid _doccutoff _termCutoff _name _cat _displaycat _numterms _numdocs _weight _termid rc _termnum_ i _count_) ;
+MPRINT(TMT_DOC_SCORE):   if 0 then set EMWS1.TextTopic_topics work._termtopics;
+MPRINT(TMT_DOC_SCORE):   dcl hash _topic_hash(dataset: "EMWS1.TextTopic_topics", ordered: "a");
+MPRINT(TMT_DOC_SCORE):   _topic_hash.defineKey("_topicid");
+MPRINT(TMT_DOC_SCORE):   _topic_hash.defineData("_topicid","_docCutoff","_termCutoff","_name","_cat","_numterms", "_numdocs");
+MPRINT(TMT_DOC_SCORE):   _topic_hash.defineDone();
+MPRINT(TMT_DOC_SCORE):   dcl hiter _it_topic("_topic_hash");
+MPRINT(TMT_DOC_SCORE):   dcl hash _termtopics(multidata: "Y");
+MPRINT(TMT_DOC_SCORE):   _termtopics.defineKey("_termid");
+MPRINT(TMT_DOC_SCORE):   _termtopics.defineData("_termid","_topicid", "_weight");
+MPRINT(TMT_DOC_SCORE):   _termtopics.defineDone();
+MPRINT(TMT_DOC_SCORE):   do until(eof);
+MPRINT(TMT_DOC_SCORE):   set work._termtopics end=eof;
+MPRINT(TMT_DOC_SCORE):   if _topic_hash.find() ne 0 then do;
+MPRINT(TMT_DOC_SCORE):   put "topic " _topicid " not found in topic data set";
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   else if abs(_weight)>= _termCutoff then do;
+MPRINT(TMT_DOC_SCORE):   _termtopics.add();
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   array _topic{1:6} TextTopic_raw1-TextTopic_raw6;
+MPRINT(TMT_DOC_SCORE):   format TextTopic_raw1-TextTopic_raw6 5.3;
+MPRINT(TMT_DOC_SCORE):   array trunc{1:6} TextTopic_1-TextTopic_6;
+MPRINT(TMT_DOC_SCORE):   array notrunc{1:6} TextTopic_raw1-TextTopic_raw6;
+MPRINT(TMT_DOC_SCORE):   label TextTopic_1= "_1_0_vehicle,+strike,+neck,ambulance,driving";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_raw1= "vehicle,+strike,+neck,ambulance,driving";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_2= "_1_0_+employee,+finger,+unload,+right,+door";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_raw2= "+employee,+finger,+unload,+right,+door";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_3= "_1_0_+fall,+shoulder,+neck,+injure,+head";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_raw3= "+fall,+shoulder,+neck,+injure,+head";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_4= "_1_0_+car,+hit,+drive,+claimant,+push";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_raw4= "+car,+hit,+drive,+claimant,+push";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_5= "_1_0_machine,+strike,+employee,+head,+work";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_raw5= "machine,+strike,+employee,+head,+work";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_6= "_1_0_accident,+involve,+injury,+employee,+multiple";
+MPRINT(TMT_DOC_SCORE):   label TextTopic_raw6= "accident,+involve,+injury,+employee,+multiple";
+MPRINT(TMT_DOC_SCORE):   dcl hash _doc_hash(hashexp:16,ordered: 'a');
+MPRINT(TMT_DOC_SCORE):   _doc_hash.defineKey("_document_");
+MPRINT(TMT_DOC_SCORE):   _doc_hash.defineData("_document_" ,"TextTopic_raw1" ,"TextTopic_raw2" ,"TextTopic_raw3" ,"TextTopic_raw4" ,"TextTopic_raw5" ,"TextTopic_raw6" );
+MPRINT(TMT_DOC_SCORE):   _doc_hash.defineDone();
+MPRINT(TMT_DOC_SCORE):   eof=0;
+MPRINT(TMT_DOC_SCORE):   do until(eof);
+MPRINT(TMT_DOC_SCORE):   set EMWS1.TextTopic_validout end=eof;
+MPRINT(TMT_DOC_SCORE):   if _doc_hash.find() ne 0 then do;
+MPRINT(TMT_DOC_SCORE):   do i=1 to 6;
+MPRINT(TMT_DOC_SCORE):   _topic{i}=0;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   _doc_hash.add();
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   _termid=_termnum_;
+MPRINT(TMT_DOC_SCORE):   rc=_termtopics.find();
+MPRINT(TMT_DOC_SCORE):   if rc = 0 then do;
+MPRINT(TMT_DOC_SCORE):   do while(rc=0);
+MPRINT(TMT_DOC_SCORE):   _topic{_topicid}= _topic{_topicid}+_weight*_count_;
+MPRINT(TMT_DOC_SCORE):   rc=_termtopics.find_next();
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   _doc_hash.replace();
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   _doc_hash.output(dataset: "docds");
+MPRINT(TMT_DOC_SCORE):   eof=0;
+MPRINT(TMT_DOC_SCORE):   do until(eof);
+MPRINT(TMT_DOC_SCORE):   set EMWS1.TextCluster_VALIDATE end=eof;
+MPRINT(TMT_DOC_SCORE):   rc=_doc_hash.find();
+MPRINT(TMT_DOC_SCORE):   if rc ne 0 then do i=1 to 6;
+MPRINT(TMT_DOC_SCORE):   _topic{i}=0;
+MPRINT(TMT_DOC_SCORE):   trunc{i} = 0;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   else do _topicid=1 to 6;
+MPRINT(TMT_DOC_SCORE):   _topic{_topicid}=round( _topic{_topicid},.001);
+MPRINT(TMT_DOC_SCORE):   _topic_hash.find();
+MPRINT(TMT_DOC_SCORE):   if _topic{_topicid} >= _doccutoff then do;
+MPRINT(TMT_DOC_SCORE):   trunc{_topicid} = 1;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   else trunc{_topicid} = 0;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   output EMWS1.TextTopic_VALIDATE;
+MPRINT(TMT_DOC_SCORE):  ;
+MPRINT(TMT_DOC_SCORE):   end;
+MPRINT(TMT_DOC_SCORE):   * _termtopics.output(dataset: "&termtopds");
+MPRINT(TMT_DOC_SCORE):   run;
+
+NOTE: There were 6 observations read from the data set EMWS1.TEXTTOPIC_TOPICS.
+NOTE: The data set WORK.DOCDS has 303 observations and 7 variables.
+NOTE: There were 6 observations read from the data set EMWS1.TEXTTOPIC_TOPICS.
+NOTE: There were 49 observations read from the data set WORK._TERMTOPICS.
+NOTE: There were 1392 observations read from the data set EMWS1.TEXTTOPIC_VALIDOUT.
+NOTE: There were 305 observations read from the data set EMWS1.TEXTCLUSTER_VALIDATE.
+NOTE: The data set EMWS1.TEXTTOPIC_VALIDATE has 305 observations and 45 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.09 seconds
+      cpu time            0.06 seconds
+      
+
+MPRINT(TMT_SCORE):  ;
+MPRINT(TMT_SCORE):   proc sql noprint;
+MPRINT(TMT_SCORE):   create view EMWS1.TextTopic_valid_trans as select ktrim(term) || '|' || role as _item_, b.* from EMWS1.TextTopic_weightedterms as a, EMWS1.TextTopic_weightedtmout as b where b._termnum_=a.key and a._ispar ne '.' order by b._termnum_, 
+b._document_ ;
+NOTE: SQL view EMWS1.TEXTTOPIC_VALID_TRANS has been defined.
+MPRINT(TMT_SCORE):   quit;
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(SCORE):  ;
+MPRINT(SCORE):  ;
+MPRINT(SCORE):   filename _meta "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextTopic\CDELTA_TRAIN.sas";
+MPRINT(SCORE):   data _null_;
+MPRINT(SCORE):   file _meta;
+MPRINT(SCORE):   put 'if CREATOR = "&EM_NODEID" and upcase(NAME) =: upcase("&EM_NODEID") then do;';
+MPRINT(SCORE):   put '   if upcase(NAME) =: upcase("&EM_NODEID._RAW") then do;';
+MPRINT(SCORE):   put '      ROLE="INPUT";';
+MPRINT(SCORE):   put '      LEVEL="INTERVAL";';
+MPRINT(SCORE):   put '      end;';
+MPRINT(SCORE):   put '   else do;';
+MPRINT(SCORE):   put '      ROLE="SEGMENT";';
+MPRINT(SCORE):   put '      LEVEL="BINARY";';
+MPRINT(SCORE):   put '      end;';
+MPRINT(SCORE):   put '   end;';
+MPRINT(SCORE):   put '   if upcase(NAME) = "_DOCUMENT_" then do;';
+MPRINT(SCORE):   put '      ROLE="ID";';
+MPRINT(SCORE):   put '      LEVEL="NOMINAL";';
+MPRINT(SCORE):   put '      end;';
+MPRINT(SCORE):   run;
+
+NOTE: The file _META is:
+      Filename=C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextTopic\CDELTA_TRAIN.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=0,
+      Last Modified=27Apr2017:17:01:18,
+      Create Time=23Apr2017:18:22:21
+
+NOTE: 14 records were written to the file _META.
+      The minimum record length was 7.
+      The maximum record length was 75.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(SCORE):   filename _meta;
+NOTE: Fileref _META has been deassigned.
+MPRINT(SCORE):   filename _meta "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextTopic\CDELTA_TRANSACTION.sas";
+MPRINT(SCORE):   data _null_;
+MPRINT(SCORE):   file _meta;
+MPRINT(SCORE):   put 'if upcase(NAME)="_DOCUMENT_" then do;';
+MPRINT(SCORE):   put '   ROLE="ID";';
+MPRINT(SCORE):   put '   LEVEL="NOMINAL";';
+MPRINT(SCORE):   put 'end;';
+MPRINT(SCORE):   put 'if upcase(NAME)="_ITEM_" then do;';
+MPRINT(SCORE):   put '   ROLE="TARGET";';
+MPRINT(SCORE):   put '   LEVEL="NOMINAL";';
+MPRINT(SCORE):   put 'end;';
+MPRINT(SCORE):   put 'if upcase(NAME) in ("_COUNT_","_TERMNUM_") then do;';
+MPRINT(SCORE):   put '   ROLE="REJECTED";';
+MPRINT(SCORE):   put 'end;';
+MPRINT(SCORE):   run;
+
+NOTE: The file _META is:
+      Filename=C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextTopic\CDELTA_TRANSACTION.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=0,
+      Last Modified=27Apr2017:17:01:18,
+      Create Time=23Apr2017:18:28:49
+
+NOTE: 11 records were written to the file _META.
+      The minimum record length was 4.
+      The maximum record length was 51.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+      
+
+MPRINT(SCORE):   filename _meta;
+NOTE: Fileref _META has been deassigned.
+MPRINT(SCORE):   data _null_;
+MPRINT(SCORE):   call symput("emwspath", strip(pathname("EMWS1")));
+MPRINT(SCORE):   run;
+
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(SCORE):  ;
+MPRINT(SCORE):   filename topicpre "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextTopic\PRESCORECODE.sas";
+MPRINT(SCORE):   data _null_;
+MPRINT(SCORE):   file topicpre;
+MPRINT(SCORE):   put 'filename temp catalog "sashelp.emtxtext.tmt_doc_score.source";';
+MPRINT(SCORE):   put '%include temp;';
+MPRINT(SCORE):   put 'filename temp catalog "sashelp.emtxtext.row_pivot_normalize.source";';
+MPRINT(SCORE):   put '%include temp;';
+MPRINT(SCORE):   put 'filename temp;';
+MPRINT(SCORE):   run;
+
+NOTE: The file TOPICPRE is:
+      Filename=C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextTopic\PRESCORECODE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=0,
+      Last Modified=27Apr2017:17:01:18,
+      Create Time=23Apr2017:18:28:49
+
+NOTE: 5 records were written to the file TOPICPRE.
+      The minimum record length was 14.
+      The maximum record length was 68.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(SCORE):   filename tmpre "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextCluster\PRESCORECODE.sas";
+MPRINT(EM_COPYFILE):   data _null_;
+MPRINT(EM_COPYFILE):   length line $20000;
+MPRINT(EM_COPYFILE):   file topicpre MOD lrecl=20000;
+MPRINT(EM_COPYFILE):   fid=fopen("tmpre",'i',20000,'v');
+MPRINT(EM_COPYFILE):   if fid > 0 then do;
+MPRINT(EM_COPYFILE):   do while(^fread(fid));
+MPRINT(EM_COPYFILE):   rlen = frlen(fid);
+MPRINT(EM_COPYFILE):   rc= fget(fid,line,20000);
+MPRINT(EM_COPYFILE):   start = length(line)-length(left(line))+1;
+MPRINT(EM_COPYFILE):   line=strip(line);
+MPRINT(EM_COPYFILE):   put @start line;
+MPRINT(EM_COPYFILE):   end;
+MPRINT(EM_COPYFILE):   if fid > 0 then rc=fclose(fid);
+MPRINT(EM_COPYFILE):   end;
+MPRINT(EM_COPYFILE):   run;
+
+NOTE: The file TOPICPRE is:
+      Filename=C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextTopic\PRESCORECODE.sas,
+      RECFM=V,LRECL=20000,File Size (bytes)=182,
+      Last Modified=27Apr2017:17:01:18,
+      Create Time=23Apr2017:18:28:49
+
+NOTE: 36 records were written to the file TOPICPRE.
+      The minimum record length was 1.
+      The maximum record length was 108.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(SCORE):  ;
+MPRINT(SCORE):   filename tmpre;
+NOTE: Fileref TMPRE has been deassigned.
+MPRINT(SCORE):   libname termloc "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1";
+NOTE: Libref TERMLOC refers to the same physical library as EMWS1.
+NOTE: Libref TERMLOC was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1
+MPRINT(SCORE):   filename topicpre;
+NOTE: Fileref TOPICPRE has been deassigned.
+MPRINT(SCORE):   filename _tpcscr "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextTopic\EMPUBLISHSCORE.sas";
+MPRINT(SCORE):   data _null_;
+MPRINT(SCORE):   file _tpcscr ;
+MPRINT(SCORE):   put '/* First we create a Weighted TMOUT Data Set based on weighted terms*/';
+MPRINT(SCORE):   put "proc tmutil data=work.TextFilter_out key=termloc.TextFilter_filtterms;";
+MPRINT(SCORE):   put "control init release;";
+MPRINT(SCORE):   put "weight cellwgt=LOG in_weight=termloc.TextFilter_filtterms (keep=key weight);";
+MPRINT(SCORE):   put "output out=work._weighted_tmout;"/;
+MPRINT(SCORE):   put '%row_pivot_normalize(transds=work._weighted_tmout, outtransds=WORK.TMOUTNORM,';
+MPRINT(SCORE):   put '      col_sumds=work._termsumds,row=_document_,col=_termnum_,entry=_count_,';
+MPRINT(SCORE):   put "      pivot=0.7,tmt_config=termloc.TextFilter_tmconfig,tmt_train=0,prefix=TextTopic);"/;
+MPRINT(SCORE):   put '/*initialize topics and termtopics datasets in case they do not exist (0 topics case)*/';
+MPRINT(SCORE):   put '%macro tmt_check_topics_exist;';
+MPRINT(SCORE):   put '%if(^%sysfunc(exist('"termloc.TextTopic_topics"'))) %then %do;';
+MPRINT(SCORE):   put '   proc sql noprint; create table '"termloc.TextTopic_topics";
+MPRINT(SCORE):   put '   (_topicid decimal, _docCutoff decimal, _termCutoff decimal, _name char(1024), _cat char(4), /* _apply char(1), */ _numterms decimal, _numdocs decimal, _displayCat char(200) );';
+MPRINT(SCORE):   put '   quit;';
+MPRINT(SCORE):   put '%end;';
+MPRINT(SCORE):   put '%if(^%sysfunc(exist('"termloc.TextTopic_termtopics"'))) %then %do;';
+MPRINT(SCORE):   put '   proc sql noprint; create table '"termloc.TextTopic_termtopics";
+MPRINT(SCORE):   put '   (_topicid decimal, _weight decimal, _termid decimal);';
+MPRINT(SCORE):   put '   quit;';
+MPRINT(SCORE):   put '%end;';
+MPRINT(SCORE):   put '%mend tmt_check_topics_exist;';
+MPRINT(SCORE):   put '%tmt_check_topics_exist;';
+MPRINT(SCORE):   put "data work.TextTopic_termtopics; set termloc.TextTopic_termtopics; run;";
+MPRINT(SCORE):   put "data work.TextTopic_topics; set termloc.TextTopic_topics; run;";
+MPRINT(SCORE):   put '%'"tmt_doc_score(termtopds=work.TextTopic_termtopics"', docds=&em_score_output,';
+MPRINT(SCORE):   put "outds=WORK.TMOUTNORM, topicds=work.TextTopic_topics, newdocds=work._newdocds, scoring=yes,";
+MPRINT(SCORE):   put "termsumds=work._termsumds, prefix=TextTopic_,pivot=0.7);";
+MPRINT(SCORE):   put 'data &em_score_output; set work._newdocds;';
+MPRINT(SCORE):   ;
+MPRINT(SCORE):   run;
+
+NOTE: The file _TPCSCR is:
+      Filename=C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextTopic\EMPUBLISHSCORE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=0,
+      Last Modified=27Apr2017:17:01:18,
+      Create Time=23Apr2017:18:22:22
+
+NOTE: 30 records were written to the file _TPCSCR.
+      The minimum record length was 0.
+      The maximum record length was 178.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+MPRINT(SCORE):   filename _tpcscr;
+NOTE: Fileref _TPCSCR has been deassigned.
+MPRINT(MAIN):  ;
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * End SCORE: TextTopic;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+25714      *------------------------------------------------------------*;
+25715      * End SCORE: TextTopic;
+25716      *------------------------------------------------------------*;
+25717      
+
+25719      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):     *------------------------------------------------------------*;
+25720      * TextTopic: Computing metadata for TRAIN data;
+MPRINT(EM_DIAGRAM):   * TextTopic: Computing metadata for TRAIN data;
+25721      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+
+MPRINT(EM_DIAGRAM):    *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * &nodeid: Computing Metadata for TRAIN data;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   filename _delta "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextTopic\CDELTA_TRAIN.sas";
+MPRINT(EMADVISECOLUMNS):   proc display c=sashelp.emmeta.advisecolumns.scl;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    options validvarname=any;
+MPRINT(EMADVISECOLUMNS):   proc contents data=EMWS1.TextTopic_TRAIN out=_tempAdvisor noprint;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):   options validvarname=V7;
+MPRINT(EMADVISECOLUMNS):    data _null_;
+MPRINT(EMADVISECOLUMNS):   dsid = open('EMWS1.TextTopic_TRAIN');
+MPRINT(EMADVISECOLUMNS):   call symput('_dsidTable', strip(put(dsid, best.)));
+MPRINT(EMADVISECOLUMNS):   if dsid then do;
+MPRINT(EMADVISECOLUMNS):   call symput('_engineTable', attrc(dsid, 'ENGINE'));
+MPRINT(EMADVISECOLUMNS):   dsid = close(dsid);
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    options fmterr;
+MPRINT(EMADVISECOLUMNS):   data _metaTestView;
+MPRINT(EMADVISECOLUMNS):   set EMWS1.TextTopic_TRAIN;
+MPRINT(EMADVISECOLUMNS):   if _N_=1 then do;
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   stop;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    proc contents data=EMWS1.TextTopic_TRAIN out=WORK.M0G49M4H noprint;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M0G49M4H;
+MPRINT(EMADVISECOLUMNS):   length NAME $ 64 TYPE $ 1 LABEL $ 200 FORMAT $ 36 INFORMAT $36 INDEX $ 1 INDEXTYPE $ 9;
+MPRINT(EMADVISECOLUMNS):   label NAME =;
+MPRINT(EMADVISECOLUMNS):   set WORK.M0G49M4H(keep=name type length label format formatl formatd informat informl informd idxusage rename=(type=itype));
+MPRINT(EMADVISECOLUMNS):   if itype = 1 then type = 'N';
+MPRINT(EMADVISECOLUMNS):   else type = 'C';
+MPRINT(EMADVISECOLUMNS):   if formatl > 0 then do;
+MPRINT(EMADVISECOLUMNS):   if format ne '' then do;
+MPRINT(EMADVISECOLUMNS):   if type='N' then format = strip(format)!!strip(put(formatl, best12.))!!'.'!!strip(put(formatd, best12.));
+MPRINT(EMADVISECOLUMNS):   else format = strip(format)!!strip(put(formatl, best12.))!!'.';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else format = strip(put(formatl, best12.))!!'.'!!strip(put(formatd, best12.));
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if format ne '' then format = strip(format)!!'.';
+MPRINT(EMADVISECOLUMNS):   if informl > 0 then do;
+MPRINT(EMADVISECOLUMNS):   if informat ne ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if type='N' then informat = strip(informat)!!strip(put(informl, best12.))!!'.'!!strip(put(informd, best12.));
+MPRINT(EMADVISECOLUMNS):   else informat = strip(informat)!!strip(put(informl, best12.))!!'.';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else informat = strip(put(informl, best12.))!!'.'!!strip(put(informd, best12.));
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if informat ne '' then informat = strip(informat)!!'.';
+MPRINT(EMADVISECOLUMNS):   if idxusage = 'NONE' then index ="N";
+MPRINT(EMADVISECOLUMNS):   else index = "Y";
+MPRINT(EMADVISECOLUMNS):   indextype = idxusage;
+MPRINT(EMADVISECOLUMNS):   drop idxusage itype formatl formatd informl informd;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M0G49M4H;
+MPRINT(EMADVISECOLUMNS):   length UNAME $64;
+MPRINT(EMADVISECOLUMNS):   set WORK.M0G49M4H;
+MPRINT(EMADVISECOLUMNS):   UNAME = upcase(NAME);
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    proc sort data=WORK.M2VZIYJH NOTHREADS;
+MPRINT(EMADVISECOLUMNS):   by UNAME;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M2VZIYJH;
+MPRINT(EMADVISECOLUMNS):   drop UNAME;
+MPRINT(EMADVISECOLUMNS):   set WORK.M2VZIYJH;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M046E5RW(keep=NAME ATTR);
+MPRINT(EMADVISECOLUMNS):   length ATTR $ 20;
+MPRINT(EMADVISECOLUMNS):   set WORK.M2VZIYJH;
+MPRINT(EMADVISECOLUMNS):   if level ne "INTERVAL" then do;
+MPRINT(EMADVISECOLUMNS):   if order = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'ORDER';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if format ne ' ' and formattype = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'FORMATTYPE';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if role = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'ROLE';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if level = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'LEVEL';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if type = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'TYPE';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if index = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'INDEX';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if report = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'REPORT';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):   proc sort NOTHREADS;
+MPRINT(EMADVISECOLUMNS):   by attr;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M2VZIYJH;
+MPRINT(EMADVISECOLUMNS):   length NAME $64 ROLE $ 32 LEVEL $ 10 ORDER $ 8 CREATOR $32 FORMATTYPE $ 10 FAMILY $ 10 LOWERLIMIT 8 UPPERLIMIT 8 REPORT $1 DISTRIBUTION $ 20 COMMENT $64;
+MPRINT(EMADVISECOLUMNS):   length levelAssigned 8 roleAssigned 8 PRICE 8;
+MPRINT(EMADVISECOLUMNS):   set WORK.M2VZIYJH;
+MPRINT(EMADVISECOLUMNS):   if formattype = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if format ne ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if type = 'N' then do;
+MPRINT(EMADVISECOLUMNS):   pos = indexc(format,'.1234567890');
+MPRINT(EMADVISECOLUMNS):   if pos > 1 then tempfmt = substr(format,1, pos-1);
+MPRINT(EMADVISECOLUMNS):   else tempfmt = ' ';
+MPRINT(EMADVISECOLUMNS):   flen = length(tempfmt);
+MPRINT(EMADVISECOLUMNS):   select;
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("DATE" "DAY" "DDMMYY" "DOWNAME" "JULDAY" "JULIAN" "MMDDYY" "MMDDYYD" "MMDDYYC" "MMDDYYN" "MMDDYYP" "MMDDYYS" "MONNAME" "MONTH" "MONYY" "NENGO" "QTR" "QTRR" "WEEKDATE" "WEEKDATX" "WEEKDAY" "WORDDATE" "WORDDATX" 
+"YEAR" "YYMMDD" "YYMON" "YYMMDDC" "YYMMDDD" "YYMMDDN" "YYMMDDP" "YYMMDDS" "EURDFDE" "NJDATE" "NLDATE" "EURDFDD" "EURDFDWN" "EURDFMN" "EURDFMY" "EURDFWK" "EURDFWKX" "EURDFWDX" "EURDFDN" "EURDFDE" )) formattype = 'DATE';
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("DATETIME" "EURDFDT" "TOD" )) formattype = "DATETIME";
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("HHMM" "HOUR" "MMSS" "TIME" "TIMEAMPM" )) formattype = "TIME";
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("COMMA" "COMMAX" "DOLLAR" "DOLLARX" "E" "FRACT" "NEGPAREN" "PERCENT")) formattype="QUANTITY";
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("BINARY" "HEX" "IB" "OCTAL" "PD" "PIB" "PK" "RB" "SSN" "Z" "ZD")) formattype = "CODING";
+MPRINT(EMADVISECOLUMNS):   otherwise do;
+MPRINT(EMADVISECOLUMNS):   formattype = "USER";
+MPRINT(EMADVISECOLUMNS):   if compress(tempfmt, '0123456789.', '') = '' then formattype='NUM';
+MPRINT(EMADVISECOLUMNS):   else if substr(tempfmt, 1, 6)='NLDATE' then formattype = "DATE";
+MPRINT(EMADVISECOLUMNS):   else if substr(tempfmt, 1, 6)='NLDATM' then formattype = "DATETIME";
+MPRINT(EMADVISECOLUMNS):   else if substr(tempfmt, 1, 4)='NLTIM' then formattype = "TIME";
+MPRINT(EMADVISECOLUMNS):   else if flen >= 4 then do;
+MPRINT(EMADVISECOLUMNS):   str = substr(tempfmt,1,4);
+MPRINT(EMADVISECOLUMNS):   if str in ("MMYY" "YYMM" "YYQR") then formattype ="DATE";
+MPRINT(EMADVISECOLUMNS):   else if str = "S370" then formattype = "CODING";
+MPRINT(EMADVISECOLUMNS):   else if str = "BEST" then formattype = "NUM";
+MPRINT(EMADVISECOLUMNS):   drop str;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if flen >=3 and substr(tempfmt,1,3) = "YYQ" then formatType = "DATE";
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   drop flen tempfmt pos;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else do;
+MPRINT(EMADVISECOLUMNS):   formatType = "CATEGORY";
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if formatType = "NUM" then do;
+MPRINT(EMADVISECOLUMNS):   if index = "Y" then formatType = "DISCRETE";
+MPRINT(EMADVISECOLUMNS):   else formatType = "QUANTITY";
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if level = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if formatType in ("CATEGORY", "CODING", "ID") or type = "C" then level = "NOMINAL";
+MPRINT(EMADVISECOLUMNS):   else level = "INTERVAL";
+MPRINT(EMADVISECOLUMNS):   levelAssigned = 1;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else level = upcase(level);
+MPRINT(EMADVISECOLUMNS):   if role = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   length name_prefix $8 _uname $64;
+MPRINT(EMADVISECOLUMNS):   drop name_prefix _uname _freqflag;
+MPRINT(EMADVISECOLUMNS):   retain _freqflag;
+MPRINT(EMADVISECOLUMNS):   if LENGTH> 80 then ROLE = 'TEXT';
+MPRINT(EMADVISECOLUMNS):   _uname = upcase(NAME);
+MPRINT(EMADVISECOLUMNS):   select(_uname);
+MPRINT(EMADVISECOLUMNS):   when('_PARTIND_') do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'ID';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   when('_WARN_') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_SEGMENT') do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'SEGMENT';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   when('_NODE_') do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'SEGMENT';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   when('EM_CLASSTARGET') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_VALUETARGET') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_PREDICTION') ROLE = 'PREDICT';
+MPRINT(EMADVISECOLUMNS):   when('EM_PROBABILITY') ROLE = 'PREDICT';
+MPRINT(EMADVISECOLUMNS):   when('EM_EVENTPROBABILITY') ROLE = 'PREDICT';
+MPRINT(EMADVISECOLUMNS):   when('EM_CLASSIFICATION') ROLE = 'CLASSIFICATION';
+MPRINT(EMADVISECOLUMNS):   when('EM_DECISION') ROLE = 'DECISION';
+MPRINT(EMADVISECOLUMNS):   when('EM_PROFIT') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_LOSS') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_ROI') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('URI') ROLE = 'URL';
+MPRINT(EMADVISECOLUMNS):   when('FILTERED') ROLE = 'TEXTLOC';
+MPRINT(EMADVISECOLUMNS):   otherwise do;
+MPRINT(EMADVISECOLUMNS):   if upcase(NAME) =: 'ZIP' then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'REJECTED';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   COMMENT = 'Rejected by: Exceed the maximum class level of %s';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if upcase(NAME) in('FREQ', 'FREQUENCY') then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'FREQ';
+MPRINT(EMADVISECOLUMNS):   if TYPE = 'C' then ROLE = 'INPUT';
+MPRINT(EMADVISECOLUMNS):   else if _freqflag =1 then ROLE='REJECTED';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else do;
+MPRINT(EMADVISECOLUMNS):   name_prefix = scan(_uname, 1, '_');
+MPRINT(EMADVISECOLUMNS):   if scan(_uname, 2, '_') = '' then name_prefix='';
+MPRINT(EMADVISECOLUMNS):   if name_prefix in('F', 'I', 'U') then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'CLASSIFICATION';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if name_prefix in('Q') then ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   else if name_prefix in('P', 'V') then ROLE = 'PREDICT';
+MPRINT(EMADVISECOLUMNS):   else if name_prefix in('R', 'RS', 'RT', 'RD', 'RDS', 'RDT', 'RA', 'RAS', 'RAT') then ROLE = 'RESIDUAL';
+MPRINT(EMADVISECOLUMNS):   else if name_prefix ='D' then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'DECISION';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if name_prefix ='B' then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'SEGMENT';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if name_prefix in('EP', 'BP', 'CP', 'EL', 'CL', 'BL', 'W', 'ROI', 'IC') then ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   else do;
+MPRINT(EMADVISECOLUMNS):   array _ROLE_ (19) $32 _TEMPORARY_ ('ASSESS','CLASSIFICATION','CENSOR', 'COST', 'CROSSID', 'DECISION', 'ID','INPUT', 'LABEL', 'MISSING','PREDICT','REFERRER','REJECTED', 'RESIDUAL','SEGMENT', 'SEQUENCE','TARGET', 'TEXT', 'TIMEID');
+MPRINT(EMADVISECOLUMNS):   drop _found_ i;
+MPRINT(EMADVISECOLUMNS):   _found_=0;
+MPRINT(EMADVISECOLUMNS):   do i=1 to 19 until(_found_=1);
+MPRINT(EMADVISECOLUMNS):   if index(_uname, trim(_ROLE_{i}))=1 then do;
+MPRINT(EMADVISECOLUMNS):   ROLE=_ROLE_{i};
+MPRINT(EMADVISECOLUMNS):   if ROLE = 'ID' then LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   else if ROLE = 'SEGMENT' then LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   else if ROLE = 'TIMEID' and TYPE='N' then LEVEL = 'INTERVAL';
+MPRINT(EMADVISECOLUMNS):   _found_=1;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if length(_uname)>2 then do;
+MPRINT(EMADVISECOLUMNS):   if substr(reverse(trim(_uname)), 1, 3) = 'DI_' then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'ID';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if ROLE='FREQ' then _freqflag=1;
+MPRINT(EMADVISECOLUMNS):   else if ROLE = 'CLASSIFICATION' then LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   if symexist('RATEMKG_ROLE') then do;
+MPRINT(EMADVISECOLUMNS):   if upcase(symget('RATEMKG_ROLE')) in('Y', 'YES') then do;
+MPRINT(EMADVISECOLUMNS):   if _uname =: 'POLICY' then ROLE = 'POLICYID';
+MPRINT(EMADVISECOLUMNS):   else if _uname in ('PARTITION', '_PARTIND_') then ROLE = 'PARTITION';
+MPRINT(EMADVISECOLUMNS):   else if type = 'N' then do;
+MPRINT(EMADVISECOLUMNS):   if _uname = 'EXPOSURE' then ROLE = 'EXPOSURE';
+MPRINT(EMADVISECOLUMNS):   else if _uname = 'YEAR' then ROLE = 'YEAR';
+MPRINT(EMADVISECOLUMNS):   else if _uname = 'WEIGHT' then ROLE = 'WEIGHT';
+MPRINT(EMADVISECOLUMNS):   else if _uname = 'OFFSET' then ROLE = 'OFFSET';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if role = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if formattype in('DATE', 'DATETIME', 'TIME') then role = 'TIMEID';
+MPRINT(EMADVISECOLUMNS):   else role = 'INPUT';
+MPRINT(EMADVISECOLUMNS):   roleAssigned = 1;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else role = upcase(role);
+MPRINT(EMADVISECOLUMNS):   if REPORT = '' then REPORT = 'N';
+MPRINT(EMADVISECOLUMNS):   if symexist('dmwb_product') then do;
+MPRINT(EMADVISECOLUMNS):   if upcase(symget('dmwb_product')) = 'FACTORYMINER_DATASOURCE' then do;
+MPRINT(EMADVISECOLUMNS):   if ROLE ^in('INPUT', 'TARGET', 'REJECTED', 'SEGMENT', 'FREQ', 'ID', 'KEY') then ROLE='REJECTED';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M2VZIYJH;
+MPRINT(EMADVISECOLUMNS):   set WORK.M2VZIYJH;
+MPRINT(EMADVISECOLUMNS):   label NAME = "Variable Name" TYPE = "Type" ROLE = "Role" LEVEL= "Measurement Level" ORDER= "Order" CREATOR= "Creator" FORMATTYPE= "Format Type" FAMILY= "Family" DISTRIBUTION= "Distribution" PRICE= "Price" LOWERLIMIT= "Lower 
+limit" UPPERLIMIT= "Upper Limit" REPORT= "Report" COMMENT= "Comment" INDEX= "Index" INDEXTYPE= "IndexType" LABEL= "Label" LENGTH= "Length";
+MPRINT(EMADVISECOLUMNS):   drop levelAssigned roleAssigned;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):   
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   proc sort data=WORK.COLUMNMETA;
+MPRINT(EM_DIAGRAM):   by NAME;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * &nodeid: Merge incoming metadata;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   proc contents data=EMWS1.TextCluster_TRAIN noprint out=_temp2(keep=NAME);
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   proc sort data=_temp2;
+MPRINT(EM_DIAGRAM):   by NAME;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   proc sort data=EMWS1.TextCluster_CMeta_TRAIN out=_temp;
+MPRINT(EM_DIAGRAM):   by NAME;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   data EMWS1.TextTopic_CMeta_TRAIN;
+MPRINT(EM_DIAGRAM):   merge WORK.COLUMNMETA(in=_a) _temp2(in=_b) _temp(drop=FORMAT INFORMAT LENGTH INDEX INDEXTYPE in=_c) end=_eof_;
+MPRINT(EM_DIAGRAM):   by NAME;
+MPRINT(EM_DIAGRAM):   if (^_a and _b) or (^_c and _a and _b) then delete;
+MPRINT(EM_DIAGRAM):   if ^_b then CREATOR = "TextTopic";
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * TextTopic: Apply Delta Code;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   if CREATOR = "TextTopic" and upcase(NAME) =: upcase("TextTopic") then do;
+MPRINT(EM_DIAGRAM):   if upcase(NAME) =: upcase("TextTopic_RAW") then do;
+MPRINT(EM_DIAGRAM):   ROLE="INPUT";
+MPRINT(EM_DIAGRAM):   LEVEL="INTERVAL";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   else do;
+MPRINT(EM_DIAGRAM):   ROLE="SEGMENT";
+MPRINT(EM_DIAGRAM):   LEVEL="BINARY";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   if upcase(NAME) = "_DOCUMENT_" then do;
+MPRINT(EM_DIAGRAM):   ROLE="ID";
+MPRINT(EM_DIAGRAM):   LEVEL="NOMINAL";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   filename _delta;
+26081      proc sort data = EMWS1.TextCluster_EMINFO OUT=WORK.SORTEDEMINFO NOTHREADS;
+MPRINT(EM_DIAGRAM):    proc sort data = EMWS1.TextCluster_EMINFO OUT=WORK.SORTEDEMINFO NOTHREADS;
+26082      by TARGET KEY;
+MPRINT(EM_DIAGRAM):   by TARGET KEY;
+26083      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: There were 9 observations read from the data set EMWS1.TEXTCLUSTER_EMINFO.
+NOTE: The data set WORK.SORTEDEMINFO has 9 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.01 seconds
+      
+
+26084      proc sort data = EMWS1.TextTopic_EMINFO OUT=WORK.TEMP_INFO NOTHREADS;
+MPRINT(EM_DIAGRAM):   proc sort data = EMWS1.TextTopic_EMINFO OUT=WORK.TEMP_INFO NOTHREADS;
+26085      by TARGET KEY;
+MPRINT(EM_DIAGRAM):   by TARGET KEY;
+26086      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: There were 5 observations read from the data set EMWS1.TEXTTOPIC_EMINFO.
+NOTE: The data set WORK.TEMP_INFO has 5 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+
+26087      data EMWS1.TextTopic_EMINFO;
+MPRINT(EM_DIAGRAM):   data EMWS1.TextTopic_EMINFO;
+26088      merge WORK.SORTEDEMINFO WORK.TEMP_INFO;
+MPRINT(EM_DIAGRAM):   merge WORK.SORTEDEMINFO WORK.TEMP_INFO;
+26089      by TARGET KEY;
+MPRINT(EM_DIAGRAM):   by TARGET KEY;
+26090      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: There were 9 observations read from the data set WORK.SORTEDEMINFO.
+NOTE: There were 5 observations read from the data set WORK.TEMP_INFO.
+NOTE: The data set EMWS1.TEXTTOPIC_EMINFO has 11 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+
+26091      proc datasets lib=work nolist;
+MPRINT(EM_DIAGRAM):   proc datasets lib=work nolist;
+26092      delete TEMP_INFO SORTEDEMINFO;
+MPRINT(EM_DIAGRAM):   delete TEMP_INFO SORTEDEMINFO;
+26093      run;
+MPRINT(EM_DIAGRAM):   run;
+
+NOTE: Deleting WORK.TEMP_INFO (memtype=DATA).
+NOTE: Deleting WORK.SORTEDEMINFO (memtype=DATA).
+26094      quit;
+MPRINT(EM_DIAGRAM):   quit;
+
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+26095      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):    *------------------------------------------------------------*;
+26096      * TextTopic: Computing metadata for TRANSACTION data;
+MPRINT(EM_DIAGRAM):   * TextTopic: Computing metadata for TRANSACTION data;
+26097      *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+
+MPRINT(EM_DIAGRAM):    *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * &nodeid: Computing Metadata for TRANSACTION data;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   filename _delta "C:\Users\Gaurav\Desktop\second sem\Data Mining\Project 3\Insurance Claim\Workspaces\EMWS1\TextTopic\CDELTA_TRANSACTION.sas";
+MPRINT(EMADVISECOLUMNS):   proc display c=sashelp.emmeta.advisecolumns.scl;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    options validvarname=any;
+MPRINT(EMADVISECOLUMNS):   proc contents data=EMWS1.TextTopic_TRANSACTION out=_tempAdvisor noprint;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):   options validvarname=V7;
+MPRINT(EMADVISECOLUMNS):    data _null_;
+MPRINT(EMADVISECOLUMNS):   dsid = open('EMWS1.TextTopic_TRANSACTION');
+MPRINT(EMADVISECOLUMNS):   call symput('_dsidTable', strip(put(dsid, best.)));
+MPRINT(EMADVISECOLUMNS):   if dsid then do;
+MPRINT(EMADVISECOLUMNS):   call symput('_engineTable', attrc(dsid, 'ENGINE'));
+MPRINT(EMADVISECOLUMNS):   dsid = close(dsid);
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    proc contents data=EMWS1.TextTopic_TRANSACTION out=WORK.M278HVR4 noprint;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M278HVR4;
+MPRINT(EMADVISECOLUMNS):   length NAME $ 64 TYPE $ 1 LABEL $ 200 FORMAT $ 36 INFORMAT $36 INDEX $ 1 INDEXTYPE $ 9;
+MPRINT(EMADVISECOLUMNS):   label NAME =;
+MPRINT(EMADVISECOLUMNS):   set WORK.M278HVR4(keep=name type length label format formatl formatd informat informl informd idxusage rename=(type=itype));
+MPRINT(EMADVISECOLUMNS):   if itype = 1 then type = 'N';
+MPRINT(EMADVISECOLUMNS):   else type = 'C';
+MPRINT(EMADVISECOLUMNS):   if formatl > 0 then do;
+MPRINT(EMADVISECOLUMNS):   if format ne '' then do;
+MPRINT(EMADVISECOLUMNS):   if type='N' then format = strip(format)!!strip(put(formatl, best12.))!!'.'!!strip(put(formatd, best12.));
+MPRINT(EMADVISECOLUMNS):   else format = strip(format)!!strip(put(formatl, best12.))!!'.';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else format = strip(put(formatl, best12.))!!'.'!!strip(put(formatd, best12.));
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if format ne '' then format = strip(format)!!'.';
+MPRINT(EMADVISECOLUMNS):   if informl > 0 then do;
+MPRINT(EMADVISECOLUMNS):   if informat ne ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if type='N' then informat = strip(informat)!!strip(put(informl, best12.))!!'.'!!strip(put(informd, best12.));
+MPRINT(EMADVISECOLUMNS):   else informat = strip(informat)!!strip(put(informl, best12.))!!'.';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else informat = strip(put(informl, best12.))!!'.'!!strip(put(informd, best12.));
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if informat ne '' then informat = strip(informat)!!'.';
+MPRINT(EMADVISECOLUMNS):   if idxusage = 'NONE' then index ="N";
+MPRINT(EMADVISECOLUMNS):   else index = "Y";
+MPRINT(EMADVISECOLUMNS):   indextype = idxusage;
+MPRINT(EMADVISECOLUMNS):   drop idxusage itype formatl formatd informl informd;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M278HVR4;
+MPRINT(EMADVISECOLUMNS):   length UNAME $64;
+MPRINT(EMADVISECOLUMNS):   set WORK.M278HVR4;
+MPRINT(EMADVISECOLUMNS):   UNAME = upcase(NAME);
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    proc sort data=WORK.M2NML0FF NOTHREADS;
+MPRINT(EMADVISECOLUMNS):   by UNAME;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M2NML0FF;
+MPRINT(EMADVISECOLUMNS):   drop UNAME;
+MPRINT(EMADVISECOLUMNS):   set WORK.M2NML0FF;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M2HVG3M0(keep=NAME ATTR);
+MPRINT(EMADVISECOLUMNS):   length ATTR $ 20;
+MPRINT(EMADVISECOLUMNS):   set WORK.M2NML0FF;
+MPRINT(EMADVISECOLUMNS):   if level ne "INTERVAL" then do;
+MPRINT(EMADVISECOLUMNS):   if order = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'ORDER';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if format ne ' ' and formattype = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'FORMATTYPE';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if role = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'ROLE';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if level = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'LEVEL';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if type = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'TYPE';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if index = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'INDEX';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if report = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   attr = 'REPORT';
+MPRINT(EMADVISECOLUMNS):   output;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):   proc sort NOTHREADS;
+MPRINT(EMADVISECOLUMNS):   by attr;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M2NML0FF;
+MPRINT(EMADVISECOLUMNS):   length NAME $64 ROLE $ 32 LEVEL $ 10 ORDER $ 8 CREATOR $32 FORMATTYPE $ 10 FAMILY $ 10 LOWERLIMIT 8 UPPERLIMIT 8 REPORT $1 DISTRIBUTION $ 20 COMMENT $64;
+MPRINT(EMADVISECOLUMNS):   length levelAssigned 8 roleAssigned 8 PRICE 8;
+MPRINT(EMADVISECOLUMNS):   set WORK.M2NML0FF;
+MPRINT(EMADVISECOLUMNS):   if formattype = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if format ne ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if type = 'N' then do;
+MPRINT(EMADVISECOLUMNS):   pos = indexc(format,'.1234567890');
+MPRINT(EMADVISECOLUMNS):   if pos > 1 then tempfmt = substr(format,1, pos-1);
+MPRINT(EMADVISECOLUMNS):   else tempfmt = ' ';
+MPRINT(EMADVISECOLUMNS):   flen = length(tempfmt);
+MPRINT(EMADVISECOLUMNS):   select;
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("DATE" "DAY" "DDMMYY" "DOWNAME" "JULDAY" "JULIAN" "MMDDYY" "MMDDYYD" "MMDDYYC" "MMDDYYN" "MMDDYYP" "MMDDYYS" "MONNAME" "MONTH" "MONYY" "NENGO" "QTR" "QTRR" "WEEKDATE" "WEEKDATX" "WEEKDAY" "WORDDATE" "WORDDATX" 
+"YEAR" "YYMMDD" "YYMON" "YYMMDDC" "YYMMDDD" "YYMMDDN" "YYMMDDP" "YYMMDDS" "EURDFDE" "NJDATE" "NLDATE" "EURDFDD" "EURDFDWN" "EURDFMN" "EURDFMY" "EURDFWK" "EURDFWKX" "EURDFWDX" "EURDFDN" "EURDFDE" )) formattype = 'DATE';
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("DATETIME" "EURDFDT" "TOD" )) formattype = "DATETIME";
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("HHMM" "HOUR" "MMSS" "TIME" "TIMEAMPM" )) formattype = "TIME";
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("COMMA" "COMMAX" "DOLLAR" "DOLLARX" "E" "FRACT" "NEGPAREN" "PERCENT")) formattype="QUANTITY";
+MPRINT(EMADVISECOLUMNS):   when(tempfmt in ("BINARY" "HEX" "IB" "OCTAL" "PD" "PIB" "PK" "RB" "SSN" "Z" "ZD")) formattype = "CODING";
+MPRINT(EMADVISECOLUMNS):   otherwise do;
+MPRINT(EMADVISECOLUMNS):   formattype = "USER";
+MPRINT(EMADVISECOLUMNS):   if compress(tempfmt, '0123456789.', '') = '' then formattype='NUM';
+MPRINT(EMADVISECOLUMNS):   else if substr(tempfmt, 1, 6)='NLDATE' then formattype = "DATE";
+MPRINT(EMADVISECOLUMNS):   else if substr(tempfmt, 1, 6)='NLDATM' then formattype = "DATETIME";
+MPRINT(EMADVISECOLUMNS):   else if substr(tempfmt, 1, 4)='NLTIM' then formattype = "TIME";
+MPRINT(EMADVISECOLUMNS):   else if flen >= 4 then do;
+MPRINT(EMADVISECOLUMNS):   str = substr(tempfmt,1,4);
+MPRINT(EMADVISECOLUMNS):   if str in ("MMYY" "YYMM" "YYQR") then formattype ="DATE";
+MPRINT(EMADVISECOLUMNS):   else if str = "S370" then formattype = "CODING";
+MPRINT(EMADVISECOLUMNS):   else if str = "BEST" then formattype = "NUM";
+MPRINT(EMADVISECOLUMNS):   drop str;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if flen >=3 and substr(tempfmt,1,3) = "YYQ" then formatType = "DATE";
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   drop flen tempfmt pos;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else do;
+MPRINT(EMADVISECOLUMNS):   formatType = "CATEGORY";
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if formatType = "NUM" then do;
+MPRINT(EMADVISECOLUMNS):   if index = "Y" then formatType = "DISCRETE";
+MPRINT(EMADVISECOLUMNS):   else formatType = "QUANTITY";
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if level = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if formatType in ("CATEGORY", "CODING", "ID") or type = "C" then level = "NOMINAL";
+MPRINT(EMADVISECOLUMNS):   else level = "INTERVAL";
+MPRINT(EMADVISECOLUMNS):   levelAssigned = 1;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else level = upcase(level);
+MPRINT(EMADVISECOLUMNS):   if role = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   length name_prefix $8 _uname $64;
+MPRINT(EMADVISECOLUMNS):   drop name_prefix _uname _freqflag;
+MPRINT(EMADVISECOLUMNS):   retain _freqflag;
+MPRINT(EMADVISECOLUMNS):   if LENGTH> 80 then ROLE = 'TEXT';
+MPRINT(EMADVISECOLUMNS):   _uname = upcase(NAME);
+MPRINT(EMADVISECOLUMNS):   select(_uname);
+MPRINT(EMADVISECOLUMNS):   when('_PARTIND_') do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'ID';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   when('_WARN_') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_SEGMENT') do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'SEGMENT';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   when('_NODE_') do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'SEGMENT';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   when('EM_CLASSTARGET') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_VALUETARGET') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_PREDICTION') ROLE = 'PREDICT';
+MPRINT(EMADVISECOLUMNS):   when('EM_PROBABILITY') ROLE = 'PREDICT';
+MPRINT(EMADVISECOLUMNS):   when('EM_EVENTPROBABILITY') ROLE = 'PREDICT';
+MPRINT(EMADVISECOLUMNS):   when('EM_CLASSIFICATION') ROLE = 'CLASSIFICATION';
+MPRINT(EMADVISECOLUMNS):   when('EM_DECISION') ROLE = 'DECISION';
+MPRINT(EMADVISECOLUMNS):   when('EM_PROFIT') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_LOSS') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('EM_ROI') ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   when('URI') ROLE = 'URL';
+MPRINT(EMADVISECOLUMNS):   when('FILTERED') ROLE = 'TEXTLOC';
+MPRINT(EMADVISECOLUMNS):   otherwise do;
+MPRINT(EMADVISECOLUMNS):   if upcase(NAME) =: 'ZIP' then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'REJECTED';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   COMMENT = 'Rejected by: Exceed the maximum class level of %s';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if upcase(NAME) in('FREQ', 'FREQUENCY') then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'FREQ';
+MPRINT(EMADVISECOLUMNS):   if TYPE = 'C' then ROLE = 'INPUT';
+MPRINT(EMADVISECOLUMNS):   else if _freqflag =1 then ROLE='REJECTED';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else do;
+MPRINT(EMADVISECOLUMNS):   name_prefix = scan(_uname, 1, '_');
+MPRINT(EMADVISECOLUMNS):   if scan(_uname, 2, '_') = '' then name_prefix='';
+MPRINT(EMADVISECOLUMNS):   if name_prefix in('F', 'I', 'U') then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'CLASSIFICATION';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if name_prefix in('Q') then ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   else if name_prefix in('P', 'V') then ROLE = 'PREDICT';
+MPRINT(EMADVISECOLUMNS):   else if name_prefix in('R', 'RS', 'RT', 'RD', 'RDS', 'RDT', 'RA', 'RAS', 'RAT') then ROLE = 'RESIDUAL';
+MPRINT(EMADVISECOLUMNS):   else if name_prefix ='D' then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'DECISION';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if name_prefix ='B' then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'SEGMENT';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else if name_prefix in('EP', 'BP', 'CP', 'EL', 'CL', 'BL', 'W', 'ROI', 'IC') then ROLE = 'ASSESS';
+MPRINT(EMADVISECOLUMNS):   else do;
+MPRINT(EMADVISECOLUMNS):   array _ROLE_ (19) $32 _TEMPORARY_ ('ASSESS','CLASSIFICATION','CENSOR', 'COST', 'CROSSID', 'DECISION', 'ID','INPUT', 'LABEL', 'MISSING','PREDICT','REFERRER','REJECTED', 'RESIDUAL','SEGMENT', 'SEQUENCE','TARGET', 'TEXT', 'TIMEID');
+MPRINT(EMADVISECOLUMNS):   drop _found_ i;
+MPRINT(EMADVISECOLUMNS):   _found_=0;
+MPRINT(EMADVISECOLUMNS):   do i=1 to 19 until(_found_=1);
+MPRINT(EMADVISECOLUMNS):   if index(_uname, trim(_ROLE_{i}))=1 then do;
+MPRINT(EMADVISECOLUMNS):   ROLE=_ROLE_{i};
+MPRINT(EMADVISECOLUMNS):   if ROLE = 'ID' then LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   else if ROLE = 'SEGMENT' then LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   else if ROLE = 'TIMEID' and TYPE='N' then LEVEL = 'INTERVAL';
+MPRINT(EMADVISECOLUMNS):   _found_=1;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if length(_uname)>2 then do;
+MPRINT(EMADVISECOLUMNS):   if substr(reverse(trim(_uname)), 1, 3) = 'DI_' then do;
+MPRINT(EMADVISECOLUMNS):   ROLE = 'ID';
+MPRINT(EMADVISECOLUMNS):   LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if ROLE='FREQ' then _freqflag=1;
+MPRINT(EMADVISECOLUMNS):   else if ROLE = 'CLASSIFICATION' then LEVEL = 'NOMINAL';
+MPRINT(EMADVISECOLUMNS):   if symexist('RATEMKG_ROLE') then do;
+MPRINT(EMADVISECOLUMNS):   if upcase(symget('RATEMKG_ROLE')) in('Y', 'YES') then do;
+MPRINT(EMADVISECOLUMNS):   if _uname =: 'POLICY' then ROLE = 'POLICYID';
+MPRINT(EMADVISECOLUMNS):   else if _uname in ('PARTITION', '_PARTIND_') then ROLE = 'PARTITION';
+MPRINT(EMADVISECOLUMNS):   else if type = 'N' then do;
+MPRINT(EMADVISECOLUMNS):   if _uname = 'EXPOSURE' then ROLE = 'EXPOSURE';
+MPRINT(EMADVISECOLUMNS):   else if _uname = 'YEAR' then ROLE = 'YEAR';
+MPRINT(EMADVISECOLUMNS):   else if _uname = 'WEIGHT' then ROLE = 'WEIGHT';
+MPRINT(EMADVISECOLUMNS):   else if _uname = 'OFFSET' then ROLE = 'OFFSET';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   if role = ' ' then do;
+MPRINT(EMADVISECOLUMNS):   if formattype in('DATE', 'DATETIME', 'TIME') then role = 'TIMEID';
+MPRINT(EMADVISECOLUMNS):   else role = 'INPUT';
+MPRINT(EMADVISECOLUMNS):   roleAssigned = 1;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   else role = upcase(role);
+MPRINT(EMADVISECOLUMNS):   if REPORT = '' then REPORT = 'N';
+MPRINT(EMADVISECOLUMNS):   if symexist('dmwb_product') then do;
+MPRINT(EMADVISECOLUMNS):   if upcase(symget('dmwb_product')) = 'FACTORYMINER_DATASOURCE' then do;
+MPRINT(EMADVISECOLUMNS):   if ROLE ^in('INPUT', 'TARGET', 'REJECTED', 'SEGMENT', 'FREQ', 'ID', 'KEY') then ROLE='REJECTED';
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   end;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):    data WORK.M2NML0FF;
+MPRINT(EMADVISECOLUMNS):   set WORK.M2NML0FF;
+MPRINT(EMADVISECOLUMNS):   label NAME = "Variable Name" TYPE = "Type" ROLE = "Role" LEVEL= "Measurement Level" ORDER= "Order" CREATOR= "Creator" FORMATTYPE= "Format Type" FAMILY= "Family" DISTRIBUTION= "Distribution" PRICE= "Price" LOWERLIMIT= "Lower 
+limit" UPPERLIMIT= "Upper Limit" REPORT= "Report" COMMENT= "Comment" INDEX= "Index" INDEXTYPE= "IndexType" LABEL= "Label" LENGTH= "Length";
+MPRINT(EMADVISECOLUMNS):   drop levelAssigned roleAssigned;
+MPRINT(EMADVISECOLUMNS):   run;
+MPRINT(EMADVISECOLUMNS):   
+MPRINT(EM_DIAGRAM):  ;
+MPRINT(EM_DIAGRAM):   data EMWS1.TextTopic_CMeta_TRANSACTION;
+MPRINT(EM_DIAGRAM):   set WORK.COLUMNMETA;
+MPRINT(EM_DIAGRAM):   length creator $32;
+MPRINT(EM_DIAGRAM):   CREATOR = "TextTopic";
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   * TextTopic: Apply Delta Code;
+MPRINT(EM_DIAGRAM):   *------------------------------------------------------------*;
+MPRINT(EM_DIAGRAM):   if upcase(NAME)="_DOCUMENT_" then do;
+MPRINT(EM_DIAGRAM):   ROLE="ID";
+MPRINT(EM_DIAGRAM):   LEVEL="NOMINAL";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   if upcase(NAME)="_ITEM_" then do;
+MPRINT(EM_DIAGRAM):   ROLE="TARGET";
+MPRINT(EM_DIAGRAM):   LEVEL="NOMINAL";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   if upcase(NAME) in ("_COUNT_","_TERMNUM_") then do;
+MPRINT(EM_DIAGRAM):   ROLE="REJECTED";
+MPRINT(EM_DIAGRAM):   end;
+MPRINT(EM_DIAGRAM):   run;
+MPRINT(EM_DIAGRAM):   filename _delta;
+MPRINT(EM_DIAGRAM):    proc printto;
+MPRINT(EM_DIAGRAM):   run;

@@ -1,0 +1,262 @@
+*------------------------------------------------------------*
+ Node = 5
+*------------------------------------------------------------*
+if Hypertension, preg. IS ONE OF: 1, 9
+AND ETHNICITYDAD IS ONE OF: 9, 5, 2
+then 
+ Tree Node Identifier   = 5
+ Number of Observations = 341
+ Predicted: LBWT=1 = 0.82
+ Predicted: LBWT=0 = 0.18
+ 
+*------------------------------------------------------------*
+ Node = 11
+*------------------------------------------------------------*
+if Hypertension, preg. IS ONE OF: 1
+AND ETHNICITYDAD IS ONE OF: 1, 3, 0, 8, 4 or MISSING
+AND Anemia -- mother IS ONE OF: 0 or MISSING
+then 
+ Tree Node Identifier   = 11
+ Number of Observations = 435
+ Predicted: LBWT=1 = 0.74
+ Predicted: LBWT=0 = 0.26
+ 
+*------------------------------------------------------------*
+ Node = 12
+*------------------------------------------------------------*
+if Hypertension, preg. IS ONE OF: 1
+AND ETHNICITYDAD IS ONE OF: 1, 3, 0, 8, 4 or MISSING
+AND Anemia -- mother IS ONE OF: 1
+then 
+ Tree Node Identifier   = 12
+ Number of Observations = 7
+ Predicted: LBWT=1 = 0.29
+ Predicted: LBWT=0 = 0.71
+ 
+*------------------------------------------------------------*
+ Node = 15
+*------------------------------------------------------------*
+if Month of preg. prenatal care began < 0.5 or MISSING
+AND Hypertension, preg. IS ONE OF: 0 or MISSING
+AND ETHNICITYMOM IS ONE OF: 1
+AND ETHNICITYDAD IS ONE OF: 9, 5, 2
+then 
+ Tree Node Identifier   = 15
+ Number of Observations = 42
+ Predicted: LBWT=1 = 0.67
+ Predicted: LBWT=0 = 0.33
+ 
+*------------------------------------------------------------*
+ Node = 16
+*------------------------------------------------------------*
+if Month of preg. prenatal care began < 0.5 or MISSING
+AND Hypertension, preg. IS ONE OF: 0 or MISSING
+AND ETHNICITYMOM IS ONE OF: 2 or MISSING
+AND ETHNICITYDAD IS ONE OF: 9, 5, 2
+then 
+ Tree Node Identifier   = 16
+ Number of Observations = 139
+ Predicted: LBWT=1 = 0.91
+ Predicted: LBWT=0 = 0.09
+ 
+*------------------------------------------------------------*
+ Node = 17
+*------------------------------------------------------------*
+if Prev. preterm/small IS ONE OF: 1
+AND Month of preg. prenatal care began >= 0.5
+AND Hypertension, preg. IS ONE OF: 0 or MISSING
+AND ETHNICITYDAD IS ONE OF: 9, 5, 2
+then 
+ Tree Node Identifier   = 17
+ Number of Observations = 97
+ Predicted: LBWT=1 = 0.90
+ Predicted: LBWT=0 = 0.10
+ 
+*------------------------------------------------------------*
+ Node = 23
+*------------------------------------------------------------*
+if Prev. preterm/small IS ONE OF: 0 or MISSING
+AND Month of preg. prenatal care began >= 0.5
+AND Hypertension, preg. IS ONE OF: 0 or MISSING
+AND Eclampsia IS ONE OF: 1
+AND ETHNICITYDAD IS ONE OF: 9, 5, 2
+then 
+ Tree Node Identifier   = 23
+ Number of Observations = 48
+ Predicted: LBWT=1 = 0.96
+ Predicted: LBWT=0 = 0.04
+ 
+*------------------------------------------------------------*
+ Node = 25
+*------------------------------------------------------------*
+if smoker IS ONE OF: 1 or MISSING
+AND Marital status IS ONE OF: 1 or MISSING
+AND Hypertension, preg. IS ONE OF: 0, 9 or MISSING
+AND Hydramnios/Oligo. IS ONE OF: 1
+AND ETHNICITYDAD IS ONE OF: 1, 3, 0, 8, 4 or MISSING
+then 
+ Tree Node Identifier   = 25
+ Number of Observations = 22
+ Predicted: LBWT=1 = 1.00
+ Predicted: LBWT=0 = 0.00
+ 
+*------------------------------------------------------------*
+ Node = 26
+*------------------------------------------------------------*
+if smoker IS ONE OF: 1 or MISSING
+AND Marital status IS ONE OF: 2
+AND Hypertension, preg. IS ONE OF: 0, 9 or MISSING
+AND Hydramnios/Oligo. IS ONE OF: 1
+AND ETHNICITYDAD IS ONE OF: 1, 3, 0, 8, 4 or MISSING
+then 
+ Tree Node Identifier   = 26
+ Number of Observations = 11
+ Predicted: LBWT=1 = 0.73
+ Predicted: LBWT=0 = 0.27
+ 
+*------------------------------------------------------------*
+ Node = 27
+*------------------------------------------------------------*
+if smoker IS ONE OF: 1 or MISSING
+AND Uterine bleeding IS ONE OF: 1
+AND Hypertension, preg. IS ONE OF: 0, 9 or MISSING
+AND Hydramnios/Oligo. IS ONE OF: 0 or MISSING
+AND ETHNICITYDAD IS ONE OF: 1, 3, 0, 8, 4 or MISSING
+then 
+ Tree Node Identifier   = 27
+ Number of Observations = 12
+ Predicted: LBWT=1 = 1.00
+ Predicted: LBWT=0 = 0.00
+ 
+*------------------------------------------------------------*
+ Node = 28
+*------------------------------------------------------------*
+if smoker IS ONE OF: 1 or MISSING
+AND Uterine bleeding IS ONE OF: 0 or MISSING
+AND Hypertension, preg. IS ONE OF: 0, 9 or MISSING
+AND Hydramnios/Oligo. IS ONE OF: 0 or MISSING
+AND ETHNICITYDAD IS ONE OF: 1, 3, 0, 8, 4 or MISSING
+then 
+ Tree Node Identifier   = 28
+ Number of Observations = 743
+ Predicted: LBWT=1 = 0.54
+ Predicted: LBWT=0 = 0.46
+ 
+*------------------------------------------------------------*
+ Node = 29
+*------------------------------------------------------------*
+if smoker IS ONE OF: 0
+AND YrsLastLiveBirth < 1.5 or MISSING
+AND Hypertension, preg. IS ONE OF: 0, 9 or MISSING
+AND Hydramnios/Oligo. IS ONE OF: 1
+AND ETHNICITYDAD IS ONE OF: 1, 3, 0, 8, 4 or MISSING
+then 
+ Tree Node Identifier   = 29
+ Number of Observations = 70
+ Predicted: LBWT=1 = 0.77
+ Predicted: LBWT=0 = 0.23
+ 
+*------------------------------------------------------------*
+ Node = 31
+*------------------------------------------------------------*
+if smoker IS ONE OF: 0
+AND YrsLastLiveBirth >= 1.5
+AND Prev. preterm/small IS ONE OF: 1
+AND Hypertension, preg. IS ONE OF: 0, 9 or MISSING
+AND ETHNICITYDAD IS ONE OF: 1, 3, 0, 8, 4 or MISSING
+then 
+ Tree Node Identifier   = 31
+ Number of Observations = 56
+ Predicted: LBWT=1 = 0.63
+ Predicted: LBWT=0 = 0.38
+ 
+*------------------------------------------------------------*
+ Node = 33
+*------------------------------------------------------------*
+if Prev. preterm/small IS ONE OF: 0 or MISSING
+AND Month of preg. prenatal care began >= 0.5
+AND Incompetent cervix IS ONE OF: 1
+AND Hypertension, preg. IS ONE OF: 0 or MISSING
+AND Eclampsia IS ONE OF: 0 or MISSING
+AND ETHNICITYDAD IS ONE OF: 9, 5, 2
+then 
+ Tree Node Identifier   = 33
+ Number of Observations = 43
+ Predicted: LBWT=1 = 0.95
+ Predicted: LBWT=0 = 0.05
+ 
+*------------------------------------------------------------*
+ Node = 34
+*------------------------------------------------------------*
+if Prev. preterm/small IS ONE OF: 0 or MISSING
+AND Month of preg. prenatal care began >= 0.5
+AND Incompetent cervix IS ONE OF: 0 or MISSING
+AND Hypertension, preg. IS ONE OF: 0 or MISSING
+AND Eclampsia IS ONE OF: 0 or MISSING
+AND ETHNICITYDAD IS ONE OF: 9, 5, 2
+then 
+ Tree Node Identifier   = 34
+ Number of Observations = 2745
+ Predicted: LBWT=1 = 0.57
+ Predicted: LBWT=0 = 0.43
+ 
+*------------------------------------------------------------*
+ Node = 35
+*------------------------------------------------------------*
+if smoker IS ONE OF: 0
+AND YrsLastLiveBirth < 1.5 or MISSING
+AND Hypertension, preg. IS ONE OF: 0, 9 or MISSING
+AND Hydramnios/Oligo. IS ONE OF: 0 or MISSING
+AND Eclampsia IS ONE OF: 0 or MISSING
+AND ETHNICITYDAD IS ONE OF: 1, 3, 0, 8, 4 or MISSING
+then 
+ Tree Node Identifier   = 35
+ Number of Observations = 1962
+ Predicted: LBWT=1 = 0.39
+ Predicted: LBWT=0 = 0.61
+ 
+*------------------------------------------------------------*
+ Node = 36
+*------------------------------------------------------------*
+if smoker IS ONE OF: 0
+AND YrsLastLiveBirth < 1.5 or MISSING
+AND Hypertension, preg. IS ONE OF: 0, 9 or MISSING
+AND Hydramnios/Oligo. IS ONE OF: 0 or MISSING
+AND Eclampsia IS ONE OF: 1
+AND ETHNICITYDAD IS ONE OF: 1, 3, 0, 8, 4 or MISSING
+then 
+ Tree Node Identifier   = 36
+ Number of Observations = 19
+ Predicted: LBWT=1 = 0.95
+ Predicted: LBWT=0 = 0.05
+ 
+*------------------------------------------------------------*
+ Node = 37
+*------------------------------------------------------------*
+if smoker IS ONE OF: 0
+AND YrsLastLiveBirth >= 1.5
+AND Prev. preterm/small IS ONE OF: 0 or MISSING
+AND Hypertension, preg. IS ONE OF: 0, 9 or MISSING
+AND Hydramnios/Oligo. IS ONE OF: 1
+AND ETHNICITYDAD IS ONE OF: 1, 3, 0, 8, 4 or MISSING
+then 
+ Tree Node Identifier   = 37
+ Number of Observations = 44
+ Predicted: LBWT=1 = 0.64
+ Predicted: LBWT=0 = 0.36
+ 
+*------------------------------------------------------------*
+ Node = 38
+*------------------------------------------------------------*
+if smoker IS ONE OF: 0
+AND YrsLastLiveBirth >= 1.5
+AND Prev. preterm/small IS ONE OF: 0 or MISSING
+AND Hypertension, preg. IS ONE OF: 0, 9 or MISSING
+AND Hydramnios/Oligo. IS ONE OF: 0 or MISSING
+AND ETHNICITYDAD IS ONE OF: 1, 3, 0, 8, 4 or MISSING
+then 
+ Tree Node Identifier   = 38
+ Number of Observations = 1712
+ Predicted: LBWT=1 = 0.25
+ Predicted: LBWT=0 = 0.75
+ 
